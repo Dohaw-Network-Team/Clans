@@ -12,10 +12,9 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class ClanManager {
+public class ClanManager{
 
 	private Main plugin;
-	String clanName;
 	
 	public ClanManager(Main plugin) {
 		this.plugin = plugin;
@@ -31,6 +30,10 @@ public class ClanManager {
 	
 	public void showClanInfo(String playerName) {
 		ClanConfigManager.showClanInfo(playerName);
+	}
+	
+	public void showClanInfo(String playerName, String clanName) {
+		ClanConfigManager.showClanInfo(playerName, clanName);
 	}
 	
 	public void invitePlayer(String playerInvited, String inviter) {
@@ -110,6 +113,7 @@ public class ClanManager {
 				return;
 			}else {
 				ClanConfigManager.addMemberToClan(clanName, playerName);
+				ClanConfigSettingManager.setToNewcomer(clanName, playerName);
 				Utils.sendPlayerMessage("You have joined the clan &a&l" + clanName + "&r!", true, Bukkit.getPlayer(playerName));
 				Player owner = Bukkit.getPlayer(ClanConfigManager.getClanOwner(clanName));
 				Utils.sendPlayerMessage("&a&lThe player " + playerName + " has joined your clan!", true, owner);
@@ -178,21 +182,167 @@ public class ClanManager {
 		
 		Player p = Bukkit.getPlayer(playerName);
 		
-		if(ClanConfigManager.isInClan(playerName)) {
-			Utils.sendPlayerMessage("You are already in a clan!", true, p);
-		}else {
-			if(!ClanConfigManager.canJoinClan(clanName)) {
-				Utils.sendPlayerMessage("This is a private clan! Ask the owner for an invite!", true, p);
+		if(ClanConfigManager.isClan(clanName)) {
+			if(ClanConfigManager.isInClan(playerName)) {
+				Utils.sendPlayerMessage("You are already in a clan!", true, p);
 			}else {
-				Utils.sendPlayerMessage("You have joined the clan &a&l" + clanName, true, p);
-				ClanConfigManager.addMemberToClan(clanName, playerName);
-				OfflinePlayer owner = Bukkit.getOfflinePlayer(ClanConfigManager.getClanOwner(clanName));
-				if(owner.isOnline()) {
-					Utils.sendPlayerMessage("&a&l" + playerName + "&r has joined your clan!", true, owner.getPlayer());
+				if(!ClanConfigManager.canJoinClan(clanName)) {
+					Utils.sendPlayerMessage("This is a private clan! Ask the owner for an invite!", true, p);
+				}else {
+					Utils.sendPlayerMessage("You have joined the clan &a&l" + clanName, true, p);
+					ClanConfigManager.addMemberToClan(clanName, playerName);
+					OfflinePlayer owner = Bukkit.getOfflinePlayer(ClanConfigManager.getClanOwner(clanName));
+					ClanConfigSettingManager.setToNewcomer(clanName, playerName);
+					if(owner.isOnline()) {
+						Utils.sendPlayerMessage("&a&lThe player " + playerName + " has joined your clan!", true, owner.getPlayer());
+					}
 				}
 			}
+		}else {
+			Utils.sendPlayerMessage("This is not a clan!", true, p);
+			return;
+		}	
+	}
+
+	public void setAvailability(String playerName, String av) {
+		
+		Player p = Bukkit.getPlayer(playerName);
+		
+		if(!ClanConfigManager.isInClan(playerName)) {
+			Utils.sendPlayerMessage("You are not in a clan!", true, p);
+			return;
+		}else {
+			
+			String clanName = ClanConfigManager.getPlayerClan(playerName);
+			
+			if(!ClanConfigManager.isOwner(clanName, playerName)) {
+				Utils.sendPlayerMessage("You can only use this command as owner!", true, p);
+				return;
+			}else {
+				if(!av.equalsIgnoreCase("public") && !av.equalsIgnoreCase("private")) {
+					Utils.sendPlayerMessage("To set change the clan availability, use the command &a/clan set <public | private>", true, p);
+				}else {
+					if(ClanConfigManager.getAvailability(clanName).equalsIgnoreCase(av)) {
+						Utils.sendPlayerMessage("Your clan is already set to &a&l" + av.toLowerCase(), true, p);
+						return;
+					}else {
+						ClanConfigManager.alterClanAvailability(av, clanName);
+						if(av.equalsIgnoreCase("public")) {
+							Utils.sendPlayerMessage("You have set the clan\'s availability to &a&l" + av + ".&r This means that players will be able to join your clan without an invite!", true, p);
+						}else {
+							Utils.sendPlayerMessage("You have set the clan\'s availability to &a&l" + av + ".&r This means that players will only be able to join your clan if you invite them!", true, p);
+						}	
+					}	
+				}
+			}	
+		}
+	}
+	
+	public void allowPlayer(String clanName, String playerName, String actionAllowed, String allowedPlayer) {
+		
+		Player p = Bukkit.getPlayer(playerName);
+		String rank = ClanConfigSettingManager.getRank(clanName, playerName);
+		String clan = ClanConfigManager.getPlayerClan(playerName);
+		
+		
+		if(ClanConfigManager.isInClan(playerName) && ClanConfigManager.isInClan(playerName)) {
+			if(!rank.equalsIgnoreCase("Overlord") && !ClanConfigManager.isOwner(clanName, playerName)) {
+				Utils.sendPlayerMessage("Only the Overlord and Owner can use this command!", true, p);
+				return;
+			}else {
+				if(!actionAllowed.equalsIgnoreCase("inv") && !actionAllowed.equalsIgnoreCase("kick")) {
+					Utils.sendPlayerMessage("The action was not recognized. The command is &a/clan allow <player name> <inv | kick>", true, p);
+					return;
+				}
+			}
+		}else {
+			
 		}
 		
+		
 	}
+
+	public void promoteOrDemotePlayer(String playerName, String playerPromotingName, boolean shouldPromote) {
+		
+		if(playerName.equalsIgnoreCase(playerPromotingName)) {
+			if(shouldPromote) {
+				Utils.sendPlayerMessage("You can\'t promote yourself!", true, Bukkit.getPlayer(playerName));
+			}else {
+				Utils.sendPlayerMessage("You can\'t demote yourself!", true, Bukkit.getPlayer(playerName));
+			}
+			return;
+		}
+		
+		if(ClanConfigManager.isInClan(playerName) && ClanConfigManager.isInClan(playerPromotingName)) {
+			
+			String playerClanName = ClanConfigManager.getPlayerClan(playerName);
+			String playerPromotingClanName = ClanConfigManager.getPlayerClan(playerPromotingName);
+			String ppCurrentRole = ClanConfigSettingManager.getRank(playerClanName, playerPromotingName);
+			String playerCurrentRole;
+			playerCurrentRole = ClanConfigSettingManager.getRank(playerClanName, playerName);
+			
+			if(!playerClanName.equalsIgnoreCase(playerPromotingClanName)) {
+				Utils.sendPlayerMessage("This player is not in your clan!", true, Bukkit.getPlayer(playerName));
+				return;
+			}else {
+				if(!ClanConfigManager.isOwner(playerClanName, playerName)) {	
+					if(!playerCurrentRole.equalsIgnoreCase("Overlord")) {
+						Utils.sendPlayerMessage("You aren\'t allowed to promote players at your current clan rank!", true, Bukkit.getPlayer(playerName));
+						return;
+					}else {
+						Player p = Bukkit.getPlayer(playerName);
+						
+						final String[] ROLES = {"Newcomer", "Member", "Loyal", "Overlord"};
+						
+						if(shouldPromote) {
+							if(ppCurrentRole.equalsIgnoreCase("Overlord") || ClanConfigManager.isOwner(playerClanName, playerPromotingName)) {
+								Utils.sendPlayerMessage("This player is already at the highest rank!", true, p);
+								return;
+							}else if(ClanConfigManager.isOwner(playerClanName, playerPromotingName) || ppCurrentRole.equalsIgnoreCase("Overlord")){
+								Utils.sendPlayerMessage("You can\'t promote someone who is the same rank or higher than you!", true, p);
+								return;
+							}else {
+								ClanConfigSettingManager.promoteOrDemotePlayer(playerPromotingName, ppCurrentRole, playerName, playerClanName, shouldPromote);
+							}
+						}else {
+							if(ppCurrentRole.equalsIgnoreCase("Newcomer")) {
+								Utils.sendPlayerMessage("This player is already at the lowest rank!", true, p);
+								return;
+							}else if(ClanConfigManager.isOwner(playerClanName, playerPromotingName) || ppCurrentRole.equalsIgnoreCase("Overlord")) {
+								Utils.sendPlayerMessage("You can\'t demote someone who is the same rank or higher than you!", true, p);
+								return;
+							}else {
+								ClanConfigSettingManager.promoteOrDemotePlayer(playerPromotingName, ppCurrentRole, playerName, playerClanName, shouldPromote);
+							}
+						}
+							
+					}
+				}else {
+					if(shouldPromote) {
+						if(ppCurrentRole.equalsIgnoreCase("Overlord")) {
+							Utils.sendPlayerMessage("This player is already at the highest rank!", true, Bukkit.getPlayer(playerName));
+							return;
+						}else {
+							ClanConfigSettingManager.promoteOrDemotePlayer(playerPromotingName, ppCurrentRole, playerName, playerClanName, shouldPromote);
+						}
+					}else {
+						if(ppCurrentRole.equalsIgnoreCase("Newcomer")) {
+							Utils.sendPlayerMessage("This player is already at the lowest rank!", true, Bukkit.getPlayer(playerName));
+							return;
+						}else {
+							ClanConfigSettingManager.promoteOrDemotePlayer(playerPromotingName, ppCurrentRole, playerName, playerClanName, shouldPromote);
+						}
+					}
+				}	
+				
+			}
+				
+		}else {
+			Utils.sendPlayerMessage("You or the player that you are trying to promote is not in a clan!", true, Bukkit.getPlayer(playerName));
+			return;
+		}
+	}
+
+	
 	
 }

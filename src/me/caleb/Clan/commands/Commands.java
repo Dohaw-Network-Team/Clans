@@ -36,7 +36,12 @@ public class Commands implements CommandExecutor{
 			}else if(args[0].equalsIgnoreCase("disband")) {
 				cm.disbandClan(p.getName());
 			}else if(args[0].equalsIgnoreCase("info")) {
-				cm.showClanInfo(p.getName());
+				if(args.length == 2) {
+					cm.showClanInfo(p.getName(), args[1]);
+				}else {
+					cm.showClanInfo(p.getName());
+				}
+				
 			}else if(args[0].equalsIgnoreCase("inv") && args.length == 2) {
 				cm.invitePlayer(args[1], p.getName());
 			}else if(args[0].equalsIgnoreCase("invaccept") && args.length == 2) {
@@ -47,6 +52,15 @@ public class Commands implements CommandExecutor{
 				cm.leaveClan(p.getName());
 			}else if(args[0].equalsIgnoreCase("join") && args.length == 2) {
 				cm.joinClan(p.getName(),args[1]);
+			}else if(args[0].equalsIgnoreCase("set") && args.length == 2) {
+				cm.setAvailability(p.getName(), args[1]);
+			//clan allow (Player) (Invite | Kick)
+			}else if(args[0].equalsIgnoreCase("allow") && args.length == 3) {
+				//cm.allowPlayer(p.getName(), args[1], args[2]);
+			}else if(args[0].equalsIgnoreCase("promote") && args.length == 2){
+				cm.promoteOrDemotePlayer(p.getName(), args[1], true);
+			}else if(args[0].equalsIgnoreCase("demote") && args.length == 2) {
+				cm.promoteOrDemotePlayer(p.getName(), args[1], false);
 			}
 			
 		}

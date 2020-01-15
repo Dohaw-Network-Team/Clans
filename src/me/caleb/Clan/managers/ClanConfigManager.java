@@ -21,7 +21,7 @@ import me.caleb.Clan.prompts.DisbandClanPrompt;
 import me.caleb.Clan.utils.Utils;
 import net.milkbowl.vault.economy.Economy;
 
-public class ClanConfigManager {
+public class ClanConfigManager extends Utils{
 
 	private static Main plugin = Main.getPlugin();
 	private static String fileName = "clans.yml";
@@ -51,6 +51,7 @@ public class ClanConfigManager {
 	}
 	
 	public static boolean canJoinClan(String clanName) {
+		
 		if(config.getString("Clans." + clanName + ".Availability").equalsIgnoreCase("private")) {
 			return false;
 		}else {
@@ -99,11 +100,13 @@ public class ClanConfigManager {
 					config.set("Clans." + clanName + ".Hearts Destroyed", 0);
 					config.set("Clans." + clanName + ".Power", 0);
 					
-					ArrayList<String> canInviteList = new ArrayList<String>();
-					ArrayList<String> canKickList = new ArrayList<String>();
+					config.set("ClansSettings." + clanName + ".Can Invite", new ArrayList<String>());
+					config.set("ClansSettings." + clanName + ".Can Kick", new ArrayList<String>());
 					
-					config.set("ClansSettings." + clanName + ".CanInvite", canInviteList);
-					config.set("ClansSettings." + clanName + ".CanKick", canKickList);
+					config.set("ClansSettings." + clanName + ".Roles.Overlord", new ArrayList<String>());
+					config.set("ClansSettings." + clanName + ".Roles.Loyal", new ArrayList<String>());
+					config.set("ClansSettings." + clanName + ".Roles.Member", new ArrayList<String>());
+					config.set("ClansSettings." + clanName + ".Roles.Newcomer", new ArrayList<String>());
 					
 					saveConfig();
 				}	
@@ -214,6 +217,14 @@ public class ClanConfigManager {
 		
 		config.set("ClansSettings." + clanName + ".CanInvite", null);
 		config.set("ClansSettings." + clanName + ".CanKick", null);
+		
+		config.set("ClansSettings." + clanName + ".Roles.Overlord", null);
+		config.set("ClansSettings." + clanName + ".Roles.Loyal", null);
+		config.set("ClansSettings." + clanName + ".Roles.Member", null);
+		config.set("ClansSettings." + clanName + ".Roles.Newcomer", null);
+		
+		config.set("ClansSettings." + clanName + ".Roles", null);
+		
 		config.set("ClansSettings." + clanName, null);
 		
 	}
@@ -247,11 +258,32 @@ public class ClanConfigManager {
 		
 	}
 	
+	public static void showClanInfo(String playerName, String clanName) {
+		
+		if(!isClan(clanName)) {
+			Utils.sendPlayerMessage("This is not a clan!", true, Bukkit.getPlayer(playerName));
+			return;
+		}
+		
+		Player p = Bukkit.getPlayer(playerName);
+		
+		Utils.sendPlayerMessage("Clan Info:", true, p);
+		Utils.sendPlayerMessage(" > &a&lName: &b&o" + clanName, false, p);
+		Set<String> keys = config.getConfigurationSection("Clans." + clanName).getKeys(false);
+		
+		for(String key : keys) {
+			String value = config.getString("Clans." + clanName + "." + key);
+			Utils.sendPlayerMessage(" > &a&l" + key + ": &r" + value, false, p);
+		}
+		
+	}
+	
 	public static void addMemberToClan(String clanName, String playerName) {
 		List<String> members = getMembers(clanName);
 		members.add(playerName);
 		config.set("Clans." + clanName + ".Members", members);
 		alterMemberCount(clanName, true);
+		
 		saveConfig();
 	}
 
@@ -275,6 +307,21 @@ public class ClanConfigManager {
 		alterMemberCount(clanName, false);
 		saveConfig();
 	}
+
+	public static void alterClanAvailability(String av, String clanName) {
+		config.set("Clans." + clanName + ".Availability", av);
+		saveConfig();
+	}
+	
+	public static String getAvailability(String clanName) {
+		return getValue("Clans." + clanName + ".Availability");
+	}
+
+	
+	
+	
+
+	
 
 	
 	
