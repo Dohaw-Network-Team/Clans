@@ -31,14 +31,22 @@ public class Commands implements CommandExecutor{
 			ClanManager cm = new ClanManager(plugin);
 			
 			//clan create (clan name)
-			if(args[0].equalsIgnoreCase("create") && args.length == 2) {
-				cm.createClan(p.getName(), args[1]);
+			if(args[0].equalsIgnoreCase("create") && args.length == 3) {
+				cm.createClan(p.getName(), args[1], args[2]);
 			}else if(args[0].equalsIgnoreCase("disband")) {
 				cm.disbandClan(p.getName());
 			}else if(args[0].equalsIgnoreCase("info")) {
 				cm.showClanInfo(p.getName());
-			}else if(args[0].equalsIgnoreCase("invite") && args.length == 2) {
+			}else if(args[0].equalsIgnoreCase("inv") && args.length == 2) {
 				cm.invitePlayer(args[1], p.getName());
+			}else if(args[0].equalsIgnoreCase("invaccept") && args.length == 2) {
+				cm.acceptInvite(args[1], p.getName());
+			}else if(args[0].equalsIgnoreCase("kick") && args.length == 2) {
+				cm.kickMember(p.getName(), args[1]);
+			}else if(args[0].equalsIgnoreCase("leave")) {
+				cm.leaveClan(p.getName());
+			}else if(args[0].equalsIgnoreCase("join") && args.length == 2) {
+				cm.joinClan(p.getName(),args[1]);
 			}
 			
 		}

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.conversations.Conversation;
@@ -51,7 +50,15 @@ public class ClanConfigManager {
 		return config.getString(path);
 	}
 	
-	public static void createClan(String clanName, String owner) {
+	public static boolean canJoinClan(String clanName) {
+		if(config.getString("Clans." + clanName + ".Availability").equalsIgnoreCase("private")) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
+	public static void createClan(String clanName, String owner, String publicOrPrivate) {
 		
 		clanName = Utils.firstUppercaseRestLowercase(clanName);
 		
@@ -63,31 +70,46 @@ public class ClanConfigManager {
 				Utils.sendPlayerMessage("&rYou are already in a clan!", true, Bukkit.getPlayer(owner));
 				return;
 			}else {
-				Utils.sendPlayerMessage("&rThe clan &b&l" + clanName + " &rhas been created!", true, Bukkit.getPlayer(owner));
+				if(!publicOrPrivate.equalsIgnoreCase("public") && !publicOrPrivate.equalsIgnoreCase("private")) {
+					Utils.sendPlayerMessage("To create clan, you must use the following command: &a/clan create <clan name> <public | private>", true, Bukkit.getPlayer(owner));
+					return;
+				}else {
+					
+					Utils.sendPlayerMessage("&rThe clan &b&l" + clanName + " &rhas been created!", true, Bukkit.getPlayer(owner));
+					
+					ArrayList<String> members = new ArrayList<String>();
+					members.add(owner);
+					
+					createClanBank(clanName, owner);
+					
+					clanList.add(clanName);
+					config.set("ClanList", clanList);
+					
+					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+					Date date = new Date();
+					
+					config.set("Clans." + clanName + ".Availability", publicOrPrivate);
+					config.set("Clans." + clanName + ".Member Count", 1);
+					config.set("Clans." + clanName + ".Owner", owner);
+					config.set("Clans." + clanName + ".Members", members);
+					config.set("Clans." + clanName + ".Gold In Bank", 0);
+					config.set("Clans." + clanName + ".Date Created", date);
+					config.set("Clans." + clanName + ".Kills", 0);
+					config.set("Clans." + clanName + ".Casualties", 0);
+					config.set("Clans." + clanName + ".Hearts Destroyed", 0);
+					config.set("Clans." + clanName + ".Power", 0);
+					
+					ArrayList<String> canInviteList = new ArrayList<String>();
+					ArrayList<String> canKickList = new ArrayList<String>();
+					
+					config.set("ClansSettings." + clanName + ".CanInvite", canInviteList);
+					config.set("ClansSettings." + clanName + ".CanKick", canKickList);
+					
+					saveConfig();
+				}	
+				
 			}
-		}
-		
-		ArrayList<String> members = new ArrayList<String>();
-		members.add(owner);
-		
-		createClanBank(clanName, owner);
-		
-		clanList.add(clanName);
-		config.set("ClanList", clanList);
-		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		
-		config.set("Clans." + clanName + ".Owner", owner);
-		config.set("Clans." + clanName + ".Members", members);
-		config.set("Clans." + clanName + ".GoldInBank", 0);
-		config.set("Clans." + clanName + ".DateCreated", date);
-		config.set("Clans." + clanName + ".Kills", 0);
-		config.set("Clans." + clanName + ".Casualties", 0);
-		config.set("Clans." + clanName + ".HeartsDestroyed", 0);
-		config.set("Clans." + clanName + ".Power", 0);
-		
-		saveConfig();
+		}	
 		
 	}
 	
@@ -98,6 +120,20 @@ public class ClanConfigManager {
 		}else {
 			return false;
 		}
+		
+	}
+	
+	public static void alterMemberCount(String clanName, boolean increase) {
+		
+		int memberAmount = config.getInt("Clans." + clanName + ".Member Count");
+		if(increase) {
+			memberAmount++;
+		}else {
+			memberAmount--;
+		}
+		
+		config.set("Clans." + clanName + ".Member Count", memberAmount);
+		saveConfig();
 		
 	}
 	
@@ -149,14 +185,13 @@ public class ClanConfigManager {
 			String clan = getPlayerClan(owner);
 			if(isOwner(clan, owner)) {
 				ConversationFactory factory = new ConversationFactory(plugin);
-				Conversation conv = factory.withFirstPrompt(new DisbandClanPrompt(plugin, clan, owner)).withLocalEcho(false).withEscapeSequence("No").buildConversation(Bukkit.getPlayer(owner));
+				Conversation conv = factory.withFirstPrompt(new DisbandClanPrompt(clan, owner)).withLocalEcho(false).withEscapeSequence("No").buildConversation(Bukkit.getPlayer(owner));
 				conv.begin();
 			}else {
 				Utils.sendPlayerMessage("You cannot disand a clan that you are not owner of!", true, Bukkit.getPlayer(owner));
 				return;
 			}
 		}
-		
 	}
 	
 	public static void removeClanFromConfig(String clanName) {
@@ -165,15 +200,22 @@ public class ClanConfigManager {
 		clanList.remove(indexOfClan);
 		
 		config.set("ClanList", clanList);
+		config.set("Clans." + clanName + ".Availability", null);
+		config.set("Clans." + clanName + ".Member Count", null);
 		config.set("Clans." + clanName + ".Owner", null);
 		config.set("Clans." + clanName + ".Members", null);
-		config.set("Clans." + clanName + ".GoldInBank", null);
-		config.set("Clans." + clanName + ".DateCreated", null);
+		config.set("Clans." + clanName + ".Gold In Bank", null);
+		config.set("Clans." + clanName + ".Date Created", null);
 		config.set("Clans." + clanName + ".Kills", null);
 		config.set("Clans." + clanName + ".Casualties", null);
-		config.set("Clans." + clanName + ".HeartsDestroyed", null);
+		config.set("Clans." + clanName + ".Hearts Destroyed", null);
 		config.set("Clans." + clanName + ".Power", null);
 		config.set("Clans." + clanName, null);
+		
+		config.set("ClansSettings." + clanName + ".CanInvite", null);
+		config.set("ClansSettings." + clanName + ".CanKick", null);
+		config.set("ClansSettings." + clanName, null);
+		
 	}
 	
 	public static void deleteClanBank(String clanName) {
@@ -186,27 +228,55 @@ public class ClanConfigManager {
 
 	public static void showClanInfo(String playerName) {
 		
+		if(!isInClan(playerName)) {
+			Utils.sendPlayerMessage("You are not in a clan!", true, Bukkit.getPlayer(playerName));
+			return;
+		}
+		
 		String clanName = getPlayerClan(playerName);
 		Player p = Bukkit.getPlayer(playerName);
 		
 		Utils.sendPlayerMessage("Clan Info:", true, p);
-		Utils.sendPlayerMessage("- &lName: &b&o" + clanName, false, p);
+		Utils.sendPlayerMessage(" > &a&lName: &b&o" + clanName, false, p);
 		Set<String> keys = config.getConfigurationSection("Clans." + clanName).getKeys(false);
 		
 		for(String key : keys) {
 			String value = config.getString("Clans." + clanName + "." + key);
-			Utils.sendPlayerMessage("- " + key + ": " + value, false, p);
+			Utils.sendPlayerMessage(" > &a&l" + key + ": &r" + value, false, p);
 		}
+		
+	}
+	
+	public static void addMemberToClan(String clanName, String playerName) {
+		List<String> members = getMembers(clanName);
+		members.add(playerName);
+		config.set("Clans." + clanName + ".Members", members);
+		alterMemberCount(clanName, true);
+		saveConfig();
 	}
 
-	public static void invitePlayer(String inviter, String playerInvited) {
-		if(isInClan(inviter)) {
-			OfflinePlayer pI = Bukkit.getOfflinePlayer(playerInvited);
-			Player p = Bukkit.getPlayer(inviter);
-			if(!pI.isOnline()) {
-				Utils.sendPlayerMessage("This player is either not a valid player, or they aren't online right now!", true, p);
-			}
-		}
+	public static String getClanOwner(String clanName) {
+		return config.getString("Clans." + clanName + ".Owner");
 	}
+
+	public static void removeMemberFromClan(String playerName, String playerKicked, String clanName) {
+		List<String> members = getMembers(clanName);
+		members.remove(members.indexOf(playerKicked));
+		config.set("Clans." + clanName + ".Members", members);
+		alterMemberCount(clanName, false);
+		saveConfig();
+	}
+
+	//For players that leave
+	public static void removeMemberFromClan(String playerName, String clanName) {
+		List<String> members = getMembers(clanName);
+		members.remove(members.indexOf(playerName));
+		config.set("Clans." + clanName + ".Members", members);
+		alterMemberCount(clanName, false);
+		saveConfig();
+	}
+
+	
+	
 	
 }
