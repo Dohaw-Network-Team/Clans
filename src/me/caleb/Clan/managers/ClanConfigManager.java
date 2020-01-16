@@ -59,6 +59,16 @@ public class ClanConfigManager extends Utils{
 		}
 	}
 	
+	public static boolean inSameClan(String player1, String player2) {
+		
+		String clan1 = getPlayerClan(player1);
+		String clan2 = getPlayerClan(player2);
+		
+		if(clan1.equalsIgnoreCase(clan2)) return true;
+		
+		return false;
+	}
+	
 	public static void createClan(String clanName, String owner, String publicOrPrivate) {
 		
 		clanName = Utils.firstUppercaseRestLowercase(clanName);

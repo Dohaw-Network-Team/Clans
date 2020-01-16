@@ -238,25 +238,51 @@ public class ClanManager{
 		}
 	}
 	
-	public void allowPlayer(String clanName, String playerName, String actionAllowed, String allowedPlayer) {
+	public void allowOrRefusePlayer(String playerName, String action, String allowedPlayer, String a) {
 		
 		Player p = Bukkit.getPlayer(playerName);
+		String clanName = ClanConfigManager.getPlayerClan(playerName);
 		String rank = ClanConfigSettingManager.getRank(clanName, playerName);
-		String clan = ClanConfigManager.getPlayerClan(playerName);
 		
+		boolean added = Boolean.parseBoolean(a);
 		
 		if(ClanConfigManager.isInClan(playerName) && ClanConfigManager.isInClan(playerName)) {
 			if(!rank.equalsIgnoreCase("Overlord") && !ClanConfigManager.isOwner(clanName, playerName)) {
 				Utils.sendPlayerMessage("Only the Overlord and Owner can use this command!", true, p);
-				return;
+				return;	
 			}else {
-				if(!actionAllowed.equalsIgnoreCase("inv") && !actionAllowed.equalsIgnoreCase("kick")) {
-					Utils.sendPlayerMessage("The action was not recognized. The command is &a/clan allow <player name> <inv | kick>", true, p);
-					return;
-				}
+				
+				if(playerName.equalsIgnoreCase(allowedPlayer)) {
+					Utils.sendPlayerMessage("You cannot use this command on yourself!", true, p);
+				}else {
+					if(!action.equalsIgnoreCase("inv") && !action.equalsIgnoreCase("kick")) {
+						Utils.sendPlayerMessage("The action was not recognized. The command is &a/clan allow <player name> <inv | kick> <true | false>", true, p);
+						return;
+					}else {
+						if(!ClanConfigManager.inSameClan(playerName, allowedPlayer)) {
+							Utils.sendPlayerMessage("This player is not in your clan!", true, p);
+							return;
+						}else {
+							if(added) {
+								if(ClanConfigManager.isOwner(clanName, allowedPlayer)) {
+									Utils.sendPlayerMessage("You cannot use this command on an owner!", true, p);
+								}else {
+									ClanConfigSettingManager.addOrRemoveToPermissionList(clanName, action, allowedPlayer, playerName, true);
+								}
+							}else {
+								if(ClanConfigManager.isOwner(clanName, allowedPlayer)) {
+									Utils.sendPlayerMessage("You cannot use this command on an owner!", true, p);
+								}else {
+									ClanConfigSettingManager.addOrRemoveToPermissionList(clanName, action, allowedPlayer, playerName, false);
+								}
+							}	
+						}
+					}
+				}	
 			}
 		}else {
-			
+			Utils.sendPlayerMessage("You or the player you are trying to give permissions to is not in a clan!", true, p);
+			return;
 		}
 		
 		

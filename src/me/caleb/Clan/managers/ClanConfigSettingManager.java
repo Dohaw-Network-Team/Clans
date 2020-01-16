@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import me.caleb.Clan.utils.Utils;
@@ -14,7 +15,7 @@ public class ClanConfigSettingManager extends ClanConfigManager{
 	private static FileConfiguration config = getConfig();
 	
 	public static boolean canKick(String clanName, String playerName) {
-		List<String> peopleThatCanKick = config.getStringList("ClansSettings." + clanName + ".CanKick");
+		List<String> peopleThatCanKick = config.getStringList("ClansSettings." + clanName + ".Can Kick");
 		
 		if(peopleThatCanKick.contains(playerName)) {
 			return true;
@@ -24,7 +25,7 @@ public class ClanConfigSettingManager extends ClanConfigManager{
 	}
 	
 	public static boolean canInvite(String clanName, String playerName) {
-		List<String> peopleThatCanInv = config.getStringList("ClansSettings." + clanName + ".CanInvite");
+		List<String> peopleThatCanInv = config.getStringList("ClansSettings." + clanName + ".Can Invite");
 		
 		if(peopleThatCanInv.contains(playerName)) {
 			return true;
@@ -96,6 +97,67 @@ public class ClanConfigSettingManager extends ClanConfigManager{
 		newcomers.add(playerName);
 		config.set("ClansSettings." + clanName + ".Roles.Newcomer", newcomers);
 		saveConfig();
+	}
+
+	public static void addOrRemoveToPermissionList(String clanName, String actionAllowed, String allowedPlayer, String playerName, boolean added) {
+		
+		//People that can do whatever action specified in actionAllowed variable
+		List<String> peopleThatCan;
+		
+		if(actionAllowed.equalsIgnoreCase("inv")) {
+			peopleThatCan =  getList("ClansSettings." + clanName + ".Can Invite");
+			actionAllowed = "Can Invite";
+		}else {
+			peopleThatCan = getList("ClansSettings." + clanName + ".Can Kick");
+			actionAllowed = "Can Kick";
+		}
+		
+		//If the player is in the list
+		if(peopleThatCan.contains(allowedPlayer)) {
+			//If the player is being allowed to do whatever action
+			if(added == true) {
+				Utils.sendPlayerMessage("This player is already allowed to do this action!", true, Bukkit.getPlayer(playerName));
+				return;
+			//If the player is not being allowed to do the action
+			}else {
+				OfflinePlayer op = Bukkit.getOfflinePlayer(allowedPlayer);
+				peopleThatCan.remove(allowedPlayer);
+				if(actionAllowed.equalsIgnoreCase("Can Invite")) {
+					Utils.sendPlayerMessage("&a&l" + allowedPlayer + "&r cannot invite players to the clan anymore!", true, Bukkit.getPlayer(playerName));
+					if(op.isOnline()) {
+						Utils.sendPlayerMessage("You cannot invite players to the clan anymore!", true, Bukkit.getPlayer(allowedPlayer));
+					}
+				}else {
+					Utils.sendPlayerMessage("&a&l" + allowedPlayer + "&r cannot kick players from the clan! anymore!", true, Bukkit.getPlayer(playerName));
+					if(op.isOnline()) {
+						Utils.sendPlayerMessage("You cannot kick players from the clan anymore!", true, Bukkit.getPlayer(allowedPlayer));
+					}	
+				}
+			}
+		}else {
+			if(added == true) {
+				OfflinePlayer op = Bukkit.getOfflinePlayer(allowedPlayer);
+				peopleThatCan.add(allowedPlayer);
+				if(actionAllowed.equalsIgnoreCase("Can Invite")) {
+					Utils.sendPlayerMessage("&a&l" + allowedPlayer + "&r can now invite players to the clan!", true, Bukkit.getPlayer(playerName));
+					if(op.isOnline()) {
+						Utils.sendPlayerMessage("You have been given the permission to invite players!", true, Bukkit.getPlayer(allowedPlayer));
+					}
+				}else {
+					Utils.sendPlayerMessage("&a&l" + allowedPlayer + "&r can now kick players from the clan!", true, Bukkit.getPlayer(playerName));
+					if(op.isOnline()) {
+						Utils.sendPlayerMessage("You can kick players from the clan now!", true, Bukkit.getPlayer(allowedPlayer));
+					}
+				}
+			}else {
+				Utils.sendPlayerMessage("This player already can\'t do that action!", true, Bukkit.getPlayer(playerName));
+				return;
+			}	
+		}
+		
+		config.set("ClansSettings." + clanName + "." + actionAllowed, peopleThatCan);
+		saveConfig();
+		
 	}
 	
 }

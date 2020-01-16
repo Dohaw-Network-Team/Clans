@@ -54,9 +54,13 @@ public class Commands implements CommandExecutor{
 				cm.joinClan(p.getName(),args[1]);
 			}else if(args[0].equalsIgnoreCase("set") && args.length == 2) {
 				cm.setAvailability(p.getName(), args[1]);
-			//clan allow (Player) (Invite | Kick)
-			}else if(args[0].equalsIgnoreCase("allow") && args.length == 3) {
-				//cm.allowPlayer(p.getName(), args[1], args[2]);
+			//clan allow (Player) (Invite | Kick) (False)
+			}else if(args[0].equalsIgnoreCase("allow") && args.length == 4) {
+				if(!args[3].equalsIgnoreCase("true") && !args[3].equalsIgnoreCase("false")) {
+					Utils.sendPlayerMessage("The arguments for the command were a little off. The command is &a/clan allow <player name> <inv | kick> <true | false>", true, p);
+				}else {
+					cm.allowOrRefusePlayer(p.getName(), args[2], args[1], args[3]);
+				}
 			}else if(args[0].equalsIgnoreCase("promote") && args.length == 2){
 				cm.promoteOrDemotePlayer(p.getName(), args[1], true);
 			}else if(args[0].equalsIgnoreCase("demote") && args.length == 2) {
