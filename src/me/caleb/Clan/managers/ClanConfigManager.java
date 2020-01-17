@@ -61,6 +61,8 @@ public class ClanConfigManager extends Utils{
 	
 	public static boolean inSameClan(String player1, String player2) {
 		
+		if(!isInClan(player2) || !isInClan(player1)) return false;
+		
 		String clan1 = getPlayerClan(player1);
 		String clan2 = getPlayerClan(player2);
 		

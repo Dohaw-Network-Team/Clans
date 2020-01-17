@@ -98,7 +98,35 @@ public class ClanConfigSettingManager extends ClanConfigManager{
 		config.set("ClansSettings." + clanName + ".Roles.Newcomer", newcomers);
 		saveConfig();
 	}
-
+	
+	public static boolean ifKickedHasHigherRank(String player1, String player2, String clanName) {
+		
+		final String[] ROLES = {"Newcomer", "Member", "Loyal", "Overlord"};
+		
+		if(isOwner(clanName, player1)) return false;
+			
+		String rank1 = getRank(clanName, player1);
+		String rank2 = getRank(clanName, player2);
+		
+		int rank1Index = 0, rank2Index = 0;
+		
+		for(int x = 0;x < ROLES.length;x++) {
+			if(rank1.equalsIgnoreCase(ROLES[x])) {
+				rank1Index = x;
+			}
+			if(rank2.equalsIgnoreCase(ROLES[x])) {
+				rank2Index = x;
+			}
+		}
+		
+		if(rank1Index > rank2Index) {
+			return false;
+		}else {
+			return true;
+		}
+		
+	}
+	
 	public static void addOrRemoveToPermissionList(String clanName, String actionAllowed, String allowedPlayer, String playerName, boolean added) {
 		
 		//People that can do whatever action specified in actionAllowed variable

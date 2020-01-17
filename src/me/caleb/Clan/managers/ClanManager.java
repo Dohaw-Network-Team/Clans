@@ -141,11 +141,22 @@ public class ClanManager{
 					if(!playerKickedClan.equalsIgnoreCase(clan)) {
 						Utils.sendPlayerMessage("This player is not in your clan!", true, p);
 					}else {
-						ClanConfigManager.removeMemberFromClan(playerName, playerKicked, clan);
-						Utils.sendPlayerMessage("You have kicked &a&l" + playerKicked + "&r from the clan!", true, p);
-						if(pK.isOnline()) {
-							Utils.sendPlayerMessage("You have been kicked from the clan &a&l" + clan + "&r by &a&l" + playerName, true, pK.getPlayer());
+						if(!ClanConfigManager.isOwner(clan, playerKicked)) {
+							if(ClanConfigSettingManager.ifKickedHasHigherRank(playerName,playerKicked,clan)) {
+								Utils.sendPlayerMessage("You cannot kick a player that has a higher rank than you!", true, p);
+							}else {
+								ClanConfigManager.removeMemberFromClan(playerName, playerKicked, clan);
+								Utils.sendPlayerMessage("You have kicked &a&l" + playerKicked + "&r from the clan!", true, p);
+							}
+
+							if(pK.isOnline()) {
+								Utils.sendPlayerMessage("You have been kicked from the clan &a&l" + clan + "&r by &a&l" + playerName, true, pK.getPlayer());
+							}
+						}else {
+							Utils.sendPlayerMessage("You cannot kick the Owner from the clan!", true, p);
+							return;
 						}
+						
 					}
 				}else {
 					Utils.sendPlayerMessage("The player you are trying to kick is not in a clan!", true, p);
