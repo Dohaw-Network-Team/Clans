@@ -1,0 +1,4 @@
+name: NewFactions
+version: ${project.version}
+main: me.c10coding.newfactions.NewFactions
+api-version: 1.13
