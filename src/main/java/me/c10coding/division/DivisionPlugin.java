@@ -6,6 +6,7 @@ import me.c10coding.core.Core;
 import me.c10coding.coreapi.CoreAPI;
 import me.c10coding.coreapi.binder.Binder;
 import me.c10coding.division.files.DivisionConfigManager;
+import me.c10coding.division.files.DivisionRankConfigManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -19,10 +20,10 @@ public final class DivisionPlugin extends JavaPlugin {
     //General API that benefits you no matter what plugin you're making.
     private CoreAPI api = core.getCoreAPI();
 
-    @Inject
-    private DivisionConfigManager dcm;
+    @Inject private DivisionConfigManager dcm;
+    @Inject private DivisionRankConfigManager drcm;
 
-    final static String prefix = "&l[&aNewFactions&r&l]&r";
+    public final static String PREFIX = "&l[&aNewFactions&r&l]&r";
 
     @Override
     public void onEnable() {
@@ -59,15 +60,24 @@ public final class DivisionPlugin extends JavaPlugin {
         return (economy != null);
     }
 
-    public static Economy getEconomy() {
-        return economy;
+    public Core getCore() {
+        return core;
     }
 
-    public static String getPrefix(){
-        return prefix;
+    public CoreAPI getCoreAPI(){
+        return api;
+    }
+
+    public static Economy getEconomy() {
+        return economy;
     }
 
     public DivisionConfigManager getDivisionConfigManager(){
         return dcm;
     }
+
+    public DivisionRankConfigManager getDivisionRankConfigManage(){
+        return drcm;
+    }
+
 }
