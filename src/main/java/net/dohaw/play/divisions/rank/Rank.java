@@ -1,6 +1,7 @@
-package me.c10coding.division.ranks;
+package net.dohaw.play.divisions.rank;
 
 public enum Rank {
+
     FRESH_MEAT("FreshMeat"),
     PROVEN_MEMBER("ProvenMember"),
     LOYAL("Loyal"),

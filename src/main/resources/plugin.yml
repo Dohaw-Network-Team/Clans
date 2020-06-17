@@ -1,4 +1,4 @@
-name: NewFactions
+name: Divisions
 version: ${project.version}
-main: me.c10coding.newfactions.NewFactions
+main: net.dohaw.play.divisions.DivisionsPlugin
 api-version: 1.13
