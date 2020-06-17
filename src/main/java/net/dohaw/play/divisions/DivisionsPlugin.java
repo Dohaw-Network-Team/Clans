@@ -3,7 +3,6 @@ package net.dohaw.play.divisions;
 import me.c10coding.core.Core;
 import me.c10coding.coreapi.CoreAPI;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
-import net.dohaw.play.divisions.files.DivisionConfigManager;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.milkbowl.vault.economy.Economy;
@@ -32,7 +31,6 @@ public final class DivisionsPlugin extends JavaPlugin {
 
     private DivisionsManager divisionsManager;
     private PlayerDataManager playerDataManager;
-    private DivisionConfigManager divisionConfigManager;
     private DefaultPermConfig defaultPermConfig;
 
     @Override
@@ -103,18 +101,22 @@ public final class DivisionsPlugin extends JavaPlugin {
         File divisionsFolder = new File(getDataFolder() + File.separator + "/divisionsData");
 
         if(!playerDataFolder.exists()){
-            playerDataFolder.mkdirs();
+            if(playerDataFolder.mkdirs()){
+                getLogger().info("Creating player data folder...");
+            }
         }
 
         if(!divisionsFolder.exists()){
-            divisionsFolder.mkdirs();
+            if(divisionsFolder.mkdirs()){
+                getLogger().info("Creating divisions data folder...");
+            }
         }
 
-        File[] files = {new File(getDataFolder(), "config.yml"), new File(getDataFolder(), "divisionsList.yml")};
+        File[] files = {new File(getDataFolder(), "config.yml"), new File(getDataFolder(), "divisionsList.yml"), new File(getDataFolder(), "divisionsPerms.yml")};
         for(File f : files){
             if(!f.exists()) {
                 saveResource(f.getName(), false);
-                Bukkit.getConsoleSender().sendMessage(getPluginPrefix() + " Loading " + f.getName());
+                getLogger().info("Loading " + f.getName() + "...");
             }
         }
     }
@@ -124,26 +126,18 @@ public final class DivisionsPlugin extends JavaPlugin {
     }
 
     public void loadManagerData(){
+        this.playerDataManager = new PlayerDataManager(this);
+        this.divisionsManager = new DivisionsManager(this);
+    }
 
-        this.divisionsManager = new DivisionsManager();
-        this.playerDataManager = new PlayerDataManager();
-        this.divisionConfigManager = new DivisionConfigManager();
-
-        divisionConfigManager.loadContents();
-        playerDataManager.loadContents();
-        divisionConfigManager.loadContents();
-
+    public void saveManagerData(){
+        divisionsManager.saveContents();
+        playerDataManager.saveContents();
     }
 
     public void loadDefaultRankPermissions(){
         this.defaultPermConfig = new DefaultPermConfig(this);
         defaultPermConfig.compilePerms();
-    }
-
-    public void saveManagerData(){
-        divisionConfigManager.saveContents();
-        playerDataManager.saveContents();
-        divisionConfigManager.saveContents();
     }
 
     public DivisionsManager getDivisionsManager(){
@@ -154,9 +148,8 @@ public final class DivisionsPlugin extends JavaPlugin {
         return playerDataManager;
     }
 
-    public DivisionConfigManager getDivisionConfigManager(){
-        return divisionConfigManager;
+    public DefaultPermConfig getDefaultPermConfig(){
+        return defaultPermConfig;
     }
-
 
 }

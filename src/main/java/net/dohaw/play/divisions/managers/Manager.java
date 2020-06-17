@@ -6,7 +6,7 @@ public interface Manager {
     boolean hasContent(Object obj);
     void saveContents();
     void loadContents();
-    void addContent();
-    void removeContent();
+    boolean addContent(Object content);
+    boolean removeContent(Object content);
 
 }

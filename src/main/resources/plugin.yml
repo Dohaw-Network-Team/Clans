@@ -2,3 +2,9 @@ name: Divisions
 version: ${project.version}
 main: net.dohaw.play.divisions.DivisionsPlugin
 api-version: 1.13
+
+commands:
+  divisions:
+    aliases:
+      - div
+      - division

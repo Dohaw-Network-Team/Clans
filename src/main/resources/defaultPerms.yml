@@ -1,2 +1,122 @@
 Permissions:
 
+  Fresh Meat:
+    Can Take From Bank: false
+    Can Kick Players: false
+    Can Recruit Members: false
+    Can Send Division Announcements: false
+    Can Invite Players: false
+    Can Declare War: false
+    Can Stop War: false
+    Can Ally: false
+    Can Discontinue Ally: false
+    Can Alter Status: false
+    Can Promote Members: false
+    Can Upgrade Structures: false
+    Can Collect From Miner: true
+    Can Collect From Woodcutter: true
+    Can Purchase Structures: false
+    Can Access Worth Chat: false
+    Can Accept Division Quests: false
+    Can Abandon Division Quests:   false
+    Can Set Division Motd: false
+    Can Hire WOrkers: false
+    Item Take Amount: 0
+    Gold Take Amount: 0
+
+  Proven Member:
+    Can Take From Bank: true
+    Can Kick Players: false
+    Can Recruit Members: false
+    Can Send Division Announcements: false
+    Can Invite Players: true
+    Can Declare War: false
+    Can Stop War: false
+    Can Ally: false
+    Can Discontinue Ally: false
+    Can Alter Status: false
+    Can Promote Members: false
+    Can Upgrade Structures: false
+    Can Collect From Miner: true
+    Can Collect From Woodcutter: true
+    Can Purchase Structures: false
+    Can Access Worth Chat: false
+    Can Accept Division Quests: false
+    Can Abandon Division Quests:   false
+    Can Set Division Motd: false
+    Can Hire WOrkers: false
+    Item Take Amount: 3
+    Gold Take Amount: 350
+
+  Loyal:
+    Can Take From Bank: true
+    Can Kick Players: false
+    Can Recruit Members: false
+    Can Send Division Announcements: false
+    Can Invite Players: true
+    Can Declare War: false
+    Can Stop War: false
+    Can Ally: false
+    Can Discontinue Ally: false
+    Can Alter Status: false
+    Can Promote Members: false
+    Can Upgrade Structures: false
+    Can Collect From Miner: true
+    Can Collect From Woodcutter: true
+    Can Purchase Structures: false
+    Can Access Worth Chat: true
+    Can Accept Division Quests: false
+    Can Abandon Division Quests:   false
+    Can Set Division Motd: false
+    Can Hire WOrkers: false
+    Item Take Amount: 6
+    Gold Take Amount: 800
+
+  Elder:
+    Can Take From Bank: true
+    Can Kick Players: true
+    Can Recruit Members: true
+    Can Send Division Announcements: true
+    Can Invite Players: true
+    Can Declare War: false
+    Can Stop War: false
+    Can Ally: false
+    Can Discontinue Ally: false
+    Can Alter Status: true
+    Can Promote Members: false
+    Can Upgrade Structures: true
+    Can Collect From Miner: true
+    Can Collect From Woodcutter: true
+    Can Purchase Structures: true
+    Can Access Worth Chat: true
+    Can Accept Division Quests: false
+    Can Abandon Division Quests:   false
+    Can Set Division Motd: true
+    Can Hire WOrkers: true
+    Item Take Amount: 8
+    Gold Take Amount: 1500
+
+  Overlord:
+    Can Take From Bank: true
+    Can Kick Players: true
+    Can Recruit Members: true
+    Can Send Division Announcements: true
+    Can Invite Players: true
+    Can Declare War: true
+    Can Stop War: true
+    Can Ally: true
+    Can Discontinue Ally: true
+    Can Alter Status: true
+    Can Promote Members: true
+    Can Upgrade Structures: true
+    Can Collect From Miner: true
+    Can Collect From Woodcutter: true
+    Can Purchase Structures: true
+    Can Access Worth Chat: true
+    Can Accept Division Quests: true
+    Can Abandon Division Quests:   true
+    Can Set Division Motd: true
+    Can Hire WOrkers: true
+    Item Take Amount: 10
+    Gold Take Amount: 3000
+
