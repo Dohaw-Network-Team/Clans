@@ -6,6 +6,7 @@ import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +28,7 @@ public class Division {
         this.NAME = DIVISION_NAME;
         this.CONFIG = DIVISION_CONFIG;
         this.LEADER = LEADER;
+        this.players = new ArrayList<>();
     }
 
     public int getKills() {
@@ -43,6 +45,10 @@ public class Division {
 
     public void setPlayers(List<PlayerData> players) {
         this.players = players;
+    }
+
+    public void addPlayer(PlayerData data){
+        players.add(data);
     }
 
     public Location getGarrisonLocation() {

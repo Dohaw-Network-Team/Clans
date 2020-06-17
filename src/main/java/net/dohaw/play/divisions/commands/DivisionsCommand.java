@@ -4,6 +4,7 @@ import me.c10coding.coreapi.chat.ChatFactory;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,15 +32,25 @@ public class DivisionsCommand implements CommandExecutor {
         if(sender instanceof Player){
             Player player = (Player) sender;
             if(args.length > 0){
-                //divions create <NAME> <PUBLIC | PRIVATE>
+                //divisions create <NAME> <PUBLIC | PRIVATE>
                 if(args[0].equalsIgnoreCase("create") && args.length == 3){
                     String divisionName = args[1];
-                    if(!divisionsManager.hasContent(divisionName)){
-                        divisionsManager.createNewDivision(divisionName, player);
-                        playerDataManager.getByPlayerObj(player).setPlayerDivision(divisionsManager.getDivision(divisionName));
-                        chatFactory.sendPlayerMessage("Created a new division called &a&l" + divisionName + "!", true, player, prefix);
+                    String status = args[2];
+                    if(playerDataManager.getByPlayerObj(player).getDivision() == null){
+                        if(!divisionsManager.hasContent(divisionName)){
+                            if(status.equalsIgnoreCase("public") || status.equalsIgnoreCase("private")){
+                                divisionsManager.createNewDivision(divisionName, player);
+                                playerDataManager.getByPlayerObj(player).setPlayerDivision(divisionsManager.getDivision(divisionName));
+                                playerDataManager.getByPlayerObj(player).setRank(null);
+                                chatFactory.sendPlayerMessage("Created a new division called &a&l" + divisionName + "!", true, player, prefix);
+                            }else{
+                                chatFactory.sendPlayerMessage("Your division can only be a public or private division.", true, player, prefix);
+                            }
+                        }else{
+                            chatFactory.sendPlayerMessage("This is already a division!", true, player, prefix);
+                        }
                     }else{
-                        chatFactory.sendPlayerMessage("This is already a division!", true, player, prefix);
+                        chatFactory.sendPlayerMessage("You are already in a division!", true, player, prefix);
                     }
                 }
             }

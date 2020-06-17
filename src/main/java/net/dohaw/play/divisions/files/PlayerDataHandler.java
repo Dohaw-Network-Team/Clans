@@ -54,10 +54,12 @@ public class PlayerDataHandler {
         int kills = config.getInt("Stats.Kills");
         int casualties = config.getInt("Stats.Casualties");
         int shrinesConquered = config.getInt("Stats.Shrines Conquered");
+        double heartsDestroyed = config.getInt("Stats.Hearts Destroyed");
 
         data.setKills(kills);
         data.setCasualties(casualties);
         data.setShrinesConquered(shrinesConquered);
+        data.setHeartsDestroyed(heartsDestroyed);
         return data;
     }
 
@@ -73,10 +75,47 @@ public class PlayerDataHandler {
     }
 
     public void saveData(List<PlayerData> playerDataList){
-
+        for(PlayerData data : playerDataList){
+            saveData(data);
+        }
     }
 
+    /*
+        Saves player data when they leave the server
+     */
     public void saveData(PlayerData playerData){
+
+        File playerFile = new File(plugin.getDataFolder() + File.separator + "/playerData", playerData.getPlayerUUID().toString() + ".yml");
+        FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+
+        double heartsDestroyed = playerData.getHeartsDestroyed();
+        int kills = playerData.getKills();
+        int casualties = playerData.getCasualties();
+        int shrinesConquered = playerData.getShrinesConquered();
+
+        /*
+            If they aren't in a division, then leave it as null. If they aren't in a division, then they can't have a rank
+         */
+        if(playerData.getDivision() != null){
+            String divisionName = playerData.getDivision().getName();
+            config.set("Division", divisionName);
+
+            if(playerData.getRank() != null){
+                String divisionRank = enumHelper.enumToName(playerData.getRank());
+                config.set("DivisionRank", divisionRank);
+            }
+        }
+
+        config.set("Stats.Hearts Destroyed", heartsDestroyed);
+        config.set("Stats.Kills", kills);
+        config.set("Stats.Casualties", casualties);
+        config.set("Stats.Shrines Conquered", shrinesConquered);
+
+        try {
+            config.save(playerFile);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
 
     }
 
@@ -84,13 +123,23 @@ public class PlayerDataHandler {
         Loads a specific player's data
      */
     public PlayerData loadPlayerData(UUID uuid){
+
         FileConfiguration playerDataConfig = getPlayerDataConfig(uuid);
-        PlayerData data = new PlayerData(Bukkit.getOfflinePlayer(uuid), getPlayerDataConfig(uuid), (Rank) enumHelper.nameToEnum(Rank.class, playerDataConfig.getString("DivisionRank")));
+        PlayerData data;
 
-        String divisionName = playerDataConfig.getString("Division");
-        Division division = divisionsManager.getDivision(divisionName);
+        if(playerDataConfig.getString("DivisionRank").equalsIgnoreCase("none")){
+            data = new PlayerData(Bukkit.getOfflinePlayer(uuid), getPlayerDataConfig(uuid), null);
+        }else{
+            data = new PlayerData(Bukkit.getOfflinePlayer(uuid), getPlayerDataConfig(uuid), (Rank) enumHelper.nameToEnum(Rank.class, playerDataConfig.getString("DivisionRank")));
+        }
 
-        data.setPlayerDivision(division);
+        if(!playerDataConfig.getString("Division").equalsIgnoreCase("none")){
+            plugin.getLogger().info(divisionsManager.getContents().toString());
+            plugin.getLogger().info(playerDataConfig.getString("Division"));
+            Division division = divisionsManager.getDivision(playerDataConfig.getString("Division"));
+            data.setPlayerDivision(division);
+        }
+
         data = loadPlayerPermissions(playerDataConfig, data);
         data = loadPlayerStats(playerDataConfig, data);
         return data;
@@ -112,24 +161,30 @@ public class PlayerDataHandler {
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
 
+        config.set("Division", "none");
+        config.set("DivisionRank", "none");
         config.set("Stats.Hearts Destroyed", 0);
         config.set("Stats.Kills", 0);
         config.set("Stats.Casualties", 0);
-        config.set("Stats.Division", "None");
         config.set("Stats.Shrines Conquered", 0);
+
+        try {
+            config.save(playerFile);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
 
     }
 
     public boolean hasPermissionData(UUID uuid){
-        return !getPlayerDataConfig(uuid).getConfigurationSection("Permissions").getKeys(false).isEmpty();
+        return getPlayerDataConfig(uuid).getConfigurationSection("Permissions") != null;
     }
 
     public FileConfiguration getPlayerDataConfig(UUID uuid){
         File playerFile = new File(plugin.getDataFolder() + File.separator + "/playerData", uuid.toString() + ".yml");
-        if(playerFile.exists()){
-            return YamlConfiguration.loadConfiguration(playerFile);
+        if(!playerFile.exists()){
+            createPlayerFile(uuid);
         }
-        createPlayerFile(uuid);
         return YamlConfiguration.loadConfiguration(playerFile);
     }
 

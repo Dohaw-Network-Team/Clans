@@ -3,6 +3,7 @@ package net.dohaw.play.divisions.managers;
 import net.dohaw.play.divisions.Division;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.files.DivisionsConfigHandler;
+import net.dohaw.play.divisions.files.DivisionsListConfig;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -13,14 +14,16 @@ import java.util.*;
 
 public class DivisionsManager implements Manager {
 
-    private HashMap<String, Division> divisions;
+    private HashMap<String, Division> divisions = new HashMap<>();
     private DivisionsPlugin plugin;
     private DivisionsConfigHandler dch;
+    private DivisionsListConfig divisionsListConfig;
     private Economy e;
 
     public DivisionsManager(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.dch = new DivisionsConfigHandler(plugin);
+        this.divisionsListConfig = new DivisionsListConfig(plugin);
         this.e = DivisionsPlugin.getEconomy();
     }
 
@@ -54,12 +57,13 @@ public class DivisionsManager implements Manager {
     }
 
     public void createNewDivision(String divisionName, Player creator){
-        PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
 
-        PlayerData creatorData = playerDataManager.getByPlayerObj(creator);
         FileConfiguration newDivisionConfig = dch.createDivisionsConfig(divisionName, creator.getUniqueId());
-        divisions.put(divisionName, new Division(divisionName, newDivisionConfig, creatorData));
+        Division newDivision = dch.loadDivision(divisionName, newDivisionConfig);
+
+        divisions.put(divisionName, newDivision);
         e.createBank(divisionName + "_Bank", Bukkit.getOfflinePlayer(creator.getUniqueId()));
+        divisionsListConfig.addDivision(divisionName);
     }
 
     @Override

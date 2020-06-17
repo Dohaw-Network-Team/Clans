@@ -1,122 +1,122 @@
 Permissions:
 
-  Fresh Meat:
-    Can Take From Bank: false
-    Can Kick Players: false
-    Can Recruit Members: false
-    Can Send Division Announcements: false
-    Can Invite Players: false
-    Can Declare War: false
-    Can Stop War: false
-    Can Ally: false
-    Can Discontinue Ally: false
-    Can Alter Status: false
-    Can Promote Members: false
-    Can Upgrade Structures: false
-    Can Collect From Miner: true
-    Can Collect From Woodcutter: true
-    Can Purchase Structures: false
-    Can Access Worth Chat: false
-    Can Accept Division Quests: false
-    Can Abandon Division Quests:   false
-    Can Set Division Motd: false
-    Can Hire WOrkers: false
-    Item Take Amount: 0
-    Gold Take Amount: 0
+  FRESH MEAT:
+    CAN TAKE FROM BANK: false
+    CAN KICK PLAYERS: false
+    CAN RECRUIT MEMBERS: false
+    CAN SEND DIVISION ANNOUNCEMENTS: false
+    CAN INVITE PLAYERS: false
+    CAN DECLARE WAR: false
+    CAN STOP WAR: false
+    CAN ALLY: false
+    CAN DISCONTINUE ALLY: false
+    CAN ALTER STATUS: false
+    CAN PROMOTE MEMBERS: false
+    CAN UPGRADE STRUCTURES: false
+    CAN COLLECT FROM MINER: true
+    CAN COLLECT FROM WOODCUTTER: true
+    CAN PURCHASE STRUCTURES: false
+    CAN ACCESS WORTHY CHAT: false
+    CAN ACCEPT DIVISION QUESTS: false
+    CAN ABANDON DIVISION QUESTS:   false
+    CAN SET DIVISION MOTD: false
+    CAN HIRE WORKERS: false
+    ITEM TAKE AMOUNT: 0
+    GOLD TAKE AMOUNT: 0
 
-  Proven Member:
-    Can Take From Bank: true
-    Can Kick Players: false
-    Can Recruit Members: false
-    Can Send Division Announcements: false
-    Can Invite Players: true
-    Can Declare War: false
-    Can Stop War: false
-    Can Ally: false
-    Can Discontinue Ally: false
-    Can Alter Status: false
-    Can Promote Members: false
-    Can Upgrade Structures: false
-    Can Collect From Miner: true
-    Can Collect From Woodcutter: true
-    Can Purchase Structures: false
-    Can Access Worth Chat: false
-    Can Accept Division Quests: false
-    Can Abandon Division Quests:   false
-    Can Set Division Motd: false
-    Can Hire WOrkers: false
-    Item Take Amount: 3
-    Gold Take Amount: 350
+  PROVEN MEMBER:
+    CAN TAKE FROM BANK: true
+    CAN KICK PLAYERS: false
+    CAN RECRUIT MEMBERS: false
+    CAN SEND DIVISION ANNOUNCEMENTS: false
+    CAN INVITE PLAYERS: true
+    CAN DECLARE WAR: false
+    CAN STOP WAR: false
+    CAN ALLY: false
+    CAN DISCONTINUE ALLY: false
+    CAN ALTER STATUS: false
+    CAN PROMOTE MEMBERS: false
+    CAN UPGRADE STRUCTURES: false
+    CAN COLLECT FROM MINER: true
+    CAN COLLECT FROM WOODCUTTER: true
+    CAN PURCHASE STRUCTURES: false
+    CAN ACCESS WORTHY CHAT: false
+    CAN ACCEPT DIVISION QUESTS: false
+    CAN ABANDON DIVISION QUESTS:   false
+    CAN SET DIVISION MOTD: false
+    CAN HIRE WORKERS: false
+    ITEM TAKE AMOUNT: 3
+    GOLD TAKE AMOUNT: 350
 
-  Loyal:
-    Can Take From Bank: true
-    Can Kick Players: false
-    Can Recruit Members: false
-    Can Send Division Announcements: false
-    Can Invite Players: true
-    Can Declare War: false
-    Can Stop War: false
-    Can Ally: false
-    Can Discontinue Ally: false
-    Can Alter Status: false
-    Can Promote Members: false
-    Can Upgrade Structures: false
-    Can Collect From Miner: true
-    Can Collect From Woodcutter: true
-    Can Purchase Structures: false
-    Can Access Worth Chat: true
-    Can Accept Division Quests: false
-    Can Abandon Division Quests:   false
-    Can Set Division Motd: false
-    Can Hire WOrkers: false
-    Item Take Amount: 6
-    Gold Take Amount: 800
+  LOYAL:
+    CAN TAKE FROM BANK: true
+    CAN KICK PLAYERS: false
+    CAN RECRUIT MEMBERS: false
+    CAN SEND DIVISION ANNOUNCEMENTS: false
+    CAN INVITE PLAYERS: true
+    CAN DECLARE WAR: false
+    CAN STOP WAR: false
+    CAN ALLY: false
+    CAN DISCONTINUE ALLY: false
+    CAN ALTER STATUS: false
+    CAN PROMOTE MEMBERS: false
+    CAN UPGRADE STRUCTURES: false
+    CAN COLLECT FROM MINER: true
+    CAN COLLECT FROM WOODCUTTER: true
+    CAN PURCHASE STRUCTURES: false
+    CAN ACCESS WORTHY CHAT: true
+    CAN ACCEPT DIVISION QUESTS: false
+    CAN ABANDON DIVISION QUESTS:   false
+    CAN SET DIVISION MOTD: false
+    CAN HIRE WORKERS: false
+    ITEM TAKE AMOUNT: 6
+    GOLD TAKE AMOUNT: 800
 
-  Elder:
-    Can Take From Bank: true
-    Can Kick Players: true
-    Can Recruit Members: true
-    Can Send Division Announcements: true
-    Can Invite Players: true
-    Can Declare War: false
-    Can Stop War: false
-    Can Ally: false
-    Can Discontinue Ally: false
-    Can Alter Status: true
-    Can Promote Members: false
-    Can Upgrade Structures: true
-    Can Collect From Miner: true
-    Can Collect From Woodcutter: true
-    Can Purchase Structures: true
-    Can Access Worth Chat: true
-    Can Accept Division Quests: false
-    Can Abandon Division Quests:   false
-    Can Set Division Motd: true
-    Can Hire WOrkers: true
-    Item Take Amount: 8
-    Gold Take Amount: 1500
+  ELDER:
+    CAN TAKE FROM BANK: true
+    CAN KICK PLAYERS: true
+    CAN RECRUIT MEMBERS: true
+    CAN SEND DIVISION ANNOUNCEMENTS: true
+    CAN INVITE PLAYERS: true
+    CAN DECLARE WAR: false
+    CAN STOP WAR: false
+    CAN ALLY: false
+    CAN DISCONTINUE ALLY: false
+    CAN ALTER STATUS: true
+    CAN PROMOTE MEMBERS: false
+    CAN UPGRADE STRUCTURES: true
+    CAN COLLECT FROM MINER: true
+    CAN COLLECT FROM WOODCUTTER: true
+    CAN PURCHASE STRUCTURES: true
+    CAN ACCESS WORTHY CHAT: true
+    CAN ACCEPT DIVISION QUESTS: false
+    CAN ABANDON DIVISION QUESTS:   false
+    CAN SET DIVISION MOTD: true
+    CAN HIRE WORKERS: true
+    ITEM TAKE AMOUNT: 8
+    GOLD TAKE AMOUNT: 1500
 
-  Overlord:
-    Can Take From Bank: true
-    Can Kick Players: true
-    Can Recruit Members: true
-    Can Send Division Announcements: true
-    Can Invite Players: true
-    Can Declare War: true
-    Can Stop War: true
-    Can Ally: true
-    Can Discontinue Ally: true
-    Can Alter Status: true
-    Can Promote Members: true
-    Can Upgrade Structures: true
-    Can Collect From Miner: true
-    Can Collect From Woodcutter: true
-    Can Purchase Structures: true
-    Can Access Worth Chat: true
-    Can Accept Division Quests: true
-    Can Abandon Division Quests:   true
-    Can Set Division Motd: true
-    Can Hire WOrkers: true
-    Item Take Amount: 10
-    Gold Take Amount: 3000
+  OVERLORD:
+    CAN TAKE FROM BANK: true
+    CAN KICK PLAYERS: true
+    CAN RECRUIT MEMBERS: true
+    CAN SEND DIVISION ANNOUNCEMENTS: true
+    CAN INVITE PLAYERS: true
+    CAN DECLARE WAR: true
+    CAN STOP WAR: true
+    CAN ALLY: true
+    CAN DISCONTINUE ALLY: true
+    CAN ALTER STATUS: true
+    CAN PROMOTE MEMBERS: true
+    CAN UPGRADE STRUCTURES: true
+    CAN COLLECT FROM MINER: true
+    CAN COLLECT FROM WOODCUTTER: true
+    CAN PURCHASE STRUCTURES: true
+    CAN ACCESS WORTHY CHAT: true
+    CAN ACCEPT DIVISION QUESTS: true
+    CAN ABANDON DIVISION QUESTS:   true
+    CAN SET DIVISION MOTD: true
+    CAN HIRE WORKERS: true
+    ITEM TAKE AMOUNT: 10
+    GOLD TAKE AMOUNT: 3000
 

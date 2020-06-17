@@ -5,9 +5,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
-public class DivisionListConfig extends ConfigManager {
+public class DivisionsListConfig extends ConfigManager {
 
-    public DivisionListConfig(JavaPlugin plugin) {
+    public DivisionsListConfig(JavaPlugin plugin) {
         super(plugin, "divisionsList.yml");
     }
 
@@ -17,6 +17,13 @@ public class DivisionListConfig extends ConfigManager {
 
     public void saveToFile(List<String> listOfDivisions){
         config.set("List Of Divisions", listOfDivisions);
+        saveConfig();
+    }
+
+    public void addDivision(String divisionName){
+        List<String> divisionNames = getListOfDivisions();
+        divisionNames.add(divisionName);
+        config.set("List of Divisions", divisionNames);
         saveConfig();
     }
 

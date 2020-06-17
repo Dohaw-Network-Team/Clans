@@ -19,6 +19,7 @@ public class PlayerDataManager implements Manager{
     public PlayerDataManager(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.playerDataHandler = new PlayerDataHandler(plugin);
+        this.playerDataList = new ArrayList<>();
     }
 
     @Override

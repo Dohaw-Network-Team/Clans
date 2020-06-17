@@ -5,6 +5,7 @@ import me.c10coding.coreapi.helpers.EnumHelper;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.rank.Permission;
+import org.bukkit.Bukkit;
 
 import java.util.EnumMap;
 
@@ -13,7 +14,7 @@ public class DefaultPermConfig extends ConfigManager {
     private EnumMap<Rank, EnumMap<Permission, Object>> defaultPerms = new EnumMap<>(Rank.class);
 
     public DefaultPermConfig(DivisionsPlugin plugin) {
-        super(plugin, "defaultperms");
+        super(plugin, "defaultPerms.yml");
     }
 
     public void compilePerms(){

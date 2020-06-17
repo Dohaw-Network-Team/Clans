@@ -1,12 +1,12 @@
 package net.dohaw.play.divisions;
 
-import me.c10coding.core.Core;
 import me.c10coding.coreapi.CoreAPI;
+import net.dohaw.play.divisions.commands.DivisionsCommand;
+import net.dohaw.play.divisions.events.GeneralListener;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,7 +24,7 @@ public final class DivisionsPlugin extends JavaPlugin {
 
     private static Economy economy = null;
     //Used to fetch any other custom plugins within the "core" plugins.
-    private Core core;
+    //private Core core;
     //General API that benefits you no matter what plugin you're making.
     private CoreAPI api;
     private String pluginPrefix;
@@ -36,13 +36,13 @@ public final class DivisionsPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        if(getServer().getPluginManager().getPlugin("Core") == null){
-            getLogger().severe("Disabled due to no Core dependency found!");
+        if(getServer().getPluginManager().getPlugin("CoreAPI") == null){
+            getLogger().severe("Disabled due to no CoreAPI dependency found!");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        this.core = (Core) getServer().getPluginManager().getPlugin("Core");
-        this.api = core.getCoreAPI();
+        //this.core = (Core) getServer().getPluginManager().getPlugin("Core");
+        this.api = (CoreAPI) getServer().getPluginManager().getPlugin("CoreAPI");
 
         if(api == null){
             getLogger().severe("Disabled due to no CoreAPI dependency found!");
@@ -51,18 +51,20 @@ public final class DivisionsPlugin extends JavaPlugin {
         }
         getLogger().fine("API hooked!");
 
-        validateConfigs();
-        loadManagerData();
-        loadDefaultRankPermissions();
-
-        this.pluginPrefix = getConfig().getString("PluginPrefix");
-
         if (!setupEconomy()) {
-            this.getLogger().severe("Disabled due to no Vault dependency found!");
+            getLogger().severe("Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
         getLogger().fine("Vault hooked!");
+
+        this.pluginPrefix = getConfig().getString("PluginPrefix");
+
+        validateConfigs();
+        loadDefaultRankPermissions();
+        loadManagerData();
+        registerEvents();
+        registerCommands();
 
     }
 
@@ -83,8 +85,12 @@ public final class DivisionsPlugin extends JavaPlugin {
         return economy != null;
     }
 
-    public Core getCore() {
-        return core;
+    private void registerEvents(){
+        getServer().getPluginManager().registerEvents(new GeneralListener(this), this);
+    }
+
+    private void registerCommands(){
+        getServer().getPluginCommand("divisions").setExecutor(new DivisionsCommand(this));
     }
 
     public CoreAPI getCoreAPI(){
@@ -112,7 +118,7 @@ public final class DivisionsPlugin extends JavaPlugin {
             }
         }
 
-        File[] files = {new File(getDataFolder(), "config.yml"), new File(getDataFolder(), "divisionsList.yml"), new File(getDataFolder(), "divisionsPerms.yml")};
+        File[] files = {new File(getDataFolder(), "config.yml"), new File(getDataFolder(), "divisionsList.yml"), new File(getDataFolder(), "defaultPerms.yml")};
         for(File f : files){
             if(!f.exists()) {
                 saveResource(f.getName(), false);
@@ -126,8 +132,8 @@ public final class DivisionsPlugin extends JavaPlugin {
     }
 
     public void loadManagerData(){
-        this.playerDataManager = new PlayerDataManager(this);
-        this.divisionsManager = new DivisionsManager(this);
+        playerDataManager = new PlayerDataManager(this);
+        divisionsManager = new DivisionsManager(this);
     }
 
     public void saveManagerData(){
@@ -136,7 +142,7 @@ public final class DivisionsPlugin extends JavaPlugin {
     }
 
     public void loadDefaultRankPermissions(){
-        this.defaultPermConfig = new DefaultPermConfig(this);
+        defaultPermConfig = new DefaultPermConfig(this);
         defaultPermConfig.compilePerms();
     }
 

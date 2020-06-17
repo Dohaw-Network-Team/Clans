@@ -15,10 +15,11 @@ public class PlayerData {
     final private String PLAYER_NAME;
     final private UUID PLAYER_UUID;
     final private FileConfiguration PLAYER_CONFIG;
-    private Division playerDivision;
-    private Rank rank;
+    private Division playerDivision = null;
+    private Rank rank = null;
     private HashMap<Permission, Object> playerPermissions;
     private int kills, casualties, shrinesConquered;
+    private double heartsDestroyed;
 
     public PlayerData(final OfflinePlayer PLAYER, final FileConfiguration PLAYER_CONFIG, Rank rank){
         this.PLAYER = PLAYER;
@@ -98,5 +99,13 @@ public class PlayerData {
 
     public FileConfiguration getPLAYER_CONFIG() {
         return PLAYER_CONFIG;
+    }
+
+    public double getHeartsDestroyed() {
+        return heartsDestroyed;
+    }
+
+    public void setHeartsDestroyed(double heartsDestroyed) {
+        this.heartsDestroyed = heartsDestroyed;
     }
 }
