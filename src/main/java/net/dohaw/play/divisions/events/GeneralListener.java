@@ -1,9 +1,9 @@
 package net.dohaw.play.divisions.events;
 
+import net.dohaw.play.divisions.Division;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.playerData.PlayerData;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

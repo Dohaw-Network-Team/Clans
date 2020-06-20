@@ -12,7 +12,7 @@ public class DivisionsListConfig extends ConfigManager {
     }
 
     public List<String> getListOfDivisions(){
-        return config.getStringList("List Of Divisions");
+        return config.getStringList("List of Divisions");
     }
 
     public void saveToFile(List<String> listOfDivisions){

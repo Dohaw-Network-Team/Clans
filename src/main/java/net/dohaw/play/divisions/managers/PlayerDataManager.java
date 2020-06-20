@@ -4,6 +4,7 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.files.PlayerDataHandler;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Rank;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -14,12 +15,11 @@ public class PlayerDataManager implements Manager{
 
     private DivisionsPlugin plugin;
     private PlayerDataHandler playerDataHandler;
-    private List<PlayerData> playerDataList;
+    private List<PlayerData> playerDataList = new ArrayList<>();
 
     public PlayerDataManager(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.playerDataHandler = new PlayerDataHandler(plugin);
-        this.playerDataList = new ArrayList<>();
     }
 
     @Override
@@ -55,10 +55,10 @@ public class PlayerDataManager implements Manager{
         return null;
     }
 
-    public List<PlayerData> getDivisionName(String divisionName){
+    public List<PlayerData> getByDivisionName(String divisionName){
         List<PlayerData> membersData = new ArrayList<>();
         for(PlayerData data : playerDataList){
-            if(data.getDivision().getName().equalsIgnoreCase(divisionName)){
+            if(data.getDivision().equalsIgnoreCase(divisionName)){
                 membersData.add(data);
             }
         }
@@ -95,5 +95,12 @@ public class PlayerDataManager implements Manager{
     @Override
     public boolean removeContent(Object content) {
         return false;
+    }
+
+    public void setPlayerDivisions() {
+        for(PlayerData data : playerDataList){
+            FileConfiguration playerDataConfig = data.getPlayerConfig();
+            data.setPlayerDivision((playerDataConfig.getString("Division")));
+        }
     }
 }

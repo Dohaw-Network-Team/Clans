@@ -22,7 +22,7 @@ public class Division {
     private Location garrisonLocation;
     private List<PlayerData> players;
     private EnumMap<Rank, EnumMap<Permission, Object>> rankPermissions;
-    private int kills, casualties, shrinesConquered;
+    private int kills, casualties, shrinesConquered, numMembers;
 
     public Division(final String DIVISION_NAME, final FileConfiguration DIVISION_CONFIG, final PlayerData LEADER){
         this.NAME = DIVISION_NAME;

@@ -40,7 +40,7 @@ public class DivisionsCommand implements CommandExecutor {
                         if(!divisionsManager.hasContent(divisionName)){
                             if(status.equalsIgnoreCase("public") || status.equalsIgnoreCase("private")){
                                 divisionsManager.createNewDivision(divisionName, player);
-                                playerDataManager.getByPlayerObj(player).setPlayerDivision(divisionsManager.getDivision(divisionName));
+                                playerDataManager.getByPlayerObj(player).setPlayerDivision(divisionsManager.getDivision(divisionName).getName());
                                 playerDataManager.getByPlayerObj(player).setRank(null);
                                 chatFactory.sendPlayerMessage("Created a new division called &a&l" + divisionName + "!", true, player, prefix);
                             }else{

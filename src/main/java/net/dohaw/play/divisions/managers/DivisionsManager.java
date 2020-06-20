@@ -4,27 +4,26 @@ import net.dohaw.play.divisions.Division;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.files.DivisionsConfigHandler;
 import net.dohaw.play.divisions.files.DivisionsListConfig;
-import net.dohaw.play.divisions.playerData.PlayerData;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class DivisionsManager implements Manager {
 
     private HashMap<String, Division> divisions = new HashMap<>();
     private DivisionsPlugin plugin;
-    private DivisionsConfigHandler dch;
     private DivisionsListConfig divisionsListConfig;
     private Economy e;
 
     public DivisionsManager(DivisionsPlugin plugin){
         this.plugin = plugin;
-        this.dch = new DivisionsConfigHandler(plugin);
-        this.divisionsListConfig = new DivisionsListConfig(plugin);
         this.e = DivisionsPlugin.getEconomy();
+        this.divisionsListConfig = new DivisionsListConfig(plugin);
     }
 
     @Override
@@ -39,11 +38,13 @@ public class DivisionsManager implements Manager {
 
     @Override
     public void saveContents() {
+        DivisionsConfigHandler dch = new DivisionsConfigHandler(plugin);
         dch.saveDivisionsData(divisions);
     }
 
     @Override
     public void loadContents() {
+        DivisionsConfigHandler dch = new DivisionsConfigHandler(plugin);
         this.divisions = dch.loadDivisions();
     }
 
@@ -57,7 +58,7 @@ public class DivisionsManager implements Manager {
     }
 
     public void createNewDivision(String divisionName, Player creator){
-
+        DivisionsConfigHandler dch = new DivisionsConfigHandler(plugin);
         FileConfiguration newDivisionConfig = dch.createDivisionsConfig(divisionName, creator.getUniqueId());
         Division newDivision = dch.loadDivision(divisionName, newDivisionConfig);
 
@@ -73,6 +74,10 @@ public class DivisionsManager implements Manager {
 
     public Division getDivision(String divisionName){
         return divisions.get(divisionName);
+    }
+
+    public void setDivision(String divisionName, Division division){
+        divisions.replace(divisionName, division);
     }
 
     public Division getByLeader(UUID leaderUUID){

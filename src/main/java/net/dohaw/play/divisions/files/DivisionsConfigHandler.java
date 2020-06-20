@@ -9,8 +9,6 @@ import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -22,9 +20,9 @@ public class DivisionsConfigHandler{
 
     private DivisionsListConfig dlc;
     private DivisionsPlugin plugin;
-    private DivisionsManager divisionsManager;
     private EnumHelper enumHelper;
     private PlayerDataManager playerDataManager;
+    private PlayerDataHandler playerDataHandler;
     private Economy e;
 
     public DivisionsConfigHandler(DivisionsPlugin plugin) {
@@ -33,7 +31,7 @@ public class DivisionsConfigHandler{
         this.enumHelper = plugin.getCoreAPI().getEnumHelper();
         this.e = DivisionsPlugin.getEconomy();
         this.playerDataManager = plugin.getPlayerDataManager();
-        this.divisionsManager = plugin.getDivisionsManager();
+        this.playerDataHandler = new PlayerDataHandler(plugin);
     }
 
     public HashMap<String, Division> loadDivisions(){
@@ -41,9 +39,7 @@ public class DivisionsConfigHandler{
         HashMap<String, Division> divisionsMap = new HashMap<>();
         int amountLoaded = 0;
         for(String divisionName : dlc.getListOfDivisions()){
-
             File divisionFile = new File(plugin.getDataFolder() + File.separator + "/divisionsData", divisionName + ".yml");
-
             if(divisionFile.exists()){
                 YamlConfiguration divisionConfig = YamlConfiguration.loadConfiguration(divisionFile);
                 Division loadedDivision = loadDivision(divisionName, divisionConfig);
@@ -61,12 +57,15 @@ public class DivisionsConfigHandler{
         List<String> memberUUIDStrings = divisionConfig.getStringList("Members");
         List<PlayerData> members = new ArrayList<>();
         UUID leaderUUID = UUID.fromString(divisionConfig.getString("Leader"));
-        PlayerData leaderPlayerData = playerDataManager.getPlayerByUUID(leaderUUID);
+        PlayerData leaderPlayerData = playerDataHandler.loadPlayerData(leaderUUID);
         Division division = new Division(divisionName, divisionConfig, leaderPlayerData);
 
+        /*
+            PLAYER DATA MANAGER WILL LOAD ONLY ONLINE PLAYERS, BUT DIVISIONS HOLD OFFLINE PLAYER DATA AS WELL SO WE LOAD OFFLINE PLAYERS HERE.
+         */
         for(String memberStringUUID : memberUUIDStrings){
             UUID memberUUID = UUID.fromString(memberStringUUID);
-            PlayerData playerData = playerDataManager.getPlayerByUUID(memberUUID);
+            PlayerData playerData = playerDataHandler.loadPlayerData(memberUUID);
             members.add(playerData);
         }
 
@@ -124,7 +123,7 @@ public class DivisionsConfigHandler{
         List<String> memberUUIDs = new ArrayList<>();
         members.forEach(data -> memberUUIDs.add(data.getPlayerUUID().toString()));
 
-        divConfig.set("Members", members);
+        divConfig.set("Members", memberUUIDs);
         divConfig.set("Leader", div.getLeader().getPlayerUUID().toString());
         divConfig.set("Power", div.getPower());
         divConfig.set("Kills", div.getKills());
@@ -209,6 +208,10 @@ public class DivisionsConfigHandler{
             return config;
         }
         return null;
+    }
+
+    public void setPlayerDataManager(PlayerDataManager playerDataManager){
+        this.playerDataManager = playerDataManager;
     }
 
 

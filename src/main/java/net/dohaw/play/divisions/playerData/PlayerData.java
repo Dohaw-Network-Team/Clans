@@ -15,7 +15,7 @@ public class PlayerData {
     final private String PLAYER_NAME;
     final private UUID PLAYER_UUID;
     final private FileConfiguration PLAYER_CONFIG;
-    private Division playerDivision = null;
+    private String playerDivision = null;
     private Rank rank = null;
     private HashMap<Permission, Object> playerPermissions;
     private int kills, casualties, shrinesConquered;
@@ -49,7 +49,7 @@ public class PlayerData {
         return playerPermissions.get(perm) != null;
     }
 
-    public Division getDivision(){
+    public String getDivision(){
         return playerDivision;
     }
 
@@ -85,7 +85,7 @@ public class PlayerData {
         this.shrinesConquered = shrinesConquered;
     }
 
-    public void setPlayerDivision(Division playerDivision) {
+    public void setPlayerDivision(String playerDivision) {
         this.playerDivision = playerDivision;
     }
 
@@ -97,7 +97,7 @@ public class PlayerData {
         this.rank = rank;
     }
 
-    public FileConfiguration getPLAYER_CONFIG() {
+    public FileConfiguration getPlayerConfig() {
         return PLAYER_CONFIG;
     }
 

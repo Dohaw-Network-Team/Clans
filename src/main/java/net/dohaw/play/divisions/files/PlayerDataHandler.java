@@ -22,7 +22,6 @@ import java.util.UUID;
 public class PlayerDataHandler {
 
     private DivisionsPlugin plugin;
-    private DivisionsManager divisionsManager;
     private EnumHelper enumHelper;
     private Economy e;
 
@@ -32,7 +31,6 @@ public class PlayerDataHandler {
     public PlayerDataHandler(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.enumHelper = plugin.getCoreAPI().getEnumHelper();
-        this.divisionsManager = plugin.getDivisionsManager();
         this.e = DivisionsPlugin.getEconomy();
     }
 
@@ -97,7 +95,7 @@ public class PlayerDataHandler {
             If they aren't in a division, then leave it as null. If they aren't in a division, then they can't have a rank
          */
         if(playerData.getDivision() != null){
-            String divisionName = playerData.getDivision().getName();
+            String divisionName = playerData.getDivision();
             config.set("Division", divisionName);
 
             if(playerData.getRank() != null){
@@ -133,12 +131,11 @@ public class PlayerDataHandler {
             data = new PlayerData(Bukkit.getOfflinePlayer(uuid), getPlayerDataConfig(uuid), (Rank) enumHelper.nameToEnum(Rank.class, playerDataConfig.getString("DivisionRank")));
         }
 
+        /*
         if(!playerDataConfig.getString("Division").equalsIgnoreCase("none")){
-            plugin.getLogger().info(divisionsManager.getContents().toString());
-            plugin.getLogger().info(playerDataConfig.getString("Division"));
-            Division division = divisionsManager.getDivision(playerDataConfig.getString("Division"));
+            Division division = null;
             data.setPlayerDivision(division);
-        }
+        }*/
 
         data = loadPlayerPermissions(playerDataConfig, data);
         data = loadPlayerStats(playerDataConfig, data);

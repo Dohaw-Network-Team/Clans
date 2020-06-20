@@ -4,6 +4,7 @@ import me.c10coding.coreapi.CoreAPI;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
 import net.dohaw.play.divisions.events.GeneralListener;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
+import net.dohaw.play.divisions.files.DivisionsConfigHandler;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.milkbowl.vault.economy.Economy;
@@ -132,8 +133,13 @@ public final class DivisionsPlugin extends JavaPlugin {
     }
 
     public void loadManagerData(){
-        playerDataManager = new PlayerDataManager(this);
         divisionsManager = new DivisionsManager(this);
+        playerDataManager = new PlayerDataManager(this);
+        /*
+        //Had to set DivisionsConfigGHandler after playerdatamanager because it's dependent on it
+        divisionsManager.setDivisionsHandler(new DivisionsConfigHandler(this));*/
+        playerDataManager.loadContents();
+        divisionsManager.loadContents();
     }
 
     public void saveManagerData(){
