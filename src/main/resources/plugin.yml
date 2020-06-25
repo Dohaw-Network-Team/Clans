@@ -5,6 +5,9 @@ api-version: 1.13
 
 commands:
   divisions:
+    description: "Base command for this plugin"
     aliases:
       - div
       - division
+  divisionsconfirm:
+    description: "For confirmable commands"

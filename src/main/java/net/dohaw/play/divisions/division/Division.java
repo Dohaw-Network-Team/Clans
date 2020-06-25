@@ -1,5 +1,6 @@
-package net.dohaw.play.divisions;
+package net.dohaw.play.divisions.division;
 
+import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
@@ -17,11 +18,12 @@ public class Division {
     final private FileConfiguration CONFIG;
     final private PlayerData LEADER;
 
+    private DivisionStatus status;
     private String bankName;
-    private double goldAmount, power, heartsDestroyed;
+    private double power, heartsDestroyed;
     private Location garrisonLocation;
     private List<PlayerData> players;
-    private EnumMap<Rank, EnumMap<Permission, Object>> rankPermissions;
+    private EnumMap<Rank, EnumMap<Permission, Object>> rankPermissions = new EnumMap<>(Rank.class);
     private int kills, casualties, shrinesConquered, numMembers;
 
     public Division(final String DIVISION_NAME, final FileConfiguration DIVISION_CONFIG, final PlayerData LEADER){
@@ -51,6 +53,10 @@ public class Division {
         players.add(data);
     }
 
+    public void removePlayer(PlayerData data){
+        players.remove(data);
+    }
+
     public Location getGarrisonLocation() {
         return garrisonLocation;
     }
@@ -76,11 +82,7 @@ public class Division {
     }
 
     public double getGoldAmount() {
-        return goldAmount;
-    }
-
-    public void setGoldAmount(double goldAmount) {
-        this.goldAmount = goldAmount;
+        return DivisionsPlugin.getEconomy().bankBalance(bankName).balance;
     }
 
     public double getPower() {
@@ -134,5 +136,13 @@ public class Division {
 
     public void setRankPermissions(EnumMap<Rank, EnumMap<Permission, Object>> rankPermissions) {
         this.rankPermissions = rankPermissions;
+    }
+
+    public DivisionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(DivisionStatus status) {
+        this.status = status;
     }
 }

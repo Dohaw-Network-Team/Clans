@@ -1,9 +1,12 @@
 package net.dohaw.play.divisions.managers;
 
-import net.dohaw.play.divisions.Division;
+import jdk.net.SocketFlow;
+import net.dohaw.play.divisions.division.Division;
+import net.dohaw.play.divisions.division.DivisionStatus;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.files.DivisionsConfigHandler;
 import net.dohaw.play.divisions.files.DivisionsListConfig;
+import net.dohaw.play.divisions.playerData.PlayerData;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -57,10 +60,10 @@ public class DivisionsManager implements Manager {
         return divisions.put(divisionName, (Division) content) != null;
     }
 
-    public void createNewDivision(String divisionName, Player creator){
+    public void createNewDivision(String divisionName, Player creator, DivisionStatus status){
         DivisionsConfigHandler dch = new DivisionsConfigHandler(plugin);
-        FileConfiguration newDivisionConfig = dch.createDivisionsConfig(divisionName, creator.getUniqueId());
-        Division newDivision = dch.loadDivision(divisionName, newDivisionConfig);
+        FileConfiguration newDivisionConfig = dch.createDivisionsConfig(divisionName, creator.getUniqueId(), status);
+        Division newDivision = dch.loadDivision(divisionName, newDivisionConfig, status);
 
         divisions.put(divisionName, newDivision);
         e.createBank(divisionName + "_Bank", Bukkit.getOfflinePlayer(creator.getUniqueId()));
@@ -88,6 +91,24 @@ public class DivisionsManager implements Manager {
             }
         }
         return null;
+    }
+
+    public void disbandDivision(String divisionName){
+
+        Division division = getDivision(divisionName);
+        divisions.remove(divisionName);
+        divisionsListConfig.removeDivision(divisionName);
+
+        PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
+        for(PlayerData playerData : division.getPlayers()){
+            playerData.setPlayerDivision(null);
+            playerData.setRank(null);
+            playerDataManager.setPlayerData(playerData.getPlayerUUID(), playerData);
+        }
+
+        DivisionsConfigHandler dch = new DivisionsConfigHandler(plugin);
+        dch.deleteDivisionConfig(divisionName);
+
     }
 
 }

@@ -1,9 +1,9 @@
 package net.dohaw.play.divisions.files;
 
 import me.c10coding.coreapi.helpers.EnumHelper;
-import net.dohaw.play.divisions.Division;
+import net.dohaw.play.divisions.division.Division;
+import net.dohaw.play.divisions.division.DivisionStatus;
 import net.dohaw.play.divisions.DivisionsPlugin;
-import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
@@ -42,17 +42,23 @@ public class DivisionsConfigHandler{
             File divisionFile = new File(plugin.getDataFolder() + File.separator + "/divisionsData", divisionName + ".yml");
             if(divisionFile.exists()){
                 YamlConfiguration divisionConfig = YamlConfiguration.loadConfiguration(divisionFile);
-                Division loadedDivision = loadDivision(divisionName, divisionConfig);
+                DivisionStatus status;
+                if(divisionConfig.getString("Status") == null){
+                    status = DivisionStatus.PRIVATE;
+                }else{
+                    status = DivisionStatus.valueOf(divisionConfig.getString("Status"));
+                }
+                Division loadedDivision = loadDivision(divisionName, divisionConfig, status);
                 divisionsMap.put(divisionName, loadedDivision);
                 amountLoaded++;
             }
         }
 
-        plugin.getLogger().info("Loaded " + amountLoaded + " divisions into memory");
+        plugin.getLogger().info("Loaded " + amountLoaded + " division(s) into memory");
         return divisionsMap;
     }
 
-    public Division loadDivision(String divisionName, FileConfiguration divisionConfig){
+    public Division loadDivision(String divisionName, FileConfiguration divisionConfig, DivisionStatus status){
 
         List<String> memberUUIDStrings = divisionConfig.getStringList("Members");
         List<PlayerData> members = new ArrayList<>();
@@ -69,10 +75,8 @@ public class DivisionsConfigHandler{
             members.add(playerData);
         }
 
+        division.setStatus(status);
         division.setPlayers(members);
-
-        int divisionGold = (int) e.bankBalance(divisionName + "_Bank").balance;
-        division.setGoldAmount(divisionGold);
 
         int power = divisionConfig.getInt("Power");
         division.setPower(power);
@@ -90,20 +94,20 @@ public class DivisionsConfigHandler{
         double heartsDestroyed = divisionConfig.getDouble("Hearts Destroyed");
         division.setHeartsDestroyed(heartsDestroyed);
 
-                /*
-                    Loads the specific permissions for a division
-                 */
+        /*
+            Loads the specific permissions for a division
+         */
         EnumMap<Rank, EnumMap<Permission, Object>> rankPermissions = new EnumMap<>(Rank.class);
-        for(Map.Entry<Rank, EnumMap<Permission, Object>> rank : rankPermissions.entrySet()){
-            String rankString = enumHelper.enumToName(rank.getKey());
+        for(Rank rank : Rank.values()){
+            String rankString = enumHelper.enumToName(rank);
             EnumMap<Permission, Object> permissionMap = new EnumMap<>(Permission.class);
-            for(Map.Entry<Permission, Object> perm : permissionMap.entrySet()){
-                String permString = enumHelper.enumToName(perm.getKey());
+            for(Permission permission : Permission.values()){
+                String permString = enumHelper.enumToName(permission);
                 if(divisionConfig.get("Rank Permissions." + rankString + "." + permString) != null){
-                    permissionMap.put(perm.getKey(), divisionConfig.get("Rank Permissions." + rankString + "." + permString));
+                    permissionMap.put(permission, divisionConfig.get("Rank Permissions." + rankString + "." + permString));
                 }
             }
-            rankPermissions.put(rank.getKey(), permissionMap);
+            rankPermissions.put(rank, permissionMap);
         }
         division.setRankPermissions(rankPermissions);
         return division;
@@ -130,6 +134,7 @@ public class DivisionsConfigHandler{
         divConfig.set("Casualties", div.getCasualties());
         divConfig.set("Shrines Conquered", div.getShrinesConquered());
         divConfig.set("Hearts Destroyed", div.getHeartsDestroyed());
+        divConfig.set("Status", div.getStatus().name());
 
         EnumMap<Rank, EnumMap<Permission, Object>> rankPermissions = div.getRankPermissions();
         for(Map.Entry<Rank, EnumMap<Permission, Object>> rank : rankPermissions.entrySet()){
@@ -165,7 +170,7 @@ public class DivisionsConfigHandler{
         return YamlConfiguration.loadConfiguration(playerFile);
     }
 
-    public FileConfiguration createDivisionsConfig(String divisionName, UUID creatorUUID){
+    public FileConfiguration createDivisionsConfig(String divisionName, UUID creatorUUID, DivisionStatus status){
 
         FileConfiguration config = getDivisionConfig(divisionName);
         List<String> members = new ArrayList<>();
@@ -178,6 +183,7 @@ public class DivisionsConfigHandler{
         config.set("Casualties", 0);
         config.set("Shrines Conquered", 0);
         config.set("Hearts Destroyed", 0);
+        config.set("Status", status.name());
 
         /*
             Puts in the default permissions from the DefaultPermConfig class.
@@ -212,6 +218,10 @@ public class DivisionsConfigHandler{
 
     public void setPlayerDataManager(PlayerDataManager playerDataManager){
         this.playerDataManager = playerDataManager;
+    }
+
+    public void deleteDivisionConfig(String divisionName){
+        new File(plugin.getDataFolder() + File.separator + "/divisionsData", divisionName + ".yml").delete();
     }
 
 

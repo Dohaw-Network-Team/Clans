@@ -27,4 +27,10 @@ public class DivisionsListConfig extends ConfigManager {
         saveConfig();
     }
 
+    public void removeDivision(String divisionName){
+        List<String> divisionNames = getListOfDivisions();
+        divisionNames.remove(divisionName);
+        config.set("List of Divisions", divisionNames);
+        saveConfig();
+    }
 }

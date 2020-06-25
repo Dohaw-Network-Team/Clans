@@ -1,8 +1,6 @@
 package net.dohaw.play.divisions.events;
 
-import net.dohaw.play.divisions.Division;
 import net.dohaw.play.divisions.DivisionsPlugin;
-import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +23,7 @@ public class GeneralListener implements Listener {
         Player p = e.getPlayer();
         if(playerDataManager.getByPlayerObj(p) == null){
             playerDataManager.addPlayerData(p.getUniqueId());
+            playerDataManager.setPlayerDivision(playerDataManager.getPlayerByUUID(p.getUniqueId()));
         }
     }
 

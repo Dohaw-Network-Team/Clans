@@ -1,9 +1,7 @@
 package net.dohaw.play.divisions.files;
 
 import me.c10coding.coreapi.helpers.EnumHelper;
-import net.dohaw.play.divisions.Division;
 import net.dohaw.play.divisions.DivisionsPlugin;
-import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
@@ -97,11 +95,13 @@ public class PlayerDataHandler {
         if(playerData.getDivision() != null){
             String divisionName = playerData.getDivision();
             config.set("Division", divisionName);
-
             if(playerData.getRank() != null){
                 String divisionRank = enumHelper.enumToName(playerData.getRank());
                 config.set("DivisionRank", divisionRank);
             }
+        }else{
+            config.set("Division", "none");
+            config.set("DivisionRank", "none");
         }
 
         config.set("Stats.Hearts Destroyed", heartsDestroyed);
@@ -134,7 +134,7 @@ public class PlayerDataHandler {
         /*
         if(!playerDataConfig.getString("Division").equalsIgnoreCase("none")){
             Division division = null;
-            data.setPlayerDivision(division);
+            data.setPlayerDivision(division.getName());
         }*/
 
         data = loadPlayerPermissions(playerDataConfig, data);

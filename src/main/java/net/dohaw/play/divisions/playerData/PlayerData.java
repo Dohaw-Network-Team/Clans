@@ -1,12 +1,11 @@
 package net.dohaw.play.divisions.playerData;
 
-import net.dohaw.play.divisions.Division;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.rank.Permission;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.UUID;
 
 public class PlayerData {
@@ -16,8 +15,8 @@ public class PlayerData {
     final private UUID PLAYER_UUID;
     final private FileConfiguration PLAYER_CONFIG;
     private String playerDivision = null;
-    private Rank rank = null;
-    private HashMap<Permission, Object> playerPermissions;
+    private Rank rank;
+    private EnumMap<Permission, Object> playerPermissions = new EnumMap<>(Permission.class);
     private int kills, casualties, shrinesConquered;
     private double heartsDestroyed;
 
@@ -33,7 +32,7 @@ public class PlayerData {
         return PLAYER_NAME;
     }
 
-    public HashMap<Permission, Object> getPermissions(){
+    public EnumMap<Permission, Object> getPermissions(){
         return playerPermissions;
     }
 
@@ -108,4 +107,5 @@ public class PlayerData {
     public void setHeartsDestroyed(double heartsDestroyed) {
         this.heartsDestroyed = heartsDestroyed;
     }
+
 }
