@@ -18,7 +18,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +31,7 @@ public class MembersMenu extends Menu implements Listener {
         super(plugin, "Member Permissions", 45);
         this.player = player;
         this.chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -55,6 +54,7 @@ public class MembersMenu extends Menu implements Listener {
             index++;
         }
 
+        setVariant((byte)15);
         fillMenu(true);
 
     }
@@ -63,15 +63,25 @@ public class MembersMenu extends Menu implements Listener {
     @Override
     protected void onInventoryClick(InventoryClickEvent e) {
 
+        Player player = (Player) e.getWhoClicked();
+        ItemStack clickedItem = e.getCurrentItem();
+
         e.setCancelled(true);
-        final ItemStack clickedItem = e.getCurrentItem();
-        if(clickedItem == null || clickedItem.getType().equals(Material.AIR) || clickedItem.getType().equals(fillerMat)) return;
-        if(!(e.getWhoClicked() instanceof Player)) return;
+        if(e.getClickedInventory() == null) return;
+        if(!e.getClickedInventory().equals(inv)) return;
+        if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
         if(clickedItem.getType().equals(Material.SKULL_ITEM)){
             PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
             SkullMeta meta = (SkullMeta) clickedItem.getItemMeta();
-            UUID memberUUID = Bukkit.getPlayer(chatFactory.removeChatColor(meta.getDisplayName())).getUniqueId();
+            UUID memberUUID;
+            // Short-term fix
+            try{
+                memberUUID = Bukkit.getPlayer(chatFactory.removeChatColor(meta.getDisplayName())).getUniqueId();
+            }catch(NullPointerException npe){
+                return;
+            }
+
             PlayerData playerData = playerDataManager.getPlayerByUUID(memberUUID);
             if(playerData != null){
                 MemberPermissionsMenu memberPermissionsMenu = new MemberPermissionsMenu(plugin, playerData);
@@ -79,8 +89,12 @@ public class MembersMenu extends Menu implements Listener {
                 player.closeInventory();
                 memberPermissionsMenu.openInventory(player);
             }
+        }else if(clickedItem.getType().equals(Material.REDSTONE_TORCH_ON)){
+            PermissionsMenu permissionsMenu = new PermissionsMenu(plugin);
+            permissionsMenu.initializeItems(player);
+            player.closeInventory();
+            permissionsMenu.openInventory(player);
         }
-
     }
 
     private ItemStack getHead(PlayerData data) {

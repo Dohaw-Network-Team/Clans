@@ -24,11 +24,12 @@ public class MemberPermissionsMenu extends Menu implements Listener {
 
     public MemberPermissionsMenu(JavaPlugin plugin, PlayerData playerData) {
         super(plugin, playerData.getPlayerName() + " Permissions", 45);
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void initializeItems(Player p) {
+
         EnumHelper enumHelper = ((DivisionsPlugin)plugin).getCoreAPI().getEnumHelper();
         PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
         EnumMap<Permission, Object> playerPermissions = playerDataManager.getPlayerByUUID(p.getUniqueId()).getPermissions();
@@ -65,6 +66,8 @@ public class MemberPermissionsMenu extends Menu implements Listener {
             inv.setItem(index, createGuiItem(Material.STAINED_GLASS_PANE, permissionName, lore));
             index++;
         }
+
+        setVariant((byte)15);
         fillMenu(true);
     }
 
@@ -72,12 +75,14 @@ public class MemberPermissionsMenu extends Menu implements Listener {
     @Override
     protected void onInventoryClick(InventoryClickEvent e) {
 
-        e.setCancelled(true);
-        final ItemStack clickedItem = e.getCurrentItem();
-        if(clickedItem == null || clickedItem.getType().equals(Material.AIR) || clickedItem.getType().equals(fillerMat)) return;
-        if(!(e.getWhoClicked() instanceof Player)) return;
-
         Player player = (Player) e.getWhoClicked();
+        ItemStack clickedItem = e.getCurrentItem();
+
+        e.setCancelled(true);
+        if(e.getClickedInventory() == null) return;
+        if(!e.getClickedInventory().equals(inv)) return;
+        if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
+
         if(clickedItem.getType().equals(Material.REDSTONE_TORCH_ON)){
             MembersMenu membersMenu = new MembersMenu(plugin, player);
             membersMenu.initializeItems(player);
@@ -89,6 +94,6 @@ public class MemberPermissionsMenu extends Menu implements Listener {
                 Bukkit.broadcastMessage("yuh");
             }
         }
-
     }
+
 }

@@ -5,6 +5,7 @@ import me.c10coding.coreapi.helpers.EnumHelper;
 import me.c10coding.coreapi.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.rank.Rank;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,11 +20,12 @@ public class RanksMenu extends Menu implements Listener {
 
     public RanksMenu(JavaPlugin plugin) {
         super(plugin, "Rank Permissions", 9);
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void initializeItems(Player p) {
+
         EnumHelper enumHelper = ((DivisionsPlugin)plugin).getCoreAPI().getEnumHelper();
         ChatFactory chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
         int index = 0;
@@ -32,18 +34,23 @@ public class RanksMenu extends Menu implements Listener {
             inv.setItem(index, createGuiItem(Material.BOOKSHELF, displayName, new ArrayList<>()));
             index++;
         }
+
+        setVariant((byte)15);
         fillMenu(true);
     }
 
     @EventHandler
     @Override
     protected void onInventoryClick(InventoryClickEvent e) {
-        e.setCancelled(true);
-        final ItemStack clickedItem = e.getCurrentItem();
-        if(clickedItem == null || clickedItem.getType().equals(Material.AIR) || clickedItem.getType().equals(fillerMat)) return;
-        if(!(e.getWhoClicked() instanceof Player)) return;
 
         Player player = (Player) e.getWhoClicked();
+        ItemStack clickedItem = e.getCurrentItem();
+
+        e.setCancelled(true);
+        if(e.getClickedInventory() == null) return;
+        if(!e.getClickedInventory().equals(inv)) return;
+        if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
+
         if(clickedItem.getType().equals(Material.REDSTONE_TORCH_ON)){
             PermissionsMenu permissionsMenu = new PermissionsMenu(plugin);
             permissionsMenu.initializeItems(player);
@@ -58,4 +65,6 @@ public class RanksMenu extends Menu implements Listener {
         }
 
     }
+
+
 }

@@ -30,7 +30,7 @@ public class RankPermissionsMenu extends Menu implements Listener {
     public RankPermissionsMenu(JavaPlugin plugin, final String rankName) {
         super(plugin, rankName + " Permissions", 45);
         this.rankName = rankName;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -41,10 +41,20 @@ public class RankPermissionsMenu extends Menu implements Listener {
         DivisionsManager divisionsManager = ((DivisionsPlugin)plugin).getDivisionsManager();
         PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
         Division division = divisionsManager.getDivision(playerDataManager.getPlayerByUUID(p.getUniqueId()).getDivision());
-        EnumMap<Permission, Object> rankPermissions = division.getRankPermissions().get(enumHelper.nameToEnum(Rank.class, rankName));
+        EnumMap<Permission, Object> rankPermissions;
+
+        /*
+            Short-term fix for the IllegalArgumentException that was given whenever going from Permissions Menu to here.
+         */
+        try{
+            rankPermissions = division.getRankPermissions().get(enumHelper.nameToEnum(Rank.class, rankName));
+        }catch(IllegalArgumentException e){
+            return;
+        }
 
         int index = 0;
         for(Map.Entry<Permission, Object> permission : rankPermissions.entrySet()){
+
             String permissionName = chatFactory.firstUpperRestLower(enumHelper.enumToName(permission.getKey()));
             String permissionsDescription = permission.getKey().getDescription();
             List<String> lore = new ArrayList<>();
@@ -75,14 +85,24 @@ public class RankPermissionsMenu extends Menu implements Listener {
             inv.setItem(index, createGuiItem(Material.STAINED_GLASS_PANE, chatFactory.colorString(permissionName), chatFactory.colorLore(lore)));
             index++;
         }
+        setVariant((byte)15);
+        setFillerMaterial(Material.STAINED_GLASS_PANE);
+        fillMenu(true);
     }
 
     @EventHandler
     @Override
     protected void onInventoryClick(InventoryClickEvent e) {
+
+        Player player = (Player) e.getWhoClicked();
+        ItemStack clickedItem = e.getCurrentItem();
+
         e.setCancelled(true);
-        final ItemStack clickedItem = e.getCurrentItem();
-        if(clickedItem == null || clickedItem.getType().equals(Material.AIR) || clickedItem.getType().equals(fillerMat)) return;
-        if(!(e.getWhoClicked() instanceof Player)) return;
+        if(e.getClickedInventory() == null) return;
+        if(!e.getClickedInventory().equals(inv)) return;
+        if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
+
     }
+
+
 }

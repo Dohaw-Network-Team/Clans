@@ -7,11 +7,13 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -26,18 +28,25 @@ public class PermissionsMenu extends Menu implements Listener {
         super(plugin, "Permissions", 45);
         this.enumHelper = ((DivisionsPlugin)plugin).getCoreAPI().getEnumHelper();
         this.chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        Bukkit.broadcastMessage("Testing");
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void initializeItems(Player p) {
+
         List<String> lore = new ArrayList<>();
         for(Rank rank : Rank.values()){
             lore.add(chatFactory.colorString("&f- &e" + enumHelper.enumToName(rank)));
         }
+
+        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+        skullMeta.setOwner(p.getName());
+        skullMeta.setDisplayName(chatFactory.colorString("&cPlayers"));
+        head.setItemMeta(skullMeta);
+
         inv.setItem(20, createGuiItem(Material.BOOKSHELF, chatFactory.colorString("&cRanks"), lore));
-        inv.setItem(24, createGuiItem(Material.SKULL_ITEM, chatFactory.colorString("&cPlayers"), new ArrayList<>()));
+        inv.setItem(24, head);
         setVariant((byte)15);
         fillMenu(false);
     }
@@ -46,13 +55,14 @@ public class PermissionsMenu extends Menu implements Listener {
     @Override
     protected void onInventoryClick(InventoryClickEvent e) {
 
-        e.setCancelled(true);
-        final ItemStack clickedItem = e.getCurrentItem();
-        int slotClicked = e.getSlot();
-        if(clickedItem == null || clickedItem.getType().equals(Material.AIR) || clickedItem.getType().equals(fillerMat)) return;
-        if(!(e.getWhoClicked() instanceof Player)) return;
-
         Player player = (Player) e.getWhoClicked();
+        int slotClicked = e.getSlot();
+        ItemStack clickedItem = e.getCurrentItem();
+
+        e.setCancelled(true);
+        if(e.getClickedInventory() == null) return;
+        if(!e.getClickedInventory().equals(inv)) return;
+        if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
         switch(slotClicked){
             case 20:
@@ -71,6 +81,6 @@ public class PermissionsMenu extends Menu implements Listener {
                 return;
         }
 
-
     }
+
 }
