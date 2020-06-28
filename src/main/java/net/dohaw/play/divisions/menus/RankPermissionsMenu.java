@@ -7,15 +7,21 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
+import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.prompts.NumericPermissionPrompt;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -26,20 +32,24 @@ import java.util.Map;
 public class RankPermissionsMenu extends Menu implements Listener {
 
     final private String rankName;
+    private DivisionsManager divisionsManager;
+    private PlayerDataManager playerDataManager;
+    private EnumHelper enumHelper;
+    private ChatFactory chatFactory;
 
     public RankPermissionsMenu(JavaPlugin plugin, final String rankName) {
         super(plugin, rankName + " Permissions", 45);
         this.rankName = rankName;
+        this.divisionsManager = ((DivisionsPlugin)plugin).getDivisionsManager();
+        this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
+        this.enumHelper = ((DivisionsPlugin)plugin).getCoreAPI().getEnumHelper();
+        this.chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void initializeItems(Player p) {
 
-        EnumHelper enumHelper = ((DivisionsPlugin)plugin).getCoreAPI().getEnumHelper();
-        ChatFactory chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
-        DivisionsManager divisionsManager = ((DivisionsPlugin)plugin).getDivisionsManager();
-        PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
         Division division = divisionsManager.getDivision(playerDataManager.getPlayerByUUID(p.getUniqueId()).getDivision());
         EnumMap<Permission, Object> rankPermissions;
 
@@ -101,8 +111,54 @@ public class RankPermissionsMenu extends Menu implements Listener {
         if(e.getClickedInventory() == null) return;
         if(!e.getClickedInventory().equals(inv)) return;
         if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
+        int slotNum = e.getSlot();
+
+        if(clickedItem.getType().equals(Material.STAINED_GLASS_PANE)){
+            byte data = clickedItem.getData().getData();
+            if(data == (byte)5 || data == (byte)14 || data == (byte)9){
+
+                ItemMeta clickedItemMeta = clickedItem.getItemMeta();
+                List<String> lore = clickedItemMeta.getLore();
+                Division division = divisionsManager.getDivision(playerDataManager.getPlayerByUUID(player.getUniqueId()).getDivision());
+                Rank rank = (Rank) enumHelper.nameToEnum(Rank.class, rankName);
+                String displayName = chatFactory.removeChatColor(clickedItem.getItemMeta().getDisplayName());
+                displayName = displayName.replace(" ", "_");
+                displayName = displayName.toUpperCase();
+                Permission permission = Permission.valueOf(displayName);
+
+                if(data == (byte)5){
+                    clickedItem.setDurability((short)14);
+                    lore.set(0, chatFactory.colorString("&cFalse"));
+                    setPermission(division, rank, permission, false);
+                }else if(data == (byte)14){
+                    clickedItem.setDurability((byte)5);
+                    lore.set(0, chatFactory.colorString("&aTrue"));
+                    setPermission(division, rank, permission, true);
+                }else{
+                    player.closeInventory();
+                    ConversationFactory cf = new ConversationFactory(plugin);
+                    Conversation conv = cf.withFirstPrompt(new NumericPermissionPrompt((DivisionsPlugin) plugin, permission, division, rank)).withLocalEcho(false).buildConversation(player);
+                    conv.begin();
+                    return;
+                }
+
+                clickedItemMeta.setLore(lore);
+                clickedItem.setItemMeta(clickedItemMeta);
+                inv.setItem(slotNum, clickedItem);
+
+            }
+        }else if(clickedItem.getType().equals(Material.REDSTONE_TORCH_ON)){
+            RanksMenu ranksMenu = new RanksMenu(plugin);
+            ranksMenu.initializeItems(player);
+            player.closeInventory();
+            ranksMenu.openInventory(player);
+        }
 
     }
 
+    private void setPermission(Division division, Rank rank, Permission perm, Object obj){
+        division.setRankPermission(rank, perm, obj);
+        divisionsManager.setDivision(division.getName(), division);
+    }
 
 }

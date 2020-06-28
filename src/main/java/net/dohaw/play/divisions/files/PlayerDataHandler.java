@@ -13,9 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerDataHandler {
 
@@ -33,13 +31,14 @@ public class PlayerDataHandler {
     }
 
     public PlayerData loadPlayerPermissions(FileConfiguration playerConfig, PlayerData data){
-        if(hasPermissionData(data.getPlayerUUID())){
-            for(Permission perm : Permission.values()){
-                String key = enumHelper.enumToName(perm);
-                if(playerConfig.get("Permissions." + key) != null){
-                    Object value = playerConfig.get("Permissions." + key);
-                    data.setPermission(perm, value);
-                }
+
+        for(Permission perm : Permission.values()){
+            String key = enumHelper.enumToName(perm);
+            if(playerConfig.get("Permissions." + key) != null){
+                Object value = playerConfig.get("Permissions." + key);
+                data.putPermission(perm, value);
+            }else{
+                data.putPermission(perm, " ");
             }
         }
         return data;
@@ -108,6 +107,13 @@ public class PlayerDataHandler {
         config.set("Stats.Kills", kills);
         config.set("Stats.Casualties", casualties);
         config.set("Stats.Shrines Conquered", shrinesConquered);
+
+        EnumMap<Permission, Object> playerPermission = playerData.getPermissions();
+        for(Map.Entry<Permission, Object> permEntry : playerPermission.entrySet()){
+            String key = enumHelper.enumToName(permEntry.getKey());
+            Object value = permEntry.getValue();
+            config.set("Permissions." + key, value);
+        }
 
         try {
             config.save(playerFile);

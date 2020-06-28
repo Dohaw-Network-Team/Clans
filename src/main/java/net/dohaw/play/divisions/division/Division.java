@@ -138,6 +138,10 @@ public class Division {
         this.rankPermissions = rankPermissions;
     }
 
+    public void setRankPermission(Rank rank, Permission perm, Object value){
+        rankPermissions.get(rank).replace(perm, value);
+    }
+
     public DivisionStatus getStatus() {
         return status;
     }

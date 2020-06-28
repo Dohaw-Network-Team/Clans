@@ -40,8 +40,12 @@ public class PlayerData {
         return PLAYER_UUID;
     }
 
-    public void setPermission(Permission perm, Object value){
+    public void replacePermission(Permission perm, Object value){
         playerPermissions.replace(perm, value);
+    }
+
+    public void putPermission(Permission perm, Object value){
+        playerPermissions.put(perm, value);
     }
 
     public boolean hasPermission(Permission perm){

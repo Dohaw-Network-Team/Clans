@@ -151,8 +151,13 @@ public final class DivisionsPlugin extends JavaPlugin {
     }
 
     public void saveManagerData(){
-        divisionsManager.saveContents();
-        playerDataManager.saveContents();
+        if(divisionsManager != null){
+            divisionsManager.saveContents();
+        }
+
+        if(playerDataManager != null){
+            playerDataManager.saveContents();
+        }
     }
 
     public void loadDefaultRankPermissions(){
