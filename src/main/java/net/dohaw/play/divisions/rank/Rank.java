@@ -19,7 +19,7 @@ public enum Rank {
      */
 
     public static int isAHigherRank(Rank rank1, Rank rank2){
-        List<Rank> ranks = Arrays.asList(values());
+        List<Rank> ranks = list();
         if(ranks.indexOf(rank1) > ranks.indexOf(rank2)){
             return 1;
         }else if(ranks.indexOf(rank1) < ranks.indexOf(rank2)){
@@ -28,6 +28,27 @@ public enum Rank {
             return 0;
         }
         return 0;
+    }
+
+    public static Rank getNextRank(Rank currentRank){
+        List<Rank> ranks = list();
+        int indexCurrentRank = ranks.indexOf(currentRank);
+        return ranks.get(indexCurrentRank + 1);
+    }
+
+    public static Rank getPreviousRank(Rank currentRank){
+        List<Rank> ranks = list();
+        int indexCurrentRank = ranks.indexOf(currentRank);
+        return ranks.get(indexCurrentRank - 1);
+    }
+
+    public static boolean isLastRank(Rank rank){
+        List<Rank> ranks = list();
+        return ranks.get(ranks.size() - 1) == rank;
+    }
+
+    public static List<Rank> list(){
+        return Arrays.asList(values());
     }
 
 }

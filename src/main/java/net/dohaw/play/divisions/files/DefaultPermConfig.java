@@ -3,9 +3,8 @@ package net.dohaw.play.divisions.files;
 import me.c10coding.coreapi.files.ConfigManager;
 import me.c10coding.coreapi.helpers.EnumHelper;
 import net.dohaw.play.divisions.DivisionsPlugin;
-import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.rank.Permission;
-import org.bukkit.Bukkit;
+import net.dohaw.play.divisions.rank.Rank;
 
 import java.util.EnumMap;
 

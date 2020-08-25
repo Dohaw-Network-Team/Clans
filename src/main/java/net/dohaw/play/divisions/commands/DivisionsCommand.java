@@ -10,6 +10,7 @@ import net.dohaw.play.divisions.menus.PermissionsMenu;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
+import net.dohaw.play.divisions.utils.PlayerHelper;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -130,7 +131,7 @@ public class DivisionsCommand implements CommandExecutor {
                         if(Bukkit.getPlayer(playerName) != null){
                             if(playerDataManager.can(player.getUniqueId(), Permission.CAN_INVITE_PLAYERS)){
                                 if(playerDataManager.getByPlayerObj(Bukkit.getPlayer(playerName)).getDivision() == null){
-                                    invitePlayer(Bukkit.getPlayer(playerName), player);
+                                    invitePlayer(player);
                                     chatFactory.sendPlayerMessage("You have invited " + playerName + " to your division!", true, player, prefix);
                                 }else{
                                     chatFactory.sendPlayerMessage("This player is already in a division!", true, player, prefix);
@@ -145,8 +146,8 @@ public class DivisionsCommand implements CommandExecutor {
                         chatFactory.sendPlayerMessage("You aren't in a division right now!", true, player, prefix);
                     }
                 }else if(args[0].equalsIgnoreCase("kick") && args.length == 2){
-                    String playerName = args[1];
 
+                    String playerName = args[1];
                     if(player.getName().equalsIgnoreCase(playerName)){
                         chatFactory.sendPlayerMessage("You can't kick yourself!", true, player, prefix);
                         return false;
@@ -204,32 +205,106 @@ public class DivisionsCommand implements CommandExecutor {
                         }
                     }
                 }else if(args[0].equalsIgnoreCase("edit")){
-                    if(args.length == 2){
-                        if(args[1].equalsIgnoreCase("status")) {
-                            if (playerDataManager.isInDivision(player)) {
-                                if (playerDataManager.can(player.getUniqueId(), Permission.CAN_ALTER_STATUS)) {
 
-                                    String divisionName = playerDataManager.getByPlayerObj(player).getDivision();
-                                    Division playerDivision = divisionsManager.getDivision(divisionName);
-                                    DivisionStatus currentStatus = playerDivision.getStatus();
+                    if(playerDataManager.isInDivision(player)){
+                        if(args.length == 2){
+                            if(args[1].equalsIgnoreCase("status")) {
+                                if (playerDataManager.isInDivision(player)) {
+                                    if (playerDataManager.can(player.getUniqueId(), Permission.CAN_ALTER_STATUS)) {
 
-                                    if (currentStatus.equals(DivisionStatus.PRIVATE)) {
-                                        playerDivision.setStatus(DivisionStatus.PUBLIC);
-                                    } else {
-                                        playerDivision.setStatus(DivisionStatus.PRIVATE);
+                                        String divisionName = playerDataManager.getByPlayerObj(player).getDivision();
+                                        Division playerDivision = divisionsManager.getDivision(divisionName);
+                                        DivisionStatus currentStatus = playerDivision.getStatus();
+
+                                        if (currentStatus.equals(DivisionStatus.PRIVATE)) {
+                                            playerDivision.setStatus(DivisionStatus.PUBLIC);
+                                        } else {
+                                            playerDivision.setStatus(DivisionStatus.PRIVATE);
+                                        }
+
+                                        divisionsManager.setDivision(divisionName, playerDivision);
+                                        chatFactory.sendPlayerMessage("You have altered the division status to &e" + playerDivision.getStatus().name() + "!", true, player, prefix);
+                                    }
+                                    //divisions edit rank perm
+                                }
+                            }else if(args[1].equalsIgnoreCase("perms")) {
+                                PermissionsMenu permissionsMenu = new PermissionsMenu(plugin);
+                                permissionsMenu.initializeItems(player);
+                                permissionsMenu.openInventory(player);
+                            }
+                        }
+                    }else{
+                        chatFactory.sendPlayerMessage("You are not in a divison!", true, player, prefix);
+                    }
+
+                }else if((args[0].equalsIgnoreCase("promote") || args[0].equalsIgnoreCase("demote")) && args.length == 2){
+
+                    String playerName = args[1];
+                    if(playerDataManager.isInDivision(player)){
+
+                        if(args[0].equalsIgnoreCase("promote")) {
+                            if (!playerDataManager.can(player.getUniqueId(), Permission.CAN_PROMOTE_MEMBERS)) {
+                                chatFactory.sendPlayerMessage("You do not have permission to promote members in your division!", true, player, prefix);
+                                return false;
+                            }
+                        }else{
+                            if(!playerDataManager.can(player.getUniqueId(), Permission.CAN_DEMOTE_MEMBERS)){
+                                chatFactory.sendPlayerMessage("You do not have permission to demote members in your division!", true, player, prefix);
+                                return false;
+                            }
+                        }
+
+                        if(player.getName().equalsIgnoreCase(playerName)){
+                            chatFactory.sendPlayerMessage("You can't kick yourself!", true, player, prefix);
+                            return false;
+                        }
+
+                        if(PlayerHelper.isValidOnlinePlayer(playerName)){
+                            Player playerAffected = Bukkit.getPlayer(playerName);
+                            if(playerDataManager.isInDivision(playerAffected)){
+                                if(playerDataManager.isInSameDivision(player, playerAffected)){
+
+                                    PlayerData playerAffectedData = playerDataManager.getByPlayerObj(playerAffected);
+                                    Rank playerAffectedRank = playerAffectedData.getRank();
+
+                                    if(playerAffectedRank != null){
+                                        Rank newRank;
+                                        String playerAffectedMsg;
+                                        String playerMsg;
+                                        if(args[0].equalsIgnoreCase("promote")){
+                                            newRank = Rank.getNextRank(playerAffectedRank);
+                                            playerAffectedMsg = "You have been promoted to the rank &e" + newRank.name() + "!";
+                                            playerMsg = "You have promoted &e" + playerAffected.getName() + " &fto the rank &e" + newRank.name() + "!";
+                                        }else{
+                                            newRank = Rank.getPreviousRank(playerAffectedRank);
+                                            playerAffectedMsg = "You have been demoted to the rank &e" + newRank.name() + "!";
+                                            playerMsg = "You have demoted &e" + playerAffected.getName() + " &fto the rank &e" + newRank.name() + "!";
+                                        }
+                                        playerAffectedData.setRank(newRank);
+                                        playerDataManager.setPlayerData(playerAffected.getUniqueId(), playerAffectedData);
+
+                                        chatFactory.sendPlayerMessage(playerAffectedMsg, true, playerAffected, prefix);
+                                        chatFactory.sendPlayerMessage(playerMsg, true, player, prefix);
+                                    }else{
+                                        /*
+                                            This person is owner
+                                        */
+                                        chatFactory.sendPlayerMessage("You can't do this to the leader of the division!", true, player, prefix);
                                     }
 
-                                    divisionsManager.setDivision(divisionName, playerDivision);
-                                    chatFactory.sendPlayerMessage("You have altered the division status to &e" + playerDivision.getStatus().name() + "!", true, player, prefix);
+                                }else{
+                                    chatFactory.sendPlayerMessage("This player is not in your division!", true, player, prefix);
                                 }
-                                //divisions edit rank perm
+                            }else{
+                                chatFactory.sendPlayerMessage("This player is not in a division!", true, player, prefix);
                             }
-                        }else if(args[1].equalsIgnoreCase("perms")) {
-                            PermissionsMenu permissionsMenu = new PermissionsMenu(plugin);
-                            permissionsMenu.initializeItems(player);
-                            permissionsMenu.openInventory(player);
+                        }else{
+                            chatFactory.sendPlayerMessage("This is not a valid online player!", true, player, prefix);
                         }
+                    }else{
+                        chatFactory.sendPlayerMessage("You are not in a divison!", true, player, prefix);
                     }
+
                 }
             }
         }
@@ -252,7 +327,7 @@ public class DivisionsCommand implements CommandExecutor {
         chatFactory.sendPlayerMessage("", false, playerToSendTo, prefix);
     }
 
-    private void invitePlayer(Player playerToInvite, Player inviter){
+    private void invitePlayer(Player inviter){
 
         String divisionName = playerDataManager.getByPlayerObj(inviter).getDivision();
         TextComponent msg = new TextComponent(chatFactory.colorString("You have been invited to the division &e" + divisionName + "&f by " + "&e" + inviter.getName() + ".&fIf you wish to accept this invite, press "));

@@ -154,4 +154,8 @@ public class PlayerDataManager implements Manager{
     public boolean isInDivision(Player player){
         return getByPlayerObj(player).getDivision() != null;
     }
+
+    public boolean isInSameDivision(Player p1, Player p2){
+        return getByPlayerObj(p1).getDivision().equalsIgnoreCase(getByPlayerObj(p2).getDivision());
+    }
 }
