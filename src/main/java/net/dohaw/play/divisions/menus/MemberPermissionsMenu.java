@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.menus;
 
+import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.chat.ChatFactory;
 import me.c10coding.coreapi.helpers.EnumHelper;
 import me.c10coding.coreapi.menus.Menu;
@@ -32,9 +33,9 @@ public class MemberPermissionsMenu extends Menu implements Listener {
     private PlayerData playerData;
 
     public MemberPermissionsMenu(JavaPlugin plugin, PlayerData playerData) {
-        super(plugin, playerData.getPlayerName() + " Permissions", 45);
-        this.chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
-        this.enumHelper = ((DivisionsPlugin)plugin).getCoreAPI().getEnumHelper();
+        super((APIHook) plugin, playerData.getPlayerName() + " Permissions", 45);
+        this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
+        this.enumHelper = ((DivisionsPlugin)plugin).getAPI().getEnumHelper();
         this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
         this.playerData = playerData;
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -87,6 +88,8 @@ public class MemberPermissionsMenu extends Menu implements Listener {
         }
 
         setVariant((byte)15);
+        setFillerMaterial(Material.STAINED_GLASS_PANE);
+        setBackMaterial(Material.LEVER);
         fillMenu(true);
     }
 
@@ -103,7 +106,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
         if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
         int slotNum = e.getSlot();
-        if(clickedItem.getType().equals(Material.REDSTONE_TORCH_ON)){
+        if(clickedItem.getType().equals(backMat)){
             MembersMenu membersMenu = new MembersMenu(plugin, player);
             membersMenu.initializeItems(player);
             player.closeInventory();

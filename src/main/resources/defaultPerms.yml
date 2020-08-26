@@ -1,6 +1,7 @@
 Permissions:
 
   FRESH MEAT:
+    CAN EDIT PERMS: false
     CAN TAKE FROM BANK: false
     CAN KICK PLAYERS: false
     CAN RECRUIT MEMBERS: false
@@ -25,6 +26,7 @@ Permissions:
     GOLD TAKE AMOUNT: 0
 
   PROVEN MEMBER:
+    CAN EDIT PERMS: false
     CAN TAKE FROM BANK: true
     CAN KICK PLAYERS: false
     CAN RECRUIT MEMBERS: false
@@ -49,6 +51,7 @@ Permissions:
     GOLD TAKE AMOUNT: 350
 
   LOYAL:
+    CAN EDIT PERMS: false
     CAN TAKE FROM BANK: true
     CAN KICK PLAYERS: false
     CAN RECRUIT MEMBERS: false
@@ -73,6 +76,7 @@ Permissions:
     GOLD TAKE AMOUNT: 800
 
   ELDER:
+    CAN EDIT PERMS: false
     CAN TAKE FROM BANK: true
     CAN KICK PLAYERS: true
     CAN RECRUIT MEMBERS: true
@@ -97,6 +101,7 @@ Permissions:
     GOLD TAKE AMOUNT: 1500
 
   OVERLORD:
+    CAN EDIT PERMS: true
     CAN TAKE FROM BANK: true
     CAN KICK PLAYERS: true
     CAN RECRUIT MEMBERS: true

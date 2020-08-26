@@ -26,7 +26,7 @@ public class PlayerDataHandler {
      */
     public PlayerDataHandler(DivisionsPlugin plugin){
         this.plugin = plugin;
-        this.enumHelper = plugin.getCoreAPI().getEnumHelper();
+        this.enumHelper = plugin.getAPI().getEnumHelper();
         this.e = DivisionsPlugin.getEconomy();
     }
 
@@ -38,6 +38,9 @@ public class PlayerDataHandler {
                 Object value = playerConfig.get("Permissions." + key);
                 data.putPermission(perm, value);
             }else{
+                /*
+                    If the permissions was just recently added via hardcode in the Permissions enum, it will make an empty value for it. When the permissions is saved, it will add the permission to the list of permissions in the .yml file.
+                 */
                 data.putPermission(perm, " ");
             }
         }

@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.menus;
 
+import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.chat.ChatFactory;
 import me.c10coding.coreapi.helpers.EnumHelper;
 import me.c10coding.coreapi.menus.Menu;
@@ -19,15 +20,15 @@ import java.util.ArrayList;
 public class RanksMenu extends Menu implements Listener {
 
     public RanksMenu(JavaPlugin plugin) {
-        super(plugin, "Rank Permissions", 9);
+        super((APIHook) plugin, "Rank Permissions", 9);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void initializeItems(Player p) {
 
-        EnumHelper enumHelper = ((DivisionsPlugin)plugin).getCoreAPI().getEnumHelper();
-        ChatFactory chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
+        EnumHelper enumHelper = plugin.getAPI().getEnumHelper();
+        ChatFactory chatFactory = plugin.getAPI().getChatFactory();
         int index = 0;
         for(Rank rank : Rank.values()){
             String displayName = chatFactory.colorString("&e" + enumHelper.enumToName(rank));
@@ -36,6 +37,8 @@ public class RanksMenu extends Menu implements Listener {
         }
 
         setVariant((byte)15);
+        setFillerMaterial(Material.STAINED_GLASS_PANE);
+        setBackMaterial(Material.LEVER);
         fillMenu(true);
     }
 
@@ -51,13 +54,13 @@ public class RanksMenu extends Menu implements Listener {
         if(!e.getClickedInventory().equals(inv)) return;
         if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
-        if(clickedItem.getType().equals(Material.REDSTONE_TORCH_ON)){
+        if(clickedItem.getType().equals(backMat)){
             PermissionsMenu permissionsMenu = new PermissionsMenu(plugin);
             permissionsMenu.initializeItems(player);
             player.closeInventory();
             permissionsMenu.openInventory(player);
         }else if(clickedItem.getType().equals(Material.BOOKSHELF)){
-            ChatFactory chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
+            ChatFactory chatFactory = plugin.getAPI().getChatFactory();
             RankPermissionsMenu rankPermissionsMenu = new RankPermissionsMenu(plugin, chatFactory.removeChatColor(clickedItem.getItemMeta().getDisplayName()));
             rankPermissionsMenu.initializeItems(player);
             player.closeInventory();

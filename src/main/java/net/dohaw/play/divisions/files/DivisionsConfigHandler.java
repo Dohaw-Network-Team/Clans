@@ -21,17 +21,19 @@ public class DivisionsConfigHandler{
     private DivisionsListConfig dlc;
     private DivisionsPlugin plugin;
     private EnumHelper enumHelper;
-    private PlayerDataManager playerDataManager;
     private PlayerDataHandler playerDataHandler;
+    private DefaultPermConfig defaultPermConfig;
     private Economy e;
+    private PlayerDataManager playerDataManager;
 
     public DivisionsConfigHandler(DivisionsPlugin plugin) {
         this.dlc = new DivisionsListConfig(plugin);
         this.plugin = plugin;
-        this.enumHelper = plugin.getCoreAPI().getEnumHelper();
+        this.enumHelper = plugin.getAPI().getEnumHelper();
+        this.defaultPermConfig = plugin.getDefaultPermConfig();
         this.e = DivisionsPlugin.getEconomy();
-        this.playerDataManager = plugin.getPlayerDataManager();
         this.playerDataHandler = new PlayerDataHandler(plugin);
+        this.playerDataManager = plugin.getPlayerDataManager();
     }
 
     public HashMap<String, Division> loadDivisions(){
@@ -105,6 +107,13 @@ public class DivisionsConfigHandler{
                 String permString = enumHelper.enumToName(permission);
                 if(divisionConfig.get("Rank Permissions." + rankString + "." + permString) != null){
                     permissionMap.put(permission, divisionConfig.get("Rank Permissions." + rankString + "." + permString));
+                }else{
+                    /*
+                        It equals null if someone has added a new Permission ENUM and it's not in the config yet. This allows newer permissions to be saved in the config later down the road.
+                     */
+                    EnumMap<Permission, Object> rankDefaultPerms = defaultPermConfig.getDefaultRankPermissions(rank);
+                    Object defaultPermValue = rankDefaultPerms.get(permission);
+                    permissionMap.put(permission, defaultPermValue);
                 }
             }
             rankPermissions.put(rank, permissionMap);

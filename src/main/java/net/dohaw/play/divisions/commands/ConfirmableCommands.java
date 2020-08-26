@@ -25,7 +25,7 @@ public class ConfirmableCommands implements CommandExecutor {
      */
     public ConfirmableCommands(DivisionsPlugin plugin){
         this.plugin = plugin;
-        this.chatFactory = plugin.getCoreAPI().getChatFactory();
+        this.chatFactory = plugin.getAPI().getChatFactory();
         this.divisionsManager = plugin.getDivisionsManager();
         this.prefix = plugin.getPluginPrefix();
     }

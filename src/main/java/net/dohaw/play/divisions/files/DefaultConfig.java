@@ -1,9 +1,9 @@
 package net.dohaw.play.divisions.files;
 
-import me.c10coding.coreapi.files.ConfigManager;
+import me.c10coding.coreapi.files.Config;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class DefaultConfig extends ConfigManager {
+public class DefaultConfig extends Config {
 
     public DefaultConfig(JavaPlugin plugin) {
         super(plugin, "config.yml");

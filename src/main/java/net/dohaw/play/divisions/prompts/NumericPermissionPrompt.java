@@ -31,10 +31,10 @@ public class NumericPermissionPrompt extends NumericPrompt {
      */
     public NumericPermissionPrompt(DivisionsPlugin plugin, Permission permission, Division division, Rank rank){
         this.plugin = plugin;
-        this.chatFactory = plugin.getCoreAPI().getChatFactory();
+        this.chatFactory = plugin.getAPI().getChatFactory();
         this.permission = permission;
         this.divisionsManager = plugin.getDivisionsManager();
-        this.enumHelper = plugin.getCoreAPI().getEnumHelper();
+        this.enumHelper = plugin.getAPI().getEnumHelper();
         this.division = division;
         this.rank = rank;
     }
@@ -47,8 +47,8 @@ public class NumericPermissionPrompt extends NumericPrompt {
         this.playerDataManager = plugin.getPlayerDataManager();
         this.permission = permission;
         this.playerData = playerData;
-        this.chatFactory = plugin.getCoreAPI().getChatFactory();
-        this.enumHelper = plugin.getCoreAPI().getEnumHelper();
+        this.chatFactory = plugin.getAPI().getChatFactory();
+        this.enumHelper = plugin.getAPI().getEnumHelper();
     }
 
     /**

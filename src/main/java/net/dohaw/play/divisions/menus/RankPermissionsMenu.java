@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.menus;
 
+import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.chat.ChatFactory;
 import me.c10coding.coreapi.helpers.EnumHelper;
 import me.c10coding.coreapi.menus.Menu;
@@ -7,12 +8,10 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.prompts.NumericPermissionPrompt;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
@@ -38,12 +37,12 @@ public class RankPermissionsMenu extends Menu implements Listener {
     private ChatFactory chatFactory;
 
     public RankPermissionsMenu(JavaPlugin plugin, final String rankName) {
-        super(plugin, rankName + " Permissions", 45);
+        super((APIHook) plugin, rankName + " Permissions", 45);
         this.rankName = rankName;
         this.divisionsManager = ((DivisionsPlugin)plugin).getDivisionsManager();
         this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
-        this.enumHelper = ((DivisionsPlugin)plugin).getCoreAPI().getEnumHelper();
-        this.chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
+        this.enumHelper = ((DivisionsPlugin)plugin).getAPI().getEnumHelper();
+        this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -97,6 +96,7 @@ public class RankPermissionsMenu extends Menu implements Listener {
         }
         setVariant((byte)15);
         setFillerMaterial(Material.STAINED_GLASS_PANE);
+        setBackMaterial(Material.LEVER);
         fillMenu(true);
     }
 
@@ -147,7 +147,7 @@ public class RankPermissionsMenu extends Menu implements Listener {
                 inv.setItem(slotNum, clickedItem);
 
             }
-        }else if(clickedItem.getType().equals(Material.REDSTONE_TORCH_ON)){
+        }else if(clickedItem.getType().equals(backMat)){
             RanksMenu ranksMenu = new RanksMenu(plugin);
             ranksMenu.initializeItems(player);
             player.closeInventory();

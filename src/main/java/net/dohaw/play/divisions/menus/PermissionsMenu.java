@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.menus;
 
+import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.chat.ChatFactory;
 import me.c10coding.coreapi.helpers.EnumHelper;
 import me.c10coding.coreapi.menus.Menu;
@@ -25,9 +26,9 @@ public class PermissionsMenu extends Menu implements Listener {
     private ChatFactory chatFactory;
 
     public PermissionsMenu(JavaPlugin plugin) {
-        super(plugin, "Permissions", 45);
-        this.enumHelper = ((DivisionsPlugin)plugin).getCoreAPI().getEnumHelper();
-        this.chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
+        super((APIHook) plugin, "Permissions", 45);
+        this.enumHelper = ((DivisionsPlugin)plugin).getAPI().getEnumHelper();
+        this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -48,6 +49,8 @@ public class PermissionsMenu extends Menu implements Listener {
         inv.setItem(20, createGuiItem(Material.BOOKSHELF, chatFactory.colorString("&cRanks"), lore));
         inv.setItem(24, head);
         setVariant((byte)15);
+
+        setFillerMaterial(Material.STAINED_GLASS_PANE);
         fillMenu(false);
     }
 

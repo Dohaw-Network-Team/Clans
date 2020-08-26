@@ -2,6 +2,7 @@ package net.dohaw.play.divisions.rank;
 
 public enum Permission {
 
+    CAN_EDIT_PERMS("The ability to edit permissions"),
     CAN_TAKE_FROM_BANK("The ability to take items from the bank"),
     CAN_KICK_PLAYERS("The ability to kick players from a division"),
     CAN_RECRUIT_MEMBERS("The ability to recruit members into a division"),

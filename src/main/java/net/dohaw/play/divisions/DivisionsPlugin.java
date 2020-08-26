@@ -1,16 +1,17 @@
 package net.dohaw.play.divisions;
 
+import me.c10coding.coreapi.BetterJavaPlugin;
 import me.c10coding.coreapi.CoreAPI;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
 import net.dohaw.play.divisions.events.GeneralListener;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
+import net.dohaw.play.divisions.files.MessagesConfig;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.runnables.InviteTimer;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
@@ -25,38 +26,22 @@ import java.util.UUID;
     Description: A better version of Factions
  */
 
-public final class DivisionsPlugin extends JavaPlugin {
+public final class DivisionsPlugin extends BetterJavaPlugin {
 
     private static Economy economy = null;
-    //Used to fetch any other custom plugins within the "core" plugins.
-    //private Core core;
-    //General API that benefits you no matter what plugin you're making.
-    private CoreAPI api;
     private String pluginPrefix;
 
     private DivisionsManager divisionsManager;
     private PlayerDataManager playerDataManager;
     private DefaultPermConfig defaultPermConfig;
+    private MessagesConfig messagesConfig;
 
     private HashMap<UUID, BukkitTask> invitedPlayers = new HashMap<>();
 
     @Override
     public void onEnable() {
 
-        if(getServer().getPluginManager().getPlugin("CoreAPI") == null){
-            getLogger().severe("Disabled due to no CoreAPI dependency found!");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-        //this.core = (Core) getServer().getPluginManager().getPlugin("Core");
-        this.api = (CoreAPI) getServer().getPluginManager().getPlugin("CoreAPI");
-
-        if(api == null){
-            getLogger().severe("Disabled due to no CoreAPI dependency found!");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-        getLogger().fine("API hooked!");
+        hookAPI(this);
 
         if (!setupEconomy()) {
             getLogger().severe("Disabled due to no Vault dependency found!");
@@ -68,10 +53,14 @@ public final class DivisionsPlugin extends JavaPlugin {
         this.pluginPrefix = getConfig().getString("PluginPrefix");
 
         validateConfigs();
+        this.messagesConfig = new MessagesConfig(this);
+
         loadDefaultRankPermissions();
         loadManagerData();
-        registerEvents();
-        registerCommands();
+
+        registerEvents(new GeneralListener(this));
+        registerCommand("divisions", new DivisionsCommand(this));
+        registerCommand("divisionsconfirm", new ConfirmableCommands(this));
 
     }
 
@@ -90,19 +79,6 @@ public final class DivisionsPlugin extends JavaPlugin {
         }
         economy = rsp.getProvider();
         return economy != null;
-    }
-
-    private void registerEvents(){
-        getServer().getPluginManager().registerEvents(new GeneralListener(this), this);
-    }
-
-    private void registerCommands(){
-        getServer().getPluginCommand("divisions").setExecutor(new DivisionsCommand(this));
-        getServer().getPluginCommand("divisionsconfirm").setExecutor(new ConfirmableCommands(this));
-    }
-
-    public CoreAPI getCoreAPI(){
-        return api;
     }
 
     public static Economy getEconomy() {
@@ -126,7 +102,7 @@ public final class DivisionsPlugin extends JavaPlugin {
             }
         }
 
-        File[] files = {new File(getDataFolder(), "config.yml"), new File(getDataFolder(), "divisionsList.yml"), new File(getDataFolder(), "defaultPerms.yml")};
+        File[] files = {new File(getDataFolder(), "config.yml"), new File(getDataFolder(), "divisionsList.yml"), new File(getDataFolder(), "defaultPerms.yml"), new File(getDataFolder(), "messages.yml")};
         for(File f : files){
             if(!f.exists()) {
                 saveResource(f.getName(), false);
@@ -175,6 +151,10 @@ public final class DivisionsPlugin extends JavaPlugin {
 
     public DefaultPermConfig getDefaultPermConfig(){
         return defaultPermConfig;
+    }
+
+    public MessagesConfig getMessagesConfig(){
+        return messagesConfig;
     }
 
     public HashMap<UUID, BukkitTask> getInvitedPlayers(){

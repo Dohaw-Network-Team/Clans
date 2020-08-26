@@ -10,11 +10,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class GeneralListener implements Listener {
 
-    private DivisionsPlugin plugin;
     private PlayerDataManager playerDataManager;
 
     public GeneralListener(DivisionsPlugin plugin){
-        this.plugin = plugin;
         this.playerDataManager = plugin.getPlayerDataManager();
     }
 

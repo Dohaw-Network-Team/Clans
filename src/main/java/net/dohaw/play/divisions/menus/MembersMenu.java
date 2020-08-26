@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.menus;
 
+import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.chat.ChatFactory;
 import me.c10coding.coreapi.helpers.ItemStackHelper;
 import me.c10coding.coreapi.menus.Menu;
@@ -28,9 +29,9 @@ public class MembersMenu extends Menu implements Listener {
     private ChatFactory chatFactory;
 
     public MembersMenu(JavaPlugin plugin, Player player) {
-        super(plugin, "Member Permissions", 45);
+        super((APIHook) plugin, "Member Permissions", 45);
         this.player = player;
-        this.chatFactory = ((DivisionsPlugin)plugin).getCoreAPI().getChatFactory();
+        this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -39,7 +40,7 @@ public class MembersMenu extends Menu implements Listener {
 
         DivisionsManager divisionsManager = ((DivisionsPlugin)plugin).getDivisionsManager();
         PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
-        ItemStackHelper itemStackHelper = ((DivisionsPlugin)plugin).getCoreAPI().getItemStackHelper();
+        ItemStackHelper itemStackHelper = ((DivisionsPlugin)plugin).getAPI().getItemStackHelper();
 
         Division division = divisionsManager.getDivision(playerDataManager.getByPlayerObj(player).getDivision());
 
@@ -55,6 +56,8 @@ public class MembersMenu extends Menu implements Listener {
         }
 
         setVariant((byte)15);
+        setFillerMaterial(Material.STAINED_GLASS_PANE);
+        setBackMaterial(Material.LEVER);
         fillMenu(true);
 
     }
@@ -89,7 +92,7 @@ public class MembersMenu extends Menu implements Listener {
                 player.closeInventory();
                 memberPermissionsMenu.openInventory(player);
             }
-        }else if(clickedItem.getType().equals(Material.REDSTONE_TORCH_ON)){
+        }else if(clickedItem.getType().equals(backMat)){
             PermissionsMenu permissionsMenu = new PermissionsMenu(plugin);
             permissionsMenu.initializeItems(player);
             player.closeInventory();
