@@ -43,8 +43,11 @@ public enum Rank {
     }
 
     public static boolean isLastRank(Rank rank){
-        List<Rank> ranks = list();
-        return ranks.get(ranks.size() - 1) == rank;
+        return list().get(list().size() - 1) == rank;
+    }
+
+    public static boolean isFirstRank(Rank rank){
+        return list().get(0) == rank;
     }
 
     public static List<Rank> list(){

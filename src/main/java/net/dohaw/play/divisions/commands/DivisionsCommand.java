@@ -297,21 +297,34 @@ public class DivisionsCommand implements CommandExecutor {
                                         String playerMsg;
                                         if(args[0].equalsIgnoreCase("promote")){
 
-                                            newRank = Rank.getNextRank(playerAffectedRank);
-                                            playerAffectedMsg = messagesConfig.getMessage(Message.PLAYER_AFFECTED_PROMOTION);
-                                            playerAffectedMsg = MessagesConfig.replacePlaceholder(playerAffectedMsg, Placeholder.RANK, newRank.name());
+                                            if(!Rank.isLastRank(playerAffectedRank)){
+                                                newRank = Rank.getNextRank(playerAffectedRank);
+                                                playerAffectedMsg = messagesConfig.getMessage(Message.PLAYER_AFFECTED_PROMOTION);
+                                                playerAffectedMsg = MessagesConfig.replacePlaceholder(playerAffectedMsg, Placeholder.RANK, newRank.name());
 
-                                            playerMsg = messagesConfig.getMessage(Message.PROMOTER);
-                                            playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.RANK, newRank.name());
-                                            playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.PLAYER_NAME, playerName);
+                                                playerMsg = messagesConfig.getMessage(Message.PROMOTER);
+                                                playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.RANK, newRank.name());
+                                                playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.PLAYER_NAME, playerName);
+                                            }else{
+                                                chatFactory.sendPlayerMessage("This player is already the highest rank they can be!", true, player, prefix);
+                                                return false;
+                                            }
+
                                         }else{
-                                            newRank = Rank.getPreviousRank(playerAffectedRank);
-                                            playerAffectedMsg = messagesConfig.getMessage(Message.PLAYER_AFFECTED_DEMOTION);
-                                            playerAffectedMsg = MessagesConfig.replacePlaceholder(playerAffectedMsg, Placeholder.RANK, newRank.name());
 
-                                            playerMsg = messagesConfig.getMessage(Message.DEMOTER);
-                                            playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.PLAYER_NAME, playerName);
-                                            playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.RANK, newRank.name());
+                                            if(!Rank.isFirstRank(playerAffectedRank)){
+                                                newRank = Rank.getPreviousRank(playerAffectedRank);
+                                                playerAffectedMsg = messagesConfig.getMessage(Message.PLAYER_AFFECTED_DEMOTION);
+                                                playerAffectedMsg = MessagesConfig.replacePlaceholder(playerAffectedMsg, Placeholder.RANK, newRank.name());
+
+                                                playerMsg = messagesConfig.getMessage(Message.DEMOTER);
+                                                playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.PLAYER_NAME, playerName);
+                                                playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.RANK, newRank.name());
+                                            }else{
+                                                chatFactory.sendPlayerMessage("This player is already the lowest rank they can be!", true, player, prefix);
+                                                return false;
+                                            }
+
                                         }
                                         playerAffectedData.setRank(newRank);
                                         playerDataManager.setPlayerData(playerAffected.getUniqueId(), playerAffectedData);
@@ -322,6 +335,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                                         chatFactory.sendPlayerMessage(playerAffectedMsg, true, playerAffected, prefix);
                                         chatFactory.sendPlayerMessage(playerMsg, true, player, prefix);
+                                        return false;
                                     }else{
                                         /*
                                             This person is owner
