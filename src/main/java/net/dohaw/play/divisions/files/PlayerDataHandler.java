@@ -19,6 +19,7 @@ public class PlayerDataHandler {
 
     private DivisionsPlugin plugin;
     private EnumHelper enumHelper;
+    private DefaultPermConfig defaultPermConfig;
     private Economy e;
 
     /*
@@ -28,6 +29,7 @@ public class PlayerDataHandler {
         this.plugin = plugin;
         this.enumHelper = plugin.getAPI().getEnumHelper();
         this.e = DivisionsPlugin.getEconomy();
+        this.defaultPermConfig = plugin.getDefaultPermConfig();
     }
 
     public PlayerData loadPlayerPermissions(FileConfiguration playerConfig, PlayerData data){
@@ -39,9 +41,10 @@ public class PlayerDataHandler {
                 data.putPermission(perm, value);
             }else{
                 /*
-                    If the permissions was just recently added via hardcode in the Permissions enum, it will make an empty value for it. When the permissions is saved, it will add the permission to the list of permissions in the .yml file.
+                    If the permissions was just recently added via hardcode in the Permissions enum, it will give them the default value from the Fresh Meat Rank. When the permissions is saved, it will add the permission to the list of permissions in the .yml file.
                  */
-                data.putPermission(perm, " ");
+                EnumMap<Permission, Object> freshMeatPerms = defaultPermConfig.getDefaultRankPermissions(Rank.FRESH_MEAT);
+                data.putPermission(perm, freshMeatPerms.get(perm));
             }
         }
         return data;

@@ -40,7 +40,7 @@ public class MembersMenu extends Menu implements Listener {
 
         DivisionsManager divisionsManager = ((DivisionsPlugin)plugin).getDivisionsManager();
         PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
-        ItemStackHelper itemStackHelper = ((DivisionsPlugin)plugin).getAPI().getItemStackHelper();
+        ItemStackHelper itemStackHelper = plugin.getAPI().getItemStackHelper();
 
         Division division = divisionsManager.getDivision(playerDataManager.getByPlayerObj(player).getDivision());
 

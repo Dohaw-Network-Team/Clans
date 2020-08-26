@@ -316,6 +316,10 @@ public class DivisionsCommand implements CommandExecutor {
                                         playerAffectedData.setRank(newRank);
                                         playerDataManager.setPlayerData(playerAffected.getUniqueId(), playerAffectedData);
 
+                                        String divisionName = playerAffectedData.getDivision();
+                                        Division division = divisionsManager.getDivision(divisionName);
+                                        division.updatePlayerData(playerAffectedData);
+
                                         chatFactory.sendPlayerMessage(playerAffectedMsg, true, playerAffected, prefix);
                                         chatFactory.sendPlayerMessage(playerMsg, true, player, prefix);
                                     }else{
@@ -406,7 +410,5 @@ public class DivisionsCommand implements CommandExecutor {
         msg.addExtra(decline);
 
     }
-
-
 
 }

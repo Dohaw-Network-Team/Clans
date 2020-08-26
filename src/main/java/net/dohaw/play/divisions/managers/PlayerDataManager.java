@@ -136,15 +136,15 @@ public class PlayerDataManager implements Manager{
         }
 
         EnumMap<Rank, EnumMap<Permission, Object>> divisionRankPermissions = division.getRankPermissions();
-        EnumMap<Permission, Object> kickerRankPermissions = divisionRankPermissions.get(rank);
-        boolean rankCan = (boolean) kickerRankPermissions.get(permission);
+        EnumMap<Permission, Object> rankPermissions = divisionRankPermissions.get(rank);
+        boolean rankCan = (boolean) rankPermissions.get(permission);
 
         if(rankCan){
             return true;
         }else{
             EnumMap<Permission, Object> personalPlayerPermissions = data.getPermissions();
             if(!personalPlayerPermissions.isEmpty()){
-                return (boolean) personalPlayerPermissions.get(Permission.CAN_KICK_PLAYERS);
+                return (boolean) personalPlayerPermissions.get(permission);
             }else{
                 return false;
             }

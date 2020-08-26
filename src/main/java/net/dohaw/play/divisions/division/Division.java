@@ -142,6 +142,21 @@ public class Division {
         rankPermissions.get(rank).replace(perm, value);
     }
 
+    public void updatePlayerData(PlayerData newData){
+
+        int indexOfData = -1;
+        for(PlayerData pd : players){
+            if(pd.getPlayerUUID().equals(newData.getPlayerUUID())){
+                indexOfData = players.indexOf(pd);
+            }
+        }
+
+        if(indexOfData != -1){
+            players.set(indexOfData, newData);
+        }
+
+    }
+
     public DivisionStatus getStatus() {
         return status;
     }
