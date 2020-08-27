@@ -111,7 +111,7 @@ public class Division {
 
     public PlayerData getMember(UUID u){
         for(PlayerData data : players){
-            if(data.getPlayerUUID().equals(u)){
+            if(data.getPLAYER_UUID().equals(u)){
                 return data;
             }
         }
@@ -146,7 +146,7 @@ public class Division {
 
         int indexOfData = -1;
         for(PlayerData pd : players){
-            if(pd.getPlayerUUID().equals(newData.getPlayerUUID())){
+            if(pd.getPLAYER_UUID().equals(newData.getPLAYER_UUID())){
                 indexOfData = players.indexOf(pd);
             }
         }

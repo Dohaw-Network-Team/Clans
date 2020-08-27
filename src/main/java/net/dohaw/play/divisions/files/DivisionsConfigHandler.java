@@ -134,10 +134,10 @@ public class DivisionsConfigHandler{
         FileConfiguration divConfig = div.getConfig();
         List<PlayerData> members = div.getPlayers();
         List<String> memberUUIDs = new ArrayList<>();
-        members.forEach(data -> memberUUIDs.add(data.getPlayerUUID().toString()));
+        members.forEach(data -> memberUUIDs.add(data.getPLAYER_UUID().toString()));
 
         divConfig.set("Members", memberUUIDs);
-        divConfig.set("Leader", div.getLeader().getPlayerUUID().toString());
+        divConfig.set("Leader", div.getLeader().getPLAYER_UUID().toString());
         divConfig.set("Power", div.getPower());
         divConfig.set("Kills", div.getKills());
         divConfig.set("Casualties", div.getCasualties());

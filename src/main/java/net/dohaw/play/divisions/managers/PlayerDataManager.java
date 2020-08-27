@@ -32,7 +32,7 @@ public class PlayerDataManager implements Manager{
 
     public PlayerData getPlayerByUUID(UUID playerUUID){
         for(PlayerData data : playerDataList){
-            if(data.getPlayerUUID().equals(playerUUID)){
+            if(data.getPLAYER_UUID().equals(playerUUID)){
                 return data;
             }
         }
@@ -41,7 +41,7 @@ public class PlayerDataManager implements Manager{
 
     public PlayerData getByPlayerObj(Player player){
         for(PlayerData data : playerDataList){
-            if(data.getPlayer().getPlayer().equals(player)){
+            if(data.getPLAYER().getPlayer().equals(player)){
                 return data;
             }
         }
@@ -113,9 +113,9 @@ public class PlayerDataManager implements Manager{
     }
 
     public void setPlayerDivision(PlayerData data){
-        FileConfiguration playerDataConfig = data.getPlayerConfig();
+        FileConfiguration playerDataConfig = data.getPLAYER_CONFIG();
         if(!playerDataConfig.getString("Division").equalsIgnoreCase("none")){
-            data.setPlayerDivision((playerDataConfig.getString("Division")));
+            data.setDivision((playerDataConfig.getString("Division")));
         }
     }
 

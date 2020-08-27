@@ -1,5 +1,8 @@
 package net.dohaw.play.divisions.playerData;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.rank.Permission;
 import org.bukkit.OfflinePlayer;
@@ -10,15 +13,19 @@ import java.util.UUID;
 
 public class PlayerData {
 
-    final private OfflinePlayer PLAYER;
-    final private String PLAYER_NAME;
-    final private UUID PLAYER_UUID;
-    final private FileConfiguration PLAYER_CONFIG;
-    private String playerDivision = null;
-    private Rank rank;
-    private EnumMap<Permission, Object> playerPermissions = new EnumMap<>(Permission.class);
-    private int kills, casualties, shrinesConquered;
-    private double heartsDestroyed;
+    @Getter final private OfflinePlayer PLAYER;
+    @Getter final private String PLAYER_NAME;
+    @Getter final private UUID PLAYER_UUID;
+    @Getter final private FileConfiguration PLAYER_CONFIG;
+
+    @Getter @Setter private String division = null;
+
+    @Getter @Setter private Rank rank;
+    @Getter @Setter private int kills, casualties, shrinesConquered;
+    @Getter @Setter private double heartsDestroyed;
+    @Getter @Setter private DivisionChannel channel = DivisionChannel.NONE;
+
+    @Getter private EnumMap<Permission, Object> permissions = new EnumMap<>(Permission.class);
 
     public PlayerData(final OfflinePlayer PLAYER, final FileConfiguration PLAYER_CONFIG, Rank rank){
         this.PLAYER = PLAYER;
@@ -28,88 +35,16 @@ public class PlayerData {
         this.PLAYER_CONFIG = PLAYER_CONFIG;
     }
 
-    public String getPlayerName(){
-        return PLAYER_NAME;
-    }
-
-    public EnumMap<Permission, Object> getPermissions(){
-        return playerPermissions;
-    }
-
-    public UUID getPlayerUUID(){
-        return PLAYER_UUID;
-    }
-
     public void replacePermission(Permission perm, Object value){
-        playerPermissions.replace(perm, value);
+        permissions.replace(perm, value);
     }
 
     public void putPermission(Permission perm, Object value){
-        playerPermissions.put(perm, value);
+        permissions.put(perm, value);
     }
 
     public boolean hasPermission(Permission perm){
-        return playerPermissions.get(perm) != null;
-    }
-
-    public String getDivision(){
-        return playerDivision;
-    }
-
-    public void savePermissions(){
-
-    }
-
-    public OfflinePlayer getPlayer() {
-        return PLAYER;
-    }
-
-    public int getKills() {
-        return kills;
-    }
-
-    public void setKills(int kills) {
-        this.kills = kills;
-    }
-
-    public int getCasualties() {
-        return casualties;
-    }
-
-    public void setCasualties(int casualties) {
-        this.casualties = casualties;
-    }
-
-    public int getShrinesConquered() {
-        return shrinesConquered;
-    }
-
-    public void setShrinesConquered(int shrinesConquered) {
-        this.shrinesConquered = shrinesConquered;
-    }
-
-    public void setPlayerDivision(String playerDivision) {
-        this.playerDivision = playerDivision;
-    }
-
-    public Rank getRank() {
-        return rank;
-    }
-
-    public void setRank(Rank rank) {
-        this.rank = rank;
-    }
-
-    public FileConfiguration getPlayerConfig() {
-        return PLAYER_CONFIG;
-    }
-
-    public double getHeartsDestroyed() {
-        return heartsDestroyed;
-    }
-
-    public void setHeartsDestroyed(double heartsDestroyed) {
-        this.heartsDestroyed = heartsDestroyed;
+        return permissions.get(perm) != null;
     }
 
 }

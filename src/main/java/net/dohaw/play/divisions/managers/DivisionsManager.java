@@ -86,7 +86,7 @@ public class DivisionsManager implements Manager {
     public Division getByLeader(UUID leaderUUID){
         for(Map.Entry<String, Division> division : divisions.entrySet()){
             Division div = division.getValue();
-            if(div.getLeader().getPlayerUUID().equals(leaderUUID)){
+            if(div.getLeader().getPLAYER_UUID().equals(leaderUUID)){
                 return div;
             }
         }
@@ -101,9 +101,9 @@ public class DivisionsManager implements Manager {
 
         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
         for(PlayerData playerData : division.getPlayers()){
-            playerData.setPlayerDivision(null);
+            playerData.setDivision(null);
             playerData.setRank(null);
-            playerDataManager.setPlayerData(playerData.getPlayerUUID(), playerData);
+            playerDataManager.setPlayerData(playerData.getPLAYER_UUID(), playerData);
         }
 
         DivisionsConfigHandler dch = new DivisionsConfigHandler(plugin);

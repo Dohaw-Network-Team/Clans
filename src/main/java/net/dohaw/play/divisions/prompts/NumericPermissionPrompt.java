@@ -69,8 +69,8 @@ public class NumericPermissionPrompt extends NumericPrompt {
             context.getForWhom().sendRawMessage("Rank: " + enumHelper.enumToName(rank) + " | Permission: " + enumHelper.enumToName(permission) + " | New Value: " + inputInt);
         }else{
             playerData.replacePermission(permission, inputInt);
-            playerDataManager.setPlayerData(playerData.getPlayerUUID(), playerData);
-            context.getForWhom().sendRawMessage("Player: " + playerData.getPlayerName() + " | Permission: " + enumHelper.enumToName(permission) + " | New Value: " + inputInt);
+            playerDataManager.setPlayerData(playerData.getPLAYER_UUID(), playerData);
+            context.getForWhom().sendRawMessage("Player: " + playerData.getPLAYER_NAME() + " | Permission: " + enumHelper.enumToName(permission) + " | New Value: " + inputInt);
         }
 
         return END_OF_CONVERSATION;

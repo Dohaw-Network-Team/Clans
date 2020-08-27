@@ -54,7 +54,7 @@ public class ConfirmableCommands implements CommandExecutor {
                         Division division = divisionsManager.getDivision(divisionName);
                         PlayerData playerData = playerDataManager.getPlayerByUUID(player.getUniqueId());
 
-                        playerData.setPlayerDivision(divisionName);
+                        playerData.setDivision(divisionName);
                         playerData.setRank(Rank.FRESH_MEAT);
                         playerDataManager.setPlayerData(player.getUniqueId(), playerData);
 
@@ -62,8 +62,8 @@ public class ConfirmableCommands implements CommandExecutor {
                         divisionsManager.setDivision(divisionName, division);
 
                         for(PlayerData member : division.getPlayers()){
-                            if(member.getPlayer().getPlayer().isOnline()){
-                                Player onlinePlayer = Bukkit.getPlayer(member.getPlayerUUID());
+                            if(member.getPLAYER().getPlayer().isOnline()){
+                                Player onlinePlayer = Bukkit.getPlayer(member.getPLAYER_UUID());
                                 chatFactory.sendPlayerMessage("The player &e" + player.getName() + "&f has joined the division", true, onlinePlayer, prefix);
                             }
                         }

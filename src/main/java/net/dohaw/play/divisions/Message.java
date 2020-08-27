@@ -38,7 +38,8 @@ public enum Message {
     NO_PERM_INVITE("No-Perm.Invite"),
     NO_PERM_PROMOTING("No-Perm.Promoting"),
     NO_PERM_DEMOTING("No-Perm.Demoting"),
-    NO_PERM_KICK("No-Perm.Kick");
+    NO_PERM_KICK("No-Perm.Kick"),
+    NO_PERM_ANNOUNCE("No-Perm.Announce");
 
     private String configKey;
     Message(String configKey){

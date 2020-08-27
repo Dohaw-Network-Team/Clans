@@ -48,7 +48,7 @@ public class MembersMenu extends Menu implements Listener {
         for(PlayerData data : division.getPlayers()){
             ItemStack playerHead = getHead(data);
             //Their own head
-            if(data.getPlayerUUID().equals(player.getUniqueId())){
+            if(data.getPLAYER_UUID().equals(player.getUniqueId())){
                 playerHead = itemStackHelper.addGlowToItem(playerHead);
             }
             inv.setItem(index, playerHead);
@@ -104,8 +104,8 @@ public class MembersMenu extends Menu implements Listener {
 
         ItemStack item = new ItemStack(Material.SKULL_ITEM, 1 , (short) SkullType.PLAYER.ordinal());
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwner(data.getPlayerName());
-        meta.setDisplayName(chatFactory.colorString("&e" + data.getPlayerName()));
+        meta.setOwner(data.getPLAYER_NAME());
+        meta.setDisplayName(chatFactory.colorString("&e" + data.getPLAYER_NAME()));
 
         List<String> lore = new ArrayList<>();
 

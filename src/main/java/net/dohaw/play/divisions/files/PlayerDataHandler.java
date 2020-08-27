@@ -19,6 +19,7 @@ public class PlayerDataHandler {
 
     private DivisionsPlugin plugin;
     private EnumHelper enumHelper;
+
     private DefaultPermConfig defaultPermConfig;
     private Economy e;
 
@@ -86,7 +87,7 @@ public class PlayerDataHandler {
      */
     public void saveData(PlayerData playerData){
 
-        File playerFile = new File(plugin.getDataFolder() + File.separator + "/playerData", playerData.getPlayerUUID().toString() + ".yml");
+        File playerFile = new File(plugin.getDataFolder() + File.separator + "/playerData", playerData.getPLAYER_UUID().toString() + ".yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
 
         double heartsDestroyed = playerData.getHeartsDestroyed();

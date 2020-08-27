@@ -33,7 +33,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
     private PlayerData playerData;
 
     public MemberPermissionsMenu(JavaPlugin plugin, PlayerData playerData) {
-        super((APIHook) plugin, playerData.getPlayerName() + " Permissions", 45);
+        super((APIHook) plugin, playerData.getPLAYER_NAME() + " Permissions", 45);
         this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
         this.enumHelper = ((DivisionsPlugin)plugin).getAPI().getEnumHelper();
         this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
@@ -171,7 +171,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
 
     private void setPlayerPermission(Permission perm, Object value){
         playerData.replacePermission(perm, value);
-        playerDataManager.setPlayerData(playerData.getPlayerUUID(), playerData);
+        playerDataManager.setPlayerData(playerData.getPLAYER_UUID(), playerData);
     }
 
 }

@@ -68,7 +68,7 @@ public class DivisionsCommand implements CommandExecutor {
                                         divisionsManager.createNewDivision(divisionName, player, DivisionStatus.PRIVATE);
                                     }
 
-                                    playerDataManager.getByPlayerObj(player).setPlayerDivision(divisionsManager.getDivision(divisionName).getName());
+                                    playerDataManager.getByPlayerObj(player).setDivision(divisionsManager.getDivision(divisionName).getName());
                                     playerDataManager.getByPlayerObj(player).setRank(null);
 
                                     msg = messagesConfig.getMessage(Message.DIVISION_CREATED);
@@ -90,7 +90,7 @@ public class DivisionsCommand implements CommandExecutor {
                     String divisionName = playerDataManager.getPlayerByUUID(player.getUniqueId()).getDivision();
                     Division division = divisionsManager.getDivision(divisionName);
                     if(playerDataManager.getPlayerByUUID(player.getUniqueId()).getDivision() != null){
-                        if(division.getLeader().getPlayerUUID().equals(player.getUniqueId())) {
+                        if(division.getLeader().getPLAYER_UUID().equals(player.getUniqueId())) {
 
                             TextComponent tcMsg = new TextComponent(chatFactory.colorString(prefix) + " Are you sure you wish to disband your division? By doing so, you will keep your Garrison, but lose all Division stats, power, and more! Press ");
                             TextComponent yes = new TextComponent(chatFactory.colorString("&a&lYes"));
@@ -189,7 +189,7 @@ public class DivisionsCommand implements CommandExecutor {
                                             Division division = divisionsManager.getDivision(kickerDivisionName);
                                             PlayerData kickedPlayerData = playerDataManager.getByPlayerObj(kickedPlayer);
 
-                                            kickedPlayerData.setPlayerDivision(null);
+                                            kickedPlayerData.setDivision(null);
                                             kickedPlayerData.setRank(null);
                                             division.removePlayer(kickedPlayerData);
 
@@ -366,7 +366,7 @@ public class DivisionsCommand implements CommandExecutor {
                                 div.addPlayer(pd);
                                 divisionsManager.setDivision(divisionName, div);
 
-                                pd.setPlayerDivision(divisionName);
+                                pd.setDivision(divisionName);
                                 pd.setRank(Rank.FRESH_MEAT);
                                 playerDataManager.setPlayerData(player.getUniqueId(), pd);
 
@@ -382,10 +382,20 @@ public class DivisionsCommand implements CommandExecutor {
                         msg = messagesConfig.getMessage(Message.ALREADY_IN_DIVISION);
                     }
 
+                }else if(args[0].equalsIgnoreCase("announce") && args.length == 2){
+                    if(playerDataManager.isInDivision(player)){
+                        if(playerDataManager.can(player.getUniqueId(), Permission.CAN_SEND_DIVISION_ANNOUNCEMENTS)){
+
+                        }
+                    }else{
+                        msg = messagesConfig.getMessage(Message.NOT_IN_DIVISION);
+                    }
                 }
+
                 if(msg != null){
                     chatFactory.sendPlayerMessage(msg, true, player, prefix);
                 }
+
             }
         }
         return false;
@@ -397,7 +407,7 @@ public class DivisionsCommand implements CommandExecutor {
         chatFactory.sendPlayerMessage("&eName: &c" + division.getName(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&ePower: &c" + division.getPower(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&eGold: &c" + division.getGoldAmount(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eLeader: &c" + division.getLeader().getPlayer().getName(), true, playerToSendTo, prefix);
+        chatFactory.sendPlayerMessage("&eLeader: &c" + division.getLeader().getPLAYER().getName(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&eKills: &c" + division.getKills(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&eCasualties: &c" + division.getCasualties(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&eNumber members: &c" + division.getPlayers().size(), true, playerToSendTo, prefix);
