@@ -17,11 +17,15 @@ import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.utils.DivisionChat;
 import net.dohaw.play.divisions.utils.PlayerHelper;
 import net.md_5.bungee.api.chat.*;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class DivisionsCommand implements CommandExecutor {
 
@@ -186,7 +190,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                                     if (kickerDivisionName.equalsIgnoreCase(kickedPlayerDivisionName)) {
                                         //Kicker has a higher rank than kicked player
-                                        if(Rank.isAHigherRank(kickerRank, kickedPlayerRank) == 1){
+                                        if(Rank.isAHigherRank(kickerRank, kickedPlayerRank) == 1 || kickerRank == null){
 
                                             Division division = divisionsManager.getDivision(kickerDivisionName);
                                             PlayerData kickedPlayerData = playerDataManager.getByPlayerObj(kickedPlayer);
@@ -199,8 +203,14 @@ public class DivisionsCommand implements CommandExecutor {
                                             divisionsManager.updateDivision(kickerDivisionName, division);
 
                                             if(kickedPlayer.isOnline()){
-                                                msg = messagesConfig.getMessage(Message.KICKED_PLAYER_NOTIFIER);
-                                                msg = MessagesConfig.replacePlaceholder(msg, Placeholder.PLAYER_NAME, player.getName());
+
+                                                String kickedPlayerMsg = messagesConfig.getMessage(Message.KICKED_PLAYER_NOTIFIER);
+                                                kickedPlayerMsg = MessagesConfig.replacePlaceholder(kickedPlayerMsg, Placeholder.PLAYER_NAME, player.getName());
+                                                chatFactory.sendPlayerMessage(kickedPlayerMsg, true, kickedPlayer, prefix);
+
+                                                chatFactory.sendPlayerMessage("You have kicked &e" + kickedPlayer.getName() + "&f from the division!", true, player, prefix);
+
+                                                return false;
                                             }
 
                                         }else if(Rank.isAHigherRank(kickerRank, kickedPlayerRank) == 0){
@@ -224,7 +234,7 @@ public class DivisionsCommand implements CommandExecutor {
                 }else if(args[0].equalsIgnoreCase("edit")){
 
                     if(playerDataManager.isInDivision(player)){
-                        if(args.length == 2){
+                        if(args.length >= 2){
                             if(args[1].equalsIgnoreCase("status")) {
                                 if (playerDataManager.can(player.getUniqueId(), Permission.CAN_ALTER_STATUS)) {
 
@@ -252,17 +262,17 @@ public class DivisionsCommand implements CommandExecutor {
                                 }else{
                                     msg = messagesConfig.getMessage(Message.NO_PERM_EDIT_PERMISSIONS);
                                 }
-                            }else if(args[1].equalsIgnoreCase("motd") && args.length == 3){
+                            }else if(args[1].equalsIgnoreCase("motd") && args.length >= 3){
                                if(playerDataManager.can(player.getUniqueId(), Permission.CAN_SET_DIVISION_MOTD)){
-
                                    String motd = args[2];
                                    PlayerData pd = playerDataManager.getByPlayerObj(player);
                                    Division division = divisionsManager.getDivision(pd.getDivision());
                                    division.setMotd(motd);
                                    divisionsManager.updateDivision(division.getName(), division);
-
                                    msg = messagesConfig.getMessage(Message.SET_MOTD);
 
+                               }else{
+                                   msg = messagesConfig.getMessage(Message.NO_PERM_MOTD);
                                }
                             }
                         }
@@ -394,11 +404,16 @@ public class DivisionsCommand implements CommandExecutor {
                         msg = messagesConfig.getMessage(Message.ALREADY_IN_DIVISION);
                     }
 
-                }else if(args[0].equalsIgnoreCase("announce") && args.length == 2){
+                }else if(args[0].equalsIgnoreCase("announce") && args.length >= 3){
                     if(playerDataManager.isInDivision(player)){
+
                         PlayerData pd = playerDataManager.getByPlayerObj(player);
                         Division division = divisionsManager.getDivision(pd.getDivision());
-                        String announcementMsg = args[1];
+
+                        List<String> argsList = Arrays.asList(args);
+                        List<String> msgPieces = argsList.subList(1, args.length);
+                        String announcementMsg = String.join(" ", msgPieces);
+
                         if(playerDataManager.can(player.getUniqueId(), Permission.CAN_SEND_DIVISION_ANNOUNCEMENTS)){
                             DivisionChat.sendAnnouncement(chatFactory, division, announcementMsg);
                         }else{
@@ -416,9 +431,18 @@ public class DivisionsCommand implements CommandExecutor {
                             Division division = divisionsManager.getDivision(pd.getDivision());
                             DivisionChannel newChannel = DivisionChannel.getChannelByAlias(potentialChannelAlias);
                             if(newChannel != pd.getChannel()){
+
                                 pd.setChannel(newChannel);
                                 playerDataManager.updatePlayerData(player.getUniqueId(), pd);
                                 division.updatePlayerData(pd);
+
+                                if(newChannel != DivisionChannel.NONE){
+                                    msg = messagesConfig.getMessage(Message.SWITCH_CHANNEL);
+                                    msg = MessagesConfig.replacePlaceholder(msg, Placeholder.DIVISION_CHANNEL, chatFactory.firstUpperRestLower(newChannel.toString()));
+                                }else{
+                                    msg = messagesConfig.getMessage(Message.NO_CHANNEL);
+                                }
+
                             }else{
                                 msg = messagesConfig.getMessage(Message.ALREADY_ON_CHANNEL);
                             }

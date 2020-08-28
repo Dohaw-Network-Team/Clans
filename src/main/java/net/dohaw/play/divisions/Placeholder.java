@@ -5,6 +5,7 @@ public enum Placeholder {
     PLAYER_NAME("%playerName%"),
     STATUS("%status%"),
     RANK("%rank%"),
+    DIVISION_CHANNEL("%divisionChannel%"),
     DIVISION_NAME("%divisionName%");
 
     private String pHolder;

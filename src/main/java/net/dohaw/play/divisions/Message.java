@@ -32,6 +32,8 @@ public enum Message {
     DIVISION_NOT_PUBLIC("General.Division Not Public"),
     ALREADY_ON_CHANNEL("General.Already On Channel"),
     SET_MOTD("General.Set MOTD"),
+    SWITCH_CHANNEL("General.Switch Channel"),
+    NO_CHANNEL("General.No Channel"),
 
     /*
         No perm stuff
@@ -41,7 +43,8 @@ public enum Message {
     NO_PERM_PROMOTING("No-Perm.Promoting"),
     NO_PERM_DEMOTING("No-Perm.Demoting"),
     NO_PERM_KICK("No-Perm.Kick"),
-    NO_PERM_ANNOUNCE("No-Perm.Announce");
+    NO_PERM_ANNOUNCE("No-Perm.Announce"),
+    NO_PERM_MOTD("No-Perm.MOTD");
 
     private String configKey;
     Message(String configKey){

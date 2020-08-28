@@ -33,13 +33,25 @@ public class DivisionChat {
 
                 Player player = op.getPlayer();
 
+                chatFactory.sendPlayerMessage(" ", false, player, null);
                 chatFactory.sendCenteredMessage(player, "&l=== &b&lDIVISION ANNOUNCEMENT &f&l===");
                 chatFactory.sendPlayerMessage(" ", false, player, null);
-                chatFactory.sendPlayerMessage(msg, false, player, null);
+                chatFactory.sendCenteredMessage(player, msg);
                 chatFactory.sendPlayerMessage(" ", false, player, null);
                 chatFactory.sendCenteredMessage(player, "&l===============");
 
             }
+        }
+    }
+
+    public static void sendMOTD(ChatFactory chatFactory, Division division, Player player){
+        String motd = division.getMotd();
+        if(motd != null){
+            chatFactory.sendCenteredMessage(player, "===== MOTD =====");
+            chatFactory.sendPlayerMessage(" ", false, player, null);
+            chatFactory.sendCenteredMessage(player, motd);
+            chatFactory.sendPlayerMessage(" ", false, player, null);
+            chatFactory.sendCenteredMessage(player, "===============");
         }
     }
 

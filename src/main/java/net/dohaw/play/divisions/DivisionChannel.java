@@ -1,7 +1,6 @@
 package net.dohaw.play.divisions;
 
 import lombok.Getter;
-import net.dohaw.play.divisions.utils.DivisionChat;
 import org.bukkit.ChatColor;
 
 import java.util.Arrays;
@@ -28,6 +27,10 @@ public enum DivisionChannel {
             }
         }
         return null;
+    }
+
+    public String getPrefix(){
+        return "[" + prefixColor + this.name() + "&f]";
     }
 
 }

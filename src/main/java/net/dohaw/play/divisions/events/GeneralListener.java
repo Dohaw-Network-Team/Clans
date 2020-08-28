@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.events;
 
 import me.c10coding.coreapi.chat.ChatFactory;
+import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
@@ -12,8 +13,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.List;
+import java.util.UUID;
 
 public class GeneralListener implements Listener {
 
@@ -37,12 +42,11 @@ public class GeneralListener implements Listener {
         }
 
         PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
-        Division division = divisionsManager.getDivision(pd.getDivision());
-        String motd = division.getMotd();
 
-        chatFactory.sendCenteredMessage(player, "===== MOTD =====");
-        chatFactory.sendCenteredMessage(player, motd);
-        chatFactory.sendCenteredMessage(player, "===============");
+        if(pd.getDivision() != null){
+            Division division = divisionsManager.getDivision(pd.getDivision());
+            DivisionChat.sendMOTD(chatFactory, division, player);
+        }
 
     }
 
@@ -60,15 +64,45 @@ public class GeneralListener implements Listener {
         OfflinePlayer op = pd.getPLAYER();
 
         if(op.isOnline()){
-
             Player player = op.getPlayer();
             Division division = e.getDivision();
-            String motd = division.getMotd();
+            DivisionChat.sendMOTD(chatFactory, division, player);
+        }
 
-            chatFactory.sendCenteredMessage(player, "===== MOTD =====");
-            chatFactory.sendCenteredMessage(player, motd);
-            chatFactory.sendCenteredMessage(player, "===============");
+    }
 
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent e){
+
+        Player player = e.getPlayer();
+        UUID uuid = player.getUniqueId();
+        PlayerData pd = playerDataManager.getPlayerByUUID(uuid);
+
+        if(pd.getDivision() != null){
+            DivisionChannel channel = pd.getChannel();
+            if(channel != DivisionChannel.NONE){
+
+                e.setCancelled(true);
+                Division division = divisionsManager.getDivision(pd.getDivision());
+                List<PlayerData> members = division.getPlayers();
+
+                String msg = "<" + player.getName() + "> " + "&7" + e.getMessage();
+                for(PlayerData pData : members){
+
+                    DivisionChannel pChannel = pData.getChannel();
+                    OfflinePlayer op = pData.getPLAYER();
+
+                    if(op.isOnline()){
+                        if(pChannel == channel){
+                            String channelPrefix = channel.getPrefix();
+                            Player recipient = op.getPlayer();
+                            chatFactory.sendPlayerMessage(msg, true, recipient, channelPrefix);
+                        }
+                    }
+
+                }
+
+            }
         }
 
     }

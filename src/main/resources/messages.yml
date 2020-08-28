@@ -26,6 +26,8 @@ General:
   Division Not Public: "This division is not public. You will need a invitation to join this division!"
   Already On Channel: "You are already on this channel!"
   Set MOTD: "You have set the division MOTD! Players will now see this message whenever they either join the server or division!"
+  Switch Channel: "You have switched division channels: &e%divisionChannel%"
+  No Channel: "You may now talk in global chat"
 
 No-Perm:
   Edit Perms: "You are not allowed to edit your division's permissions!"
@@ -34,4 +36,5 @@ No-Perm:
   Demoting: "You do not have permission to demote members in your division!"
   Kick: "You do not have permission to kick players from your division!"
   Announce: "You do not have permission to send announcements within your division!"
+  MOTD: "You do not have permission to edit the division's MOTD!"
 

@@ -59,8 +59,15 @@ public class Division {
         Bukkit.getPluginManager().callEvent(nme);
     }
 
+    /*
+        Lazy right now but just make the parameter the player UUID instead of Player data
+     */
     public void removePlayer(PlayerData data){
-        players.remove(data);
+        for(PlayerData d : players){
+            if(data.getPLAYER_UUID() == d.getPLAYER_UUID()){
+                players.remove(d);
+            }
+        }
     }
 
     public Location getGarrisonLocation() {
