@@ -4,8 +4,10 @@ import me.c10coding.coreapi.chat.ChatFactory;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
+import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.utils.DivisionChat;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,19 +19,31 @@ public class GeneralListener implements Listener {
 
     private PlayerDataManager playerDataManager;
     private ChatFactory chatFactory;
+    private DivisionsManager divisionsManager;
 
     public GeneralListener(DivisionsPlugin plugin){
         this.playerDataManager = plugin.getPlayerDataManager();
         this.chatFactory = plugin.getAPI().getChatFactory();
+        this.divisionsManager = plugin.getDivisionsManager();
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
-        Player p = e.getPlayer();
-        if(playerDataManager.getByPlayerObj(p) == null){
-            playerDataManager.addPlayerData(p.getUniqueId());
-            playerDataManager.setPlayerDivision(playerDataManager.getPlayerByUUID(p.getUniqueId()));
+
+        Player player = e.getPlayer();
+        if(playerDataManager.getByPlayerObj(player) == null){
+            playerDataManager.addPlayerData(player.getUniqueId());
+            playerDataManager.setPlayerDivision(playerDataManager.getPlayerByUUID(player.getUniqueId()));
         }
+
+        PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
+        Division division = divisionsManager.getDivision(pd.getDivision());
+        String motd = division.getMotd();
+
+        chatFactory.sendCenteredMessage(player, "===== MOTD =====");
+        chatFactory.sendCenteredMessage(player, motd);
+        chatFactory.sendCenteredMessage(player, "===============");
+
     }
 
     @EventHandler
@@ -42,11 +56,18 @@ public class GeneralListener implements Listener {
     @EventHandler
     public void onAdditionOfMember(NewMemberEvent e){
 
-        Division division = e.getDivision();
         PlayerData pd = e.getNewMember();
         OfflinePlayer op = pd.getPLAYER();
 
         if(op.isOnline()){
+
+            Player player = op.getPlayer();
+            Division division = e.getDivision();
+            String motd = division.getMotd();
+
+            chatFactory.sendCenteredMessage(player, "===== MOTD =====");
+            chatFactory.sendCenteredMessage(player, motd);
+            chatFactory.sendCenteredMessage(player, "===============");
 
         }
 
