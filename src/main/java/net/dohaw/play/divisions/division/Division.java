@@ -1,9 +1,13 @@
 package net.dohaw.play.divisions.division;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.events.custom.NewMemberEvent;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -19,7 +23,7 @@ public class Division {
     final private PlayerData LEADER;
 
     private DivisionStatus status;
-    private String bankName;
+    @Getter @Setter private String bankName, motd;
     private double power, heartsDestroyed;
     private Location garrisonLocation;
     private List<PlayerData> players;
@@ -51,6 +55,8 @@ public class Division {
 
     public void addPlayer(PlayerData data){
         players.add(data);
+        NewMemberEvent nme = new NewMemberEvent(this, data);
+        Bukkit.getPluginManager().callEvent(nme);
     }
 
     public void removePlayer(PlayerData data){
@@ -91,14 +97,6 @@ public class Division {
 
     public void setPower(double power) {
         this.power = power;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
     }
 
     public int getShrinesConquered() {

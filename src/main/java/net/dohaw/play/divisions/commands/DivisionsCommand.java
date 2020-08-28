@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.commands;
 
 import me.c10coding.coreapi.chat.ChatFactory;
+import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.Message;
 import net.dohaw.play.divisions.Placeholder;
 import net.dohaw.play.divisions.division.Division;
@@ -13,6 +14,7 @@ import net.dohaw.play.divisions.menus.PermissionsMenu;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
+import net.dohaw.play.divisions.utils.DivisionChat;
 import net.dohaw.play.divisions.utils.PlayerHelper;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
@@ -193,8 +195,8 @@ public class DivisionsCommand implements CommandExecutor {
                                             kickedPlayerData.setRank(null);
                                             division.removePlayer(kickedPlayerData);
 
-                                            playerDataManager.setPlayerData(kickedPlayer.getUniqueId(), kickedPlayerData);
-                                            divisionsManager.setDivision(kickerDivisionName, division);
+                                            playerDataManager.updatePlayerData(kickedPlayer.getUniqueId(), kickedPlayerData);
+                                            divisionsManager.updateDivision(kickerDivisionName, division);
 
                                             if(kickedPlayer.isOnline()){
                                                 msg = messagesConfig.getMessage(Message.KICKED_PLAYER_NOTIFIER);
@@ -224,25 +226,23 @@ public class DivisionsCommand implements CommandExecutor {
                     if(playerDataManager.isInDivision(player)){
                         if(args.length == 2){
                             if(args[1].equalsIgnoreCase("status")) {
-                                if (playerDataManager.isInDivision(player)) {
-                                    if (playerDataManager.can(player.getUniqueId(), Permission.CAN_ALTER_STATUS)) {
+                                if (playerDataManager.can(player.getUniqueId(), Permission.CAN_ALTER_STATUS)) {
 
-                                        String divisionName = playerDataManager.getByPlayerObj(player).getDivision();
-                                        Division playerDivision = divisionsManager.getDivision(divisionName);
-                                        DivisionStatus currentStatus = playerDivision.getStatus();
+                                    String divisionName = playerDataManager.getByPlayerObj(player).getDivision();
+                                    Division playerDivision = divisionsManager.getDivision(divisionName);
+                                    DivisionStatus currentStatus = playerDivision.getStatus();
 
-                                        DivisionStatus divStatus;
-                                        if (currentStatus.equals(DivisionStatus.PRIVATE)) {
-                                            divStatus = DivisionStatus.PUBLIC;
-                                        } else {
-                                            divStatus = DivisionStatus.PRIVATE;
-                                        }
-                                        playerDivision.setStatus(divStatus);
-                                        divisionsManager.setDivision(divisionName, playerDivision);
-
-                                        msg = messagesConfig.getMessage(Message.ALTER_STATUS);
-                                        msg = MessagesConfig.replacePlaceholder(msg, Placeholder.STATUS, divStatus.name());
+                                    DivisionStatus divStatus;
+                                    if (currentStatus.equals(DivisionStatus.PRIVATE)) {
+                                        divStatus = DivisionStatus.PUBLIC;
+                                    } else {
+                                        divStatus = DivisionStatus.PRIVATE;
                                     }
+                                    playerDivision.setStatus(divStatus);
+                                    divisionsManager.updateDivision(divisionName, playerDivision);
+
+                                    msg = messagesConfig.getMessage(Message.ALTER_STATUS);
+                                    msg = MessagesConfig.replacePlaceholder(msg, Placeholder.STATUS, divStatus.name());
                                 }
                             }else if(args[1].equalsIgnoreCase("perms")) {
                                 if(playerDataManager.can(player.getUniqueId(), Permission.CAN_EDIT_PERMS)){
@@ -252,6 +252,18 @@ public class DivisionsCommand implements CommandExecutor {
                                 }else{
                                     msg = messagesConfig.getMessage(Message.NO_PERM_EDIT_PERMISSIONS);
                                 }
+                            }else if(args[1].equalsIgnoreCase("motd") && args.length == 3){
+                               if(playerDataManager.can(player.getUniqueId(), Permission.CAN_SET_DIVISION_MOTD)){
+
+                                   String motd = args[2];
+                                   PlayerData pd = playerDataManager.getByPlayerObj(player);
+                                   Division division = divisionsManager.getDivision(pd.getDivision());
+                                   division.setMotd(motd);
+                                   divisionsManager.updateDivision(division.getName(), division);
+
+                                   msg = messagesConfig.getMessage(Message.SET_MOTD);
+
+                               }
                             }
                         }
                     }else{
@@ -327,7 +339,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                                         }
                                         playerAffectedData.setRank(newRank);
-                                        playerDataManager.setPlayerData(playerAffected.getUniqueId(), playerAffectedData);
+                                        playerDataManager.updatePlayerData(playerAffected.getUniqueId(), playerAffectedData);
 
                                         String divisionName = playerAffectedData.getDivision();
                                         Division division = divisionsManager.getDivision(divisionName);
@@ -338,7 +350,7 @@ public class DivisionsCommand implements CommandExecutor {
                                         return false;
                                     }else{
                                         /*
-                                            This person is owner
+                                            This person is leader
                                         */
                                         msg = messagesConfig.getMessage(Message.ACTION_LEADER_DENY);
                                     }
@@ -364,11 +376,11 @@ public class DivisionsCommand implements CommandExecutor {
                             if(div.getStatus() != DivisionStatus.PRIVATE){
                                 PlayerData pd = playerDataManager.getByPlayerObj(player);
                                 div.addPlayer(pd);
-                                divisionsManager.setDivision(divisionName, div);
+                                divisionsManager.updateDivision(divisionName, div);
 
                                 pd.setDivision(divisionName);
                                 pd.setRank(Rank.FRESH_MEAT);
-                                playerDataManager.setPlayerData(player.getUniqueId(), pd);
+                                playerDataManager.updatePlayerData(player.getUniqueId(), pd);
 
                                 msg = messagesConfig.getMessage(Message.DIVISION_JOIN);
                                 msg = MessagesConfig.replacePlaceholder(msg, Placeholder.DIVISION_NAME, divisionName);
@@ -384,7 +396,32 @@ public class DivisionsCommand implements CommandExecutor {
 
                 }else if(args[0].equalsIgnoreCase("announce") && args.length == 2){
                     if(playerDataManager.isInDivision(player)){
+                        PlayerData pd = playerDataManager.getByPlayerObj(player);
+                        Division division = divisionsManager.getDivision(pd.getDivision());
+                        String announcementMsg = args[1];
                         if(playerDataManager.can(player.getUniqueId(), Permission.CAN_SEND_DIVISION_ANNOUNCEMENTS)){
+                            DivisionChat.sendAnnouncement(chatFactory, division, announcementMsg);
+                        }else{
+                            msg = messagesConfig.getMessage(Message.NO_PERM_ANNOUNCE);
+                        }
+                    }else{
+                        msg = messagesConfig.getMessage(Message.NOT_IN_DIVISION);
+                    }
+                }else if(args[0].equalsIgnoreCase("channel") && args.length == 2){
+                    if(playerDataManager.isInDivision(player)){
+                        String potentialChannelAlias = args[1];
+                        if(DivisionChannel.getChannelByAlias(potentialChannelAlias) != null){
+
+                            PlayerData pd = playerDataManager.getByPlayerObj(player);
+                            Division division = divisionsManager.getDivision(pd.getDivision());
+                            DivisionChannel newChannel = DivisionChannel.getChannelByAlias(potentialChannelAlias);
+                            if(newChannel != pd.getChannel()){
+                                pd.setChannel(newChannel);
+                                playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+                                division.updatePlayerData(pd);
+                            }else{
+                                msg = messagesConfig.getMessage(Message.ALREADY_ON_CHANNEL);
+                            }
 
                         }
                     }else{

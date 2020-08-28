@@ -30,6 +30,8 @@ public enum Message {
     MUST_BE_LEADER("General.Must Be Leader"),
     NOT_A_DIVISION("General.Not A Division"),
     DIVISION_NOT_PUBLIC("General.Division Not Public"),
+    ALREADY_ON_CHANNEL("General.Already On Channel"),
+    SET_MOTD("General.Set MOTD"),
 
     /*
         No perm stuff

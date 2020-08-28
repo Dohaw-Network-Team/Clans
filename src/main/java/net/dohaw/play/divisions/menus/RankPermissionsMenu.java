@@ -158,7 +158,7 @@ public class RankPermissionsMenu extends Menu implements Listener {
 
     private void setPermission(Division division, Rank rank, Permission perm, Object obj){
         division.setRankPermission(rank, perm, obj);
-        divisionsManager.setDivision(division.getName(), division);
+        divisionsManager.updateDivision(division.getName(), division);
     }
 
 }

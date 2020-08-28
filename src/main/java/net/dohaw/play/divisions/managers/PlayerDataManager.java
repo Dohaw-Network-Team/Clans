@@ -91,7 +91,7 @@ public class PlayerDataManager implements Manager{
         playerDataList.add(playerDataHandler.loadPlayerData(u));
     }
 
-    public void setPlayerData(UUID playerUUID, PlayerData newData){
+    public void updatePlayerData(UUID playerUUID, PlayerData newData){
         PlayerData playerData = getPlayerByUUID(playerUUID);
         playerDataList.set(playerDataList.indexOf(playerData), newData);
     }

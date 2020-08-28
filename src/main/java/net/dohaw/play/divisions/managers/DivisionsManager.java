@@ -1,6 +1,5 @@
 package net.dohaw.play.divisions.managers;
 
-import jdk.net.SocketFlow;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.division.DivisionStatus;
 import net.dohaw.play.divisions.DivisionsPlugin;
@@ -79,7 +78,7 @@ public class DivisionsManager implements Manager {
         return divisions.get(divisionName);
     }
 
-    public void setDivision(String divisionName, Division division){
+    public void updateDivision(String divisionName, Division division){
         divisions.replace(divisionName, division);
     }
 
@@ -103,7 +102,7 @@ public class DivisionsManager implements Manager {
         for(PlayerData playerData : division.getPlayers()){
             playerData.setDivision(null);
             playerData.setRank(null);
-            playerDataManager.setPlayerData(playerData.getPLAYER_UUID(), playerData);
+            playerDataManager.updatePlayerData(playerData.getPLAYER_UUID(), playerData);
         }
 
         DivisionsConfigHandler dch = new DivisionsConfigHandler(plugin);

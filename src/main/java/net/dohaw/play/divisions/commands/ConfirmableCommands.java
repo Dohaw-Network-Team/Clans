@@ -56,10 +56,10 @@ public class ConfirmableCommands implements CommandExecutor {
 
                         playerData.setDivision(divisionName);
                         playerData.setRank(Rank.FRESH_MEAT);
-                        playerDataManager.setPlayerData(player.getUniqueId(), playerData);
+                        playerDataManager.updatePlayerData(player.getUniqueId(), playerData);
 
                         division.addPlayer(playerData);
-                        divisionsManager.setDivision(divisionName, division);
+                        divisionsManager.updateDivision(divisionName, division);
 
                         for(PlayerData member : division.getPlayers()){
                             if(member.getPLAYER().getPlayer().isOnline()){

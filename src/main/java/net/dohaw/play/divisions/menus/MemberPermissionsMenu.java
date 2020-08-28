@@ -171,7 +171,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
 
     private void setPlayerPermission(Permission perm, Object value){
         playerData.replacePermission(perm, value);
-        playerDataManager.setPlayerData(playerData.getPLAYER_UUID(), playerData);
+        playerDataManager.updatePlayerData(playerData.getPLAYER_UUID(), playerData);
     }
 
 }

@@ -65,11 +65,11 @@ public class NumericPermissionPrompt extends NumericPrompt {
         int inputInt = input.intValue();
         if(division != null){
             division.setRankPermission(rank, permission, inputInt);
-            divisionsManager.setDivision(division.getName(), division);
+            divisionsManager.updateDivision(division.getName(), division);
             context.getForWhom().sendRawMessage("Rank: " + enumHelper.enumToName(rank) + " | Permission: " + enumHelper.enumToName(permission) + " | New Value: " + inputInt);
         }else{
             playerData.replacePermission(permission, inputInt);
-            playerDataManager.setPlayerData(playerData.getPLAYER_UUID(), playerData);
+            playerDataManager.updatePlayerData(playerData.getPLAYER_UUID(), playerData);
             context.getForWhom().sendRawMessage("Player: " + playerData.getPLAYER_NAME() + " | Permission: " + enumHelper.enumToName(permission) + " | New Value: " + inputInt);
         }
 
