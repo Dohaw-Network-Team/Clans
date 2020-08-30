@@ -44,7 +44,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
     @Override
     public void initializeItems(Player p) {
 
-        EnumMap<Permission, Object> playerPermissions = playerDataManager.getPlayerByUUID(p.getUniqueId()).getPermissions();
+        EnumMap<Permission, Object> playerPermissions = playerData.getPermissions();
 
         int index = 0;
         for(Permission perm : Permission.values()){

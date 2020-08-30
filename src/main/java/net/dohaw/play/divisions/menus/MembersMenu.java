@@ -80,6 +80,7 @@ public class MembersMenu extends Menu implements Listener {
         if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
         if(clickedItem.getType().equals(Material.SKULL_ITEM)){
+
             PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
             SkullMeta meta = (SkullMeta) clickedItem.getItemMeta();
             UUID memberUUID = Bukkit.getOfflinePlayer(chatFactory.removeChatColor(meta.getDisplayName())).getUniqueId();
