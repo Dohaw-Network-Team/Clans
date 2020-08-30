@@ -43,6 +43,9 @@ public class GeneralListener implements Listener {
 
         PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
 
+        /*
+            Possibly add a delay to this
+         */
         if(pd.getDivision() != null){
             Division division = divisionsManager.getDivision(pd.getDivision());
             DivisionChat.sendMOTD(chatFactory, division, player);

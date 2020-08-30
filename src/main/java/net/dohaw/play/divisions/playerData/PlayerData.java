@@ -2,6 +2,9 @@ package net.dohaw.play.divisions.playerData;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.c10coding.classes.archetype.Archetype;
+import me.c10coding.classes.archetype.Skill;
+import me.c10coding.classes.archetype.SpecialityType;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.rank.Permission;
@@ -21,9 +24,15 @@ public class PlayerData {
     @Getter @Setter private String division = null;
 
     @Getter @Setter private Rank rank;
-    @Getter @Setter private int kills, casualties, shrinesConquered;
-    @Getter @Setter private double heartsDestroyed;
+    @Getter @Setter private int kills, casualties, shrinesConquered, level;
+    @Getter @Setter private double heartsDestroyed, exp;
     @Getter @Setter private DivisionChannel channel = DivisionChannel.NONE;
+
+    /*
+        Archetype stuff
+     */
+    @Getter @Setter private Archetype archetype;
+    @Getter @Setter private EnumMap<Skill, Double> skills = new EnumMap<>(Skill.class);
 
     @Getter private EnumMap<Permission, Object> permissions = new EnumMap<>(Permission.class);
 

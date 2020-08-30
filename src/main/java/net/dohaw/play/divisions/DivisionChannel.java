@@ -21,7 +21,7 @@ public enum DivisionChannel {
 
     public static DivisionChannel getChannelByAlias(String alias){
         for(DivisionChannel channel : DivisionChannel.values()){
-            List<String> aliases = Arrays.asList(channel.getChannelAliases());
+            List<String> aliases = Arrays.asList(channel.channelAliases);
             if(aliases.contains(alias)){
                 return channel;
             }
