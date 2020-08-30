@@ -63,7 +63,7 @@ public class DivisionsConfigHandler{
     public Division loadDivision(String divisionName, FileConfiguration divisionConfig, DivisionStatus status){
 
         List<String> memberUUIDStrings = divisionConfig.getStringList("Members");
-        List<PlayerData> members = new ArrayList<>();
+        List<UUID> members = new ArrayList<>();
         UUID leaderUUID = UUID.fromString(divisionConfig.getString("Leader"));
         PlayerData leaderPlayerData = playerDataHandler.loadPlayerData(leaderUUID);
         Division division = new Division(divisionName, divisionConfig, leaderPlayerData);
@@ -73,8 +73,7 @@ public class DivisionsConfigHandler{
          */
         for(String memberStringUUID : memberUUIDStrings){
             UUID memberUUID = UUID.fromString(memberStringUUID);
-            PlayerData playerData = playerDataHandler.loadPlayerData(memberUUID);
-            members.add(playerData);
+            members.add(memberUUID);
         }
 
         division.setStatus(status);
@@ -132,9 +131,9 @@ public class DivisionsConfigHandler{
     public void saveDivisionData(Division div){
 
         FileConfiguration divConfig = div.getConfig();
-        List<PlayerData> members = div.getPlayers();
+        List<UUID> members = div.getPlayers();
         List<String> memberUUIDs = new ArrayList<>();
-        members.forEach(data -> memberUUIDs.add(data.getPLAYER_UUID().toString()));
+        members.forEach(memberUUID -> memberUUIDs.add(memberUUID.toString()));
 
         divConfig.set("Members", memberUUIDs);
         divConfig.set("Leader", div.getLeader().getPLAYER_UUID().toString());

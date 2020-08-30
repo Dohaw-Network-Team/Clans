@@ -13,6 +13,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class ConfirmableCommands implements CommandExecutor {
 
     private DivisionsPlugin plugin;
@@ -61,8 +63,9 @@ public class ConfirmableCommands implements CommandExecutor {
                         division.addPlayer(playerData);
                         divisionsManager.updateDivision(divisionName, division);
 
-                        for(PlayerData member : division.getPlayers()){
-                            if(member.getPLAYER().getPlayer().isOnline()){
+                        for(UUID uuid : division.getPlayers()){
+                            PlayerData member = playerDataManager.getPlayerByUUID(uuid);
+                            if(member.getPLAYER().isOnline()){
                                 Player onlinePlayer = Bukkit.getPlayer(member.getPLAYER_UUID());
                                 chatFactory.sendPlayerMessage("The player &e" + player.getName() + "&f has joined the division", true, onlinePlayer, prefix);
                             }

@@ -2,10 +2,12 @@ package net.dohaw.play.divisions.managers;
 
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.events.custom.TemporaryPlayerDataCreationEvent;
 import net.dohaw.play.divisions.files.PlayerDataHandler;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -78,10 +80,18 @@ public class PlayerDataManager implements Manager{
         playerDataHandler.saveData(playerDataList);
     }
 
+    public void savePlayerData(PlayerData data){
+        playerDataHandler.saveData(data);
+    }
+
     @Override
     public void loadContents() {
         this.playerDataList = playerDataHandler.loadData();
         plugin.getLogger().info("Loaded " + playerDataList.size() + " player(s) into memory");
+    }
+
+    public PlayerData loadPlayerData(UUID uuid){
+        return playerDataHandler.loadPlayerData(uuid);
     }
 
     @Override
@@ -92,8 +102,16 @@ public class PlayerDataManager implements Manager{
     }
 
     public void updatePlayerData(UUID playerUUID, PlayerData newData){
+        /*
+            It may invoke null if the newData value is temporarily loaded data.
+         */
         PlayerData playerData = getPlayerByUUID(playerUUID);
-        playerDataList.set(playerDataList.indexOf(playerData), newData);
+        if(playerData == null){
+            playerDataList.add(newData);
+            Bukkit.getPluginManager().callEvent(new TemporaryPlayerDataCreationEvent(playerUUID));
+        }else{
+            playerDataList.set(playerDataList.indexOf(playerData), newData);
+        }
     }
 
     public void removePlayerData(UUID u){

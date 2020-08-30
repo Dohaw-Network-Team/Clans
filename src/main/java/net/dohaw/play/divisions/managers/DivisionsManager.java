@@ -99,7 +99,9 @@ public class DivisionsManager implements Manager {
         divisionsListConfig.removeDivision(divisionName);
 
         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
-        for(PlayerData playerData : division.getPlayers()){
+        for(UUID uuid : division.getPlayers()){
+            PlayerData playerData = playerDataManager.getPlayerByUUID(uuid);
+
             playerData.setDivision(null);
             playerData.setRank(null);
             playerDataManager.updatePlayerData(playerData.getPLAYER_UUID(), playerData);

@@ -5,10 +5,12 @@ import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
+import net.dohaw.play.divisions.events.custom.TemporaryPlayerDataCreationEvent;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.utils.DivisionChat;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,8 +65,8 @@ public class GeneralListener implements Listener {
     @EventHandler
     public void onAdditionOfMember(NewMemberEvent e){
 
-        PlayerData pd = e.getNewMember();
-        OfflinePlayer op = pd.getPLAYER();
+        UUID uuid = e.getUuid();
+        OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
 
         if(op.isOnline()){
             Player player = op.getPlayer();
@@ -72,6 +74,12 @@ public class GeneralListener implements Listener {
             DivisionChat.sendMOTD(chatFactory, division, player);
         }
 
+    }
+
+    @EventHandler
+    public void onTemporaryPlayerDataCreation(TemporaryPlayerDataCreationEvent e){
+        UUID tempDataUUID = e.getUuidTempData();
+        playerDataManager.removePlayerData(tempDataUUID);
     }
 
     @EventHandler
@@ -87,10 +95,12 @@ public class GeneralListener implements Listener {
 
                 e.setCancelled(true);
                 Division division = divisionsManager.getDivision(pd.getDivision());
-                List<PlayerData> members = division.getPlayers();
+                List<UUID> members = division.getPlayers();
 
                 String msg = "<" + player.getName() + "> " + "&7" + e.getMessage();
-                for(PlayerData pData : members){
+                for(UUID memberUUID : members){
+
+                    PlayerData pData = playerDataManager.getPlayerByUUID(memberUUID);
 
                     DivisionChannel pChannel = pData.getChannel();
                     OfflinePlayer op = pData.getPLAYER();

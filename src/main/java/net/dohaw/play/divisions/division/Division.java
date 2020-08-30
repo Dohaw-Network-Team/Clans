@@ -26,7 +26,7 @@ public class Division {
     @Getter @Setter private String bankName, motd;
     private double power, heartsDestroyed;
     private Location garrisonLocation;
-    private List<PlayerData> players;
+    private List<UUID> players;
     private EnumMap<Rank, EnumMap<Permission, Object>> rankPermissions = new EnumMap<>(Rank.class);
     private int kills, casualties, shrinesConquered, numMembers;
 
@@ -45,17 +45,18 @@ public class Division {
         this.kills = kills;
     }
 
-    public List<PlayerData> getPlayers() {
+    public List<UUID> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<PlayerData> players) {
+    public void setPlayers(List<UUID> players) {
         this.players = players;
     }
 
     public void addPlayer(PlayerData data){
-        players.add(data);
-        NewMemberEvent nme = new NewMemberEvent(this, data);
+        UUID uuid = data.getPLAYER_UUID();
+        players.add(uuid);
+        NewMemberEvent nme = new NewMemberEvent(this, uuid);
         Bukkit.getPluginManager().callEvent(nme);
     }
 
@@ -63,9 +64,9 @@ public class Division {
         Lazy right now but just make the parameter the player UUID instead of Player data
      */
     public void removePlayer(PlayerData data){
-        for(PlayerData d : players){
-            if(data.getPLAYER_UUID() == d.getPLAYER_UUID()){
-                players.remove(d);
+        for(UUID uuid : players){
+            if(data.getPLAYER_UUID().equals(uuid)){
+                players.remove(uuid);
             }
         }
     }
@@ -114,15 +115,6 @@ public class Division {
         this.shrinesConquered = shrinesConquered;
     }
 
-    public PlayerData getMember(UUID u){
-        for(PlayerData data : players){
-            if(data.getPLAYER_UUID().equals(u)){
-                return data;
-            }
-        }
-        return null;
-    }
-
     public String getName() {
         return NAME;
     }
@@ -147,10 +139,11 @@ public class Division {
         rankPermissions.get(rank).replace(perm, value);
     }
 
+    /*
     public void updatePlayerData(PlayerData newData){
 
         int indexOfData = -1;
-        for(PlayerData pd : players){
+        for(UUID pd : players){
             if(pd.getPLAYER_UUID().equals(newData.getPLAYER_UUID())){
                 indexOfData = players.indexOf(pd);
             }
@@ -160,7 +153,7 @@ public class Division {
             players.set(indexOfData, newData);
         }
 
-    }
+    }*/
 
     public DivisionStatus getStatus() {
         return status;

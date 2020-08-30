@@ -7,16 +7,18 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import java.util.UUID;
+
 public class NewMemberEvent extends Event implements Cancellable{
 
     @Getter private Division division;
-    @Getter private PlayerData newMember;
+    @Getter private UUID uuid;
     private boolean isCancelled = false;
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-    public NewMemberEvent(Division division, PlayerData newMember){
+    public NewMemberEvent(Division division, UUID uuid){
         this.division = division;
-        this.newMember = newMember;
+        this.uuid = uuid;
     }
 
     /**

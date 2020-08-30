@@ -6,6 +6,7 @@ import me.c10coding.coreapi.helpers.ItemStackHelper;
 import me.c10coding.coreapi.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
+import net.dohaw.play.divisions.files.PlayerDataHandler;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.playerData.PlayerData;
@@ -45,10 +46,14 @@ public class MembersMenu extends Menu implements Listener {
         Division division = divisionsManager.getDivision(playerDataManager.getByPlayerObj(player).getDivision());
 
         int index = 0;
-        for(PlayerData data : division.getPlayers()){
+        for(UUID uuid : division.getPlayers()){
+            PlayerData data = playerDataManager.getPlayerByUUID(uuid);
+            if(data == null){
+                data = playerDataManager.loadPlayerData(uuid);
+            }
             ItemStack playerHead = getHead(data);
             //Their own head
-            if(data.getPLAYER_UUID().equals(player.getUniqueId())){
+            if(uuid.equals(player.getUniqueId())){
                 playerHead = itemStackHelper.addGlowToItem(playerHead);
             }
             inv.setItem(index, playerHead);
@@ -77,21 +82,18 @@ public class MembersMenu extends Menu implements Listener {
         if(clickedItem.getType().equals(Material.SKULL_ITEM)){
             PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
             SkullMeta meta = (SkullMeta) clickedItem.getItemMeta();
-            UUID memberUUID;
-            // Short-term fix
-            try{
-                memberUUID = Bukkit.getPlayer(chatFactory.removeChatColor(meta.getDisplayName())).getUniqueId();
-            }catch(NullPointerException npe){
-                return;
-            }
+            UUID memberUUID = Bukkit.getOfflinePlayer(chatFactory.removeChatColor(meta.getDisplayName())).getUniqueId();
 
             PlayerData playerData = playerDataManager.getPlayerByUUID(memberUUID);
-            if(playerData != null){
-                MemberPermissionsMenu memberPermissionsMenu = new MemberPermissionsMenu(plugin, playerData);
-                memberPermissionsMenu.initializeItems(player);
-                player.closeInventory();
-                memberPermissionsMenu.openInventory(player);
+            if(playerData == null){
+                playerData = playerDataManager.loadPlayerData(memberUUID);
             }
+
+            MemberPermissionsMenu memberPermissionsMenu = new MemberPermissionsMenu(plugin, playerData);
+            memberPermissionsMenu.initializeItems(player);
+            player.closeInventory();
+            memberPermissionsMenu.openInventory(player);
+
         }else if(clickedItem.getType().equals(backMat)){
             PermissionsMenu permissionsMenu = new PermissionsMenu(plugin);
             permissionsMenu.initializeItems(player);

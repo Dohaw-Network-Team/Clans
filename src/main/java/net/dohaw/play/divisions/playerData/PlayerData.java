@@ -2,12 +2,11 @@ package net.dohaw.play.divisions.playerData;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.c10coding.classes.archetype.Archetype;
-import me.c10coding.classes.archetype.Skill;
-import me.c10coding.classes.archetype.SpecialityType;
+import net.dohaw.play.archetypes.archetype.Archetype;
+import net.dohaw.play.archetypes.archetype.Skill;
 import net.dohaw.play.divisions.DivisionChannel;
-import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.rank.Permission;
+import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 

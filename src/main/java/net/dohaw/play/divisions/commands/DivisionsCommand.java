@@ -353,7 +353,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                                         String divisionName = playerAffectedData.getDivision();
                                         Division division = divisionsManager.getDivision(divisionName);
-                                        division.updatePlayerData(playerAffectedData);
+                                        //division.updatePlayerData(playerAffectedData);
 
                                         chatFactory.sendPlayerMessage(playerAffectedMsg, true, playerAffected, prefix);
                                         chatFactory.sendPlayerMessage(playerMsg, true, player, prefix);
@@ -404,7 +404,7 @@ public class DivisionsCommand implements CommandExecutor {
                         msg = messagesConfig.getMessage(Message.ALREADY_IN_DIVISION);
                     }
 
-                }else if(args[0].equalsIgnoreCase("announce") && args.length >= 3){
+                }else if(args[0].equalsIgnoreCase("announce") && args.length >= 2){
                     if(playerDataManager.isInDivision(player)){
 
                         PlayerData pd = playerDataManager.getByPlayerObj(player);
@@ -428,13 +428,13 @@ public class DivisionsCommand implements CommandExecutor {
                         if(DivisionChannel.getChannelByAlias(potentialChannelAlias) != null){
 
                             PlayerData pd = playerDataManager.getByPlayerObj(player);
-                            Division division = divisionsManager.getDivision(pd.getDivision());
+                            //Division division = divisionsManager.getDivision(pd.getDivision());
                             DivisionChannel newChannel = DivisionChannel.getChannelByAlias(potentialChannelAlias);
                             if(newChannel != pd.getChannel()){
 
                                 pd.setChannel(newChannel);
                                 playerDataManager.updatePlayerData(player.getUniqueId(), pd);
-                                division.updatePlayerData(pd);
+                                //division.updatePlayerData(pd);
 
                                 if(newChannel != DivisionChannel.NONE){
                                     msg = messagesConfig.getMessage(Message.SWITCH_CHANNEL);
