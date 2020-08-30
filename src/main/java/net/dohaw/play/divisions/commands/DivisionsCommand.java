@@ -14,6 +14,7 @@ import net.dohaw.play.divisions.menus.PermissionsMenu;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
+import net.dohaw.play.divisions.runnables.InviteTimer;
 import net.dohaw.play.divisions.utils.DivisionChat;
 import net.dohaw.play.divisions.utils.PlayerHelper;
 import net.md_5.bungee.api.chat.*;
@@ -23,6 +24,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Arrays;
 import java.util.List;
@@ -145,13 +147,26 @@ public class DivisionsCommand implements CommandExecutor {
                     String playerName = args[1];
                     if(playerDataManager.getByPlayerObj(player).getDivision() != null){
                         if(Bukkit.getPlayer(playerName) != null){
+                            Player invitedPlayer = Bukkit.getPlayer(playerName);
                             if(playerDataManager.can(player.getUniqueId(), Permission.CAN_INVITE_PLAYERS)){
-                                if(playerDataManager.getByPlayerObj(Bukkit.getPlayer(playerName)).getDivision() == null){
-                                    invitePlayer(player);
-                                    msg = messagesConfig.getMessage(Message.INVITER);
-                                    msg = messagesConfig.replacePlaceholder(msg, Placeholder.PLAYER_NAME, playerName);
+                                if(!playerName.equalsIgnoreCase(player.getName())){
+                                    PlayerData invitedPlayerData = playerDataManager.getPlayerByUUID(invitedPlayer.getUniqueId());
+                                    if(invitedPlayerData.getDivision() == null){
+
+                                        if(!plugin.getInvitedPlayers().containsKey(invitedPlayer.getUniqueId())){
+                                            invitePlayer(invitedPlayer, player);
+                                            plugin.addInvitedPlayer(invitedPlayer.getUniqueId());
+                                            msg = messagesConfig.getMessage(Message.INVITER);
+                                            msg = messagesConfig.replacePlaceholder(msg, Placeholder.PLAYER_NAME, playerName);
+                                        }else{
+                                            chatFactory.sendPlayerMessage("This player has already been invited recently. Try inviting them again later!", true, player, prefix);
+                                        }
+
+                                    }else{
+                                        msg = messagesConfig.getMessage(Message.TARGET_PLAYER_ALREADY_IN_DIVISION);
+                                    }
                                 }else{
-                                    msg = messagesConfig.getMessage(Message.TARGET_PLAYER_ALREADY_IN_DIVISION);
+                                    msg = messagesConfig.getMessage(Message.ACTION_YOURSELF_DENY);
                                 }
                             }else{
                                 msg = messagesConfig.getMessage(Message.NO_PERM_INVITE);
@@ -351,10 +366,6 @@ public class DivisionsCommand implements CommandExecutor {
                                         playerAffectedData.setRank(newRank);
                                         playerDataManager.updatePlayerData(playerAffected.getUniqueId(), playerAffectedData);
 
-                                        String divisionName = playerAffectedData.getDivision();
-                                        Division division = divisionsManager.getDivision(divisionName);
-                                        //division.updatePlayerData(playerAffectedData);
-
                                         chatFactory.sendPlayerMessage(playerAffectedMsg, true, playerAffected, prefix);
                                         chatFactory.sendPlayerMessage(playerMsg, true, player, prefix);
                                         return false;
@@ -384,6 +395,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                             Division div = divisionsManager.getDivision(divisionName);
                             if(div.getStatus() != DivisionStatus.PRIVATE){
+
                                 PlayerData pd = playerDataManager.getByPlayerObj(player);
                                 div.addPlayer(pd);
                                 divisionsManager.updateDivision(divisionName, div);
@@ -477,13 +489,13 @@ public class DivisionsCommand implements CommandExecutor {
         chatFactory.sendPlayerMessage("", false, playerToSendTo, prefix);
     }
 
-    private void invitePlayer(Player inviter){
+    private void invitePlayer(Player invited, Player inviter){
 
         String divisionName = playerDataManager.getByPlayerObj(inviter).getDivision();
-        TextComponent msg = new TextComponent(chatFactory.colorString("You have been invited to the division &e" + divisionName + "&f by " + "&e" + inviter.getName() + ".&fIf you wish to accept this invite, press "));
-        TextComponent join = new TextComponent(chatFactory.colorString("&aJoin"));
-        TextComponent msg2 = new TextComponent(chatFactory.colorString(". If you wish to decline this invite, press "));
-        TextComponent decline = new TextComponent(chatFactory.colorString("&cDecline"));
+        TextComponent msg = new TextComponent(chatFactory.colorString("You have been invited to the division &e" + divisionName + "&f by " + "&e" + inviter.getName() + ".&f If you wish to accept this invite, press "));
+        TextComponent join = new TextComponent(chatFactory.colorString("&a&lJoin"));
+        TextComponent msg2 = new TextComponent(chatFactory.colorString(".&f If you wish to decline this invite, press "));
+        TextComponent decline = new TextComponent(chatFactory.colorString("&c&lDecline"));
 
         join.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Join Division").create()));
         decline.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Decline invite").create()));
@@ -494,6 +506,7 @@ public class DivisionsCommand implements CommandExecutor {
         msg.addExtra(msg2);
         msg.addExtra(decline);
 
+        invited.spigot().sendMessage(msg);
     }
 
 }

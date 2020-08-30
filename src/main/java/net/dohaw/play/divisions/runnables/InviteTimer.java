@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.runnables;
 
+import lombok.Getter;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -9,8 +10,8 @@ public class InviteTimer extends BukkitRunnable {
 
     private DivisionsPlugin plugin;
     //Minutes
-    private int inviteCooldown;
     private UUID playerUUID;
+    @Getter private int inviteCooldown;
 
     public InviteTimer(DivisionsPlugin plugin, UUID playerUUID){
         this.plugin = plugin;
@@ -29,4 +30,5 @@ public class InviteTimer extends BukkitRunnable {
             plugin.removeInvitedPlayer(playerUUID);
         }
     }
+
 }

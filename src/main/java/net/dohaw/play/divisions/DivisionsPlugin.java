@@ -1,7 +1,6 @@
 package net.dohaw.play.divisions;
 
 import me.c10coding.coreapi.BetterJavaPlugin;
-import me.c10coding.coreapi.CoreAPI;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
 import net.dohaw.play.divisions.events.GeneralListener;
@@ -50,9 +49,8 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         }
         getLogger().fine("Vault hooked!");
 
-        this.pluginPrefix = getConfig().getString("PluginPrefix");
-
         validateConfigs();
+        this.pluginPrefix = getConfig().getString("PluginPrefix");
         this.messagesConfig = new MessagesConfig(this);
 
         loadDefaultRankPermissions();
