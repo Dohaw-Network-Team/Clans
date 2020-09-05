@@ -21,8 +21,8 @@ import java.util.UUID;
     Divisions Plugin
     Author: c10coding
     Started: 6/16/2020
-    Finished: ~
-    Description: A better version of Factions
+    Finished: 8/30/2020 (Finished 95% of features. Got to do the rest later. Took a break for a while which is why there's a 2 month gap.)
+    Description: A better version of Factions specifically made for Dohaw Network
  */
 
 public final class DivisionsPlugin extends BetterJavaPlugin {
@@ -114,13 +114,13 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
     }
 
     public void loadManagerData(){
+
         divisionsManager = new DivisionsManager(this);
         playerDataManager = new PlayerDataManager(this);
-        /*
-        //Had to set DivisionsConfigGHandler after playerdatamanager because it's dependent on it
-        divisionsManager.setDivisionsHandler(new DivisionsConfigHandler(this));*/
+
         playerDataManager.loadContents();
         divisionsManager.loadContents();
+
         playerDataManager.setPlayerDivisions();
     }
 

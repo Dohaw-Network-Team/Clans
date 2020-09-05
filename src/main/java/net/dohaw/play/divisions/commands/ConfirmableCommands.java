@@ -51,6 +51,7 @@ public class ConfirmableCommands implements CommandExecutor {
                  */
                 if(plugin.hasBeenInvitedRecently(player.getUniqueId())){
                     if(!args[1].equalsIgnoreCase("abort")){
+
                         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
                         String divisionName = args[1];
                         Division division = divisionsManager.getDivision(divisionName);

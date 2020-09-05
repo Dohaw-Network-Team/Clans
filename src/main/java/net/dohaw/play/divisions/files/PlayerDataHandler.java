@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.files;
 
 import me.c10coding.coreapi.helpers.EnumHelper;
+import net.dohaw.play.archetypes.archetype.Stat;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.playerData.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
@@ -51,12 +52,32 @@ public class PlayerDataHandler {
         return data;
     }
 
-    public PlayerData loadPlayerStats(FileConfiguration config, PlayerData data){
+    public PlayerData loadPlayerAttributes(FileConfiguration playerConfig, PlayerData data){
+        EnumMap<Stat, Double> stats = new EnumMap<>(Stat.class);
+        for(Stat stat : Stat.values()){
+            String statKey = enumHelper.enumToName(stat);
+            double statLevel;
+            if(playerConfig.get("Stats.Attributes." + statKey) != null){
+                statLevel = playerConfig.getDouble("Stats.Attributes." + statKey);
+            }else{
+                statLevel = 1;
+            }
+            stats.put(stat, statLevel);
+        }
+        data.setStatLevels(stats);
 
-        int kills = config.getInt("Stats.Kills");
-        int casualties = config.getInt("Stats.Casualties");
-        int shrinesConquered = config.getInt("Stats.Shrines Conquered");
-        double heartsDestroyed = config.getInt("Stats.Hearts Destroyed");
+        double mana = playerConfig.getDouble("Mana");
+        data.setMana(mana);
+
+        return data;
+    }
+
+    public PlayerData loadPlayerStats(FileConfiguration playerConfig, PlayerData data){
+
+        int kills = playerConfig.getInt("Stats.Kills");
+        int casualties = playerConfig.getInt("Stats.Casualties");
+        int shrinesConquered = playerConfig.getInt("Stats.Shrines Conquered");
+        double heartsDestroyed = playerConfig.getInt("Stats.Hearts Destroyed");
 
         data.setKills(kills);
         data.setCasualties(casualties);
@@ -122,6 +143,21 @@ public class PlayerDataHandler {
             config.set("Permissions." + key, value);
         }
 
+        /*
+            ARCHETYPE STUFF AFTER HERE.
+         */
+        if(playerData.getArchetype() != null){
+            EnumMap<Stat, Double> stats = playerData.getStatLevels();
+            for(Map.Entry<Stat, Double> statEntry : stats.entrySet()){
+                String key = enumHelper.enumToName(statEntry.getKey());
+                double value = statEntry.getValue();
+                config.set("Stats.Attributes." + key, value);
+            }
+
+            double mana = playerData.getMana();
+            config.set("Mana", mana);
+        }
+
         try {
             config.save(playerFile);
         } catch (IOException ioException) {
@@ -152,6 +188,9 @@ public class PlayerDataHandler {
 
         data = loadPlayerPermissions(playerDataConfig, data);
         data = loadPlayerStats(playerDataConfig, data);
+        if(data.getArchetype() != null){
+            data = loadPlayerAttributes(playerDataConfig, data);
+        }
         return data;
     }
 

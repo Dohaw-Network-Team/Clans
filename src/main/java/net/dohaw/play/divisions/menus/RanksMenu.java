@@ -49,9 +49,9 @@ public class RanksMenu extends Menu implements Listener {
         Player player = (Player) e.getWhoClicked();
         ItemStack clickedItem = e.getCurrentItem();
 
-        e.setCancelled(true);
         if(e.getClickedInventory() == null) return;
         if(!e.getClickedInventory().equals(inv)) return;
+        e.setCancelled(true);
         if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
         if(clickedItem.getType().equals(backMat)){

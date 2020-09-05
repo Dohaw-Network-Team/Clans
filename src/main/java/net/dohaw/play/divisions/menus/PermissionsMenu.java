@@ -62,9 +62,9 @@ public class PermissionsMenu extends Menu implements Listener {
         int slotClicked = e.getSlot();
         ItemStack clickedItem = e.getCurrentItem();
 
-        e.setCancelled(true);
         if(e.getClickedInventory() == null) return;
         if(!e.getClickedInventory().equals(inv)) return;
+        e.setCancelled(true);
         if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
         switch(slotClicked){
