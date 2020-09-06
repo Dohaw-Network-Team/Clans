@@ -6,7 +6,7 @@ import me.c10coding.coreapi.helpers.EnumHelper;
 import me.c10coding.coreapi.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.prompts.NumericPermissionPrompt;
 import net.dohaw.play.divisions.rank.Permission;
 import org.bukkit.Bukkit;
@@ -83,12 +83,12 @@ public class MemberPermissionsMenu extends Menu implements Listener {
 
             lore.add(" ");
             lore.add("&b" + permissionDescription);
-            inv.setItem(index, createGuiItem(Material.STAINED_GLASS_PANE, permissionName, chatFactory.colorLore(lore)));
+            inv.setItem(index, createGuiItem(Material.BLACK_STAINED_GLASS_PANE, permissionName, chatFactory.colorLore(lore)));
             index++;
         }
 
         setVariant((byte)15);
-        setFillerMaterial(Material.STAINED_GLASS_PANE);
+        setFillerMaterial(Material.BLACK_STAINED_GLASS_PANE);
         setBackMaterial(Material.LEVER);
         fillMenu(true);
     }
@@ -111,7 +111,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
             membersMenu.initializeItems(player);
             player.closeInventory();
             membersMenu.openInventory(player);
-        }else if(clickedItem.getType().equals(Material.STAINED_GLASS_PANE)){
+        }else if(clickedItem.getType().equals(Material.BLACK_STAINED_GLASS_PANE)){
 
             byte data = clickedItem.getData().getData();
             /*

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
-import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Bukkit;
@@ -64,11 +64,7 @@ public class Division {
         Lazy right now but just make the parameter the player UUID instead of Player data
      */
     public void removePlayer(PlayerData data){
-        for(UUID uuid : players){
-            if(data.getPLAYER_UUID().equals(uuid)){
-                players.remove(uuid);
-            }
-        }
+        players.removeIf(uuid -> data.getPLAYER_UUID().equals(uuid));
     }
 
     public Location getGarrisonLocation() {

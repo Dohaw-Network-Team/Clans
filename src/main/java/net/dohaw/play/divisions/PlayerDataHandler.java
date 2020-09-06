@@ -1,9 +1,7 @@
-package net.dohaw.play.divisions.files;
+package net.dohaw.play.divisions;
 
 import me.c10coding.coreapi.helpers.EnumHelper;
-import net.dohaw.play.archetypes.archetype.Stat;
-import net.dohaw.play.divisions.DivisionsPlugin;
-import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import net.milkbowl.vault.economy.Economy;
@@ -66,7 +64,12 @@ public class PlayerDataHandler {
         }
         data.setStatLevels(stats);
 
-        double mana = playerConfig.getDouble("Mana");
+        double mana;
+        if(playerConfig.get("Mana") == null){
+            mana = 100;
+        }else{
+            mana = playerConfig.getDouble("Mana");
+        }
         data.setMana(mana);
 
         return data;
@@ -146,17 +149,15 @@ public class PlayerDataHandler {
         /*
             ARCHETYPE STUFF AFTER HERE.
          */
-        if(playerData.getArchetype() != null){
-            EnumMap<Stat, Double> stats = playerData.getStatLevels();
-            for(Map.Entry<Stat, Double> statEntry : stats.entrySet()){
-                String key = enumHelper.enumToName(statEntry.getKey());
-                double value = statEntry.getValue();
-                config.set("Stats.Attributes." + key, value);
-            }
-
-            double mana = playerData.getMana();
-            config.set("Mana", mana);
+        EnumMap<Stat, Double> stats = playerData.getStatLevels();
+        for(Map.Entry<Stat, Double> statEntry : stats.entrySet()){
+            String key = enumHelper.enumToName(statEntry.getKey());
+            double value = statEntry.getValue();
+            config.set("Stats.Attributes." + key, value);
         }
+
+        double mana = playerData.getMana();
+        config.set("Mana", mana);
 
         try {
             config.save(playerFile);
@@ -188,9 +189,7 @@ public class PlayerDataHandler {
 
         data = loadPlayerPermissions(playerDataConfig, data);
         data = loadPlayerStats(playerDataConfig, data);
-        if(data.getArchetype() != null){
-            data = loadPlayerAttributes(playerDataConfig, data);
-        }
+        data = loadPlayerAttributes(playerDataConfig, data);
         return data;
     }
 

@@ -91,11 +91,11 @@ public class RankPermissionsMenu extends Menu implements Listener {
             lore.add(" ");
             lore.add("&b" + permissionsDescription);
 
-            inv.setItem(index, createGuiItem(Material.STAINED_GLASS_PANE, chatFactory.colorString(permissionName), chatFactory.colorLore(lore)));
+            inv.setItem(index, createGuiItem(Material.BLACK_STAINED_GLASS_PANE, chatFactory.colorString(permissionName), chatFactory.colorLore(lore)));
             index++;
         }
         setVariant((byte)15);
-        setFillerMaterial(Material.STAINED_GLASS_PANE);
+        setFillerMaterial(Material.BLACK_STAINED_GLASS_PANE);
         setBackMaterial(Material.LEVER);
         fillMenu(true);
     }
@@ -113,7 +113,7 @@ public class RankPermissionsMenu extends Menu implements Listener {
         if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
         int slotNum = e.getSlot();
 
-        if(clickedItem.getType().equals(Material.STAINED_GLASS_PANE)){
+        if(clickedItem.getType().equals(Material.BLACK_STAINED_GLASS_PANE)){
             byte data = clickedItem.getData().getData();
             if(data == (byte)5 || data == (byte)14 || data == (byte)9){
 

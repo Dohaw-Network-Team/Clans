@@ -6,10 +6,9 @@ import me.c10coding.coreapi.helpers.ItemStackHelper;
 import me.c10coding.coreapi.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
-import net.dohaw.play.divisions.files.PlayerDataHandler;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -61,7 +60,7 @@ public class MembersMenu extends Menu implements Listener {
         }
 
         setVariant((byte)15);
-        setFillerMaterial(Material.STAINED_GLASS_PANE);
+        setFillerMaterial(Material.BLACK_STAINED_GLASS_PANE);
         setBackMaterial(Material.LEVER);
         fillMenu(true);
 
@@ -79,7 +78,7 @@ public class MembersMenu extends Menu implements Listener {
         e.setCancelled(true);
         if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
-        if(clickedItem.getType().equals(Material.SKULL_ITEM)){
+        if(clickedItem.getType().equals(Material.LEGACY_SKULL_ITEM)){
 
             PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
             SkullMeta meta = (SkullMeta) clickedItem.getItemMeta();
@@ -105,7 +104,7 @@ public class MembersMenu extends Menu implements Listener {
 
     private ItemStack getHead(PlayerData data) {
 
-        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1 , (short) SkullType.PLAYER.ordinal());
+        ItemStack item = new ItemStack(Material.LEGACY_SKULL_ITEM, 1 , (short) SkullType.PLAYER.ordinal());
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwner(data.getPLAYER_NAME());
         meta.setDisplayName(chatFactory.colorString("&e" + data.getPLAYER_NAME()));

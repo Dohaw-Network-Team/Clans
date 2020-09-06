@@ -37,7 +37,7 @@ public class RanksMenu extends Menu implements Listener {
         }
 
         setVariant((byte)15);
-        setFillerMaterial(Material.STAINED_GLASS_PANE);
+        setFillerMaterial(Material.BLACK_STAINED_GLASS_PANE);
         setBackMaterial(Material.LEVER);
         fillMenu(true);
     }

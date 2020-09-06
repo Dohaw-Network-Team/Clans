@@ -1,11 +1,12 @@
 package net.dohaw.play.divisions.files;
 
 import me.c10coding.coreapi.helpers.EnumHelper;
+import net.dohaw.play.divisions.PlayerDataHandler;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.division.DivisionStatus;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import net.milkbowl.vault.economy.Economy;

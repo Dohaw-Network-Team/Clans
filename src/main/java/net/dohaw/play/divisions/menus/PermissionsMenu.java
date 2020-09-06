@@ -40,7 +40,7 @@ public class PermissionsMenu extends Menu implements Listener {
             lore.add(chatFactory.colorString("&f- &e" + enumHelper.enumToName(rank)));
         }
 
-        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        ItemStack head = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
         skullMeta.setOwner(p.getName());
         skullMeta.setDisplayName(chatFactory.colorString("&cPlayers"));
@@ -50,7 +50,7 @@ public class PermissionsMenu extends Menu implements Listener {
         inv.setItem(24, head);
         setVariant((byte)15);
 
-        setFillerMaterial(Material.STAINED_GLASS_PANE);
+        setFillerMaterial(Material.BLACK_STAINED_GLASS_PANE);
         fillMenu(false);
     }
 
@@ -80,8 +80,6 @@ public class PermissionsMenu extends Menu implements Listener {
                 player.closeInventory();
                 memberPermissionsMenu.openInventory(player);
                 break;
-            default:
-                return;
         }
 
     }

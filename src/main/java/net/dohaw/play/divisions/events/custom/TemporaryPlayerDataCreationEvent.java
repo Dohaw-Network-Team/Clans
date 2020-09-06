@@ -1,7 +1,6 @@
 package net.dohaw.play.divisions.events.custom;
 
 import lombok.Getter;
-import net.dohaw.play.divisions.playerData.PlayerData;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

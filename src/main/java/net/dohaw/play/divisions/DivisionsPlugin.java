@@ -1,11 +1,14 @@
 package net.dohaw.play.divisions;
 
+import lombok.Getter;
 import me.c10coding.coreapi.BetterJavaPlugin;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
 import net.dohaw.play.divisions.events.GeneralListener;
+import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.files.MessagesConfig;
+import net.dohaw.play.divisions.files.StatsConfig;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.runnables.InviteTimer;
@@ -27,15 +30,17 @@ import java.util.UUID;
 
 public final class DivisionsPlugin extends BetterJavaPlugin {
 
-    private static Economy economy = null;
-    private String pluginPrefix;
+    @Getter private static Economy economy = null;
+    @Getter private String pluginPrefix;
 
-    private DivisionsManager divisionsManager;
-    private PlayerDataManager playerDataManager;
-    private DefaultPermConfig defaultPermConfig;
-    private MessagesConfig messagesConfig;
+    @Getter private DivisionsManager divisionsManager;
+    @Getter private PlayerDataManager playerDataManager;
+    @Getter private DefaultPermConfig defaultPermConfig;
+    @Getter private MessagesConfig messagesConfig;
+    @Getter private StatsConfig statsConfig;
+    @Getter private DefaultConfig defaultConfig;
 
-    private HashMap<UUID, BukkitTask> invitedPlayers = new HashMap<>();
+    @Getter private HashMap<UUID, BukkitTask> invitedPlayers = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -50,8 +55,10 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         getLogger().fine("Vault hooked!");
 
         validateConfigs();
-        this.pluginPrefix = getConfig().getString("PluginPrefix");
+        this.pluginPrefix = getConfig().getString("Plugin Prefix");
         this.messagesConfig = new MessagesConfig(this);
+        this.statsConfig = new StatsConfig(this);
+        this.defaultConfig = new DefaultConfig(this);
 
         loadDefaultRankPermissions();
         loadManagerData();
@@ -100,17 +107,17 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
             }
         }
 
-        File[] files = {new File(getDataFolder(), "config.yml"), new File(getDataFolder(), "divisionsList.yml"), new File(getDataFolder(), "defaultPerms.yml"), new File(getDataFolder(), "messages.yml")};
+        File[] files = {new File(getDataFolder(), "config.yml"),
+                new File(getDataFolder(), "divisionsList.yml"),
+                new File(getDataFolder(), "defaultPerms.yml"),
+                new File(getDataFolder(), "stats.yml"),
+                new File(getDataFolder(), "messages.yml")};
         for(File f : files){
             if(!f.exists()) {
                 saveResource(f.getName(), false);
                 getLogger().info("Loading " + f.getName() + "...");
             }
         }
-    }
-
-    public String getPluginPrefix(){
-        return pluginPrefix;
     }
 
     public void loadManagerData(){
@@ -137,26 +144,6 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
     public void loadDefaultRankPermissions(){
         defaultPermConfig = new DefaultPermConfig(this);
         defaultPermConfig.compilePerms();
-    }
-
-    public DivisionsManager getDivisionsManager(){
-        return divisionsManager;
-    }
-
-    public PlayerDataManager getPlayerDataManager(){
-        return playerDataManager;
-    }
-
-    public DefaultPermConfig getDefaultPermConfig(){
-        return defaultPermConfig;
-    }
-
-    public MessagesConfig getMessagesConfig(){
-        return messagesConfig;
-    }
-
-    public HashMap<UUID, BukkitTask> getInvitedPlayers(){
-        return invitedPlayers;
     }
 
     public void addInvitedPlayer(UUID u){

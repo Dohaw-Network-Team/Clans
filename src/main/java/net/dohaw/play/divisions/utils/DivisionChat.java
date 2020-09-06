@@ -4,7 +4,7 @@ import me.c10coding.coreapi.chat.ChatFactory;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

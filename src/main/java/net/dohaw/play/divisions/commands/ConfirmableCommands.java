@@ -5,7 +5,7 @@ import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

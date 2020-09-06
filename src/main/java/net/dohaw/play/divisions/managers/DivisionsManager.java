@@ -5,7 +5,7 @@ import net.dohaw.play.divisions.division.DivisionStatus;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.files.DivisionsConfigHandler;
 import net.dohaw.play.divisions.files.DivisionsListConfig;
-import net.dohaw.play.divisions.playerData.PlayerData;
+import net.dohaw.play.divisions.PlayerData;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;

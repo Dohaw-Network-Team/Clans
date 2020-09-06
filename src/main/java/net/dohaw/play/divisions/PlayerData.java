@@ -1,10 +1,8 @@
-package net.dohaw.play.divisions.playerData;
+package net.dohaw.play.divisions;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.dohaw.play.archetypes.archetype.Archetype;
-import net.dohaw.play.archetypes.archetype.Stat;
-import net.dohaw.play.divisions.DivisionChannel;
+import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.OfflinePlayer;
