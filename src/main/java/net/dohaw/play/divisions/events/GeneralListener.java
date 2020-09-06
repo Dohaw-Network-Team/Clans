@@ -155,6 +155,8 @@ public class GeneralListener implements Listener {
             double dmgScale = damageType == DamageType.RANGED ? defaultConfig.getBowDamageScale() : defaultConfig.getMeleeDamageScale();
             double dmgDivisionScale = damageType == DamageType.RANGED ? defaultConfig.getRangedDamageDivisionScale() : defaultConfig.getMeleeDamageDivisionScale();
 
+
+
             dmg = DamageCalculator.factorInDamage(pd, dmg, dmgScale, dmgDivisionScale);
 
         }
@@ -174,6 +176,7 @@ public class GeneralListener implements Listener {
             dmg = DamageCalculator.factorInToughness(pd, dmg, toughnessScale);
 
         }
+
         e.setDamage(dmg);
 
     }
@@ -183,13 +186,19 @@ public class GeneralListener implements Listener {
         return source instanceof Entity ? (Entity) source : null;
     }
 
+    /*
+        If the entity is a projectile, it gets the shooter.
+        If the entity isn't a projectile, it checks to see if it's a player.
+     */
     private boolean isEntityInvolvedAPlayer(Entity entityInvolved){
         if(entityInvolved instanceof Player){
             return true;
         }else{
-            if(getPotentialPlayerFromProjectile(entityInvolved) != null){
-                Entity potentialPlayer = getPotentialPlayerFromProjectile(entityInvolved);
-                return potentialPlayer instanceof Player;
+            if(entityInvolved instanceof Projectile){
+                if(getPotentialPlayerFromProjectile(entityInvolved) != null){
+                    Entity potentialPlayer = getPotentialPlayerFromProjectile(entityInvolved);
+                    return potentialPlayer instanceof Player;
+                }
             }
         }
         return false;
