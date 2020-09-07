@@ -14,23 +14,24 @@ public class DefaultConfig extends Config {
     }
 
     public double getMeleeDamageScale(){
-        return config.getDouble("Melee Damage Scale");
+        return config.getDouble("Damage Calculations.Scale.Melee Damage Scale");
     }
 
     public double getToughnessScale(){
-        return config.getDouble("Toughness Scale");
-    }
-
-    public double getMeleeDamageDivisionScale(){
-        return config.getDouble("Melee Damage Division Scale");
-    }
-
-    public double getRangedDamageDivisionScale(){
-        return config.getDouble("Ranged Damage Division Scale");
+        return config.getDouble("Damage Calculations.Scale.Toughness Scale");
     }
 
     public double getBowDamageScale(){
-        return config.getDouble("Bow Damage Scale");
+        return config.getDouble("Damage Calculations.Scale.Bow Damage Scale");
     }
+
+    public double getMeleeDamageDivisionScale(){
+        return config.getDouble("Damage Calculations.Division Scale.Melee Damage Division Scale");
+    }
+
+    public double getRangedDamageDivisionScale(){
+        return config.getDouble("Damage Calculations.Division Scale.Ranged Damage Division Scale");
+    }
+
 
 }

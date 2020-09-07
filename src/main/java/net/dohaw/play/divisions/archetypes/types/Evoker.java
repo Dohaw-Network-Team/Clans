@@ -7,15 +7,15 @@ import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import java.util.Arrays;
 import java.util.List;
 
-public class Duelist extends ArchetypeWrapper {
+public class Evoker extends ArchetypeWrapper {
 
-    public Duelist(ArchetypeName ARCHETYPE) {
+    public Evoker(ArchetypeName ARCHETYPE) {
         super(ARCHETYPE);
     }
 
     @Override
     public List<String> getAliases() {
-        return Arrays.asList("ass", "assassin", "as", "assin");
+        return Arrays.asList("evoker", "ev", "evo");
     }
 
 }

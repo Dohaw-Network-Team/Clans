@@ -13,3 +13,9 @@ commands:
       - division
   divisionsconfirm:
     description: "For confirmable commands"
+  archetypes:
+    description: "Command to deal with Archetype things"
+    aliases:
+      - ar
+      - arch
+      - arc

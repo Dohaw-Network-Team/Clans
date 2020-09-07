@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.archetypes;
 
-public interface Specializer {
+public interface Specializable {
 
 
 

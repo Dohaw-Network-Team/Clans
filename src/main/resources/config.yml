@@ -2,3 +2,14 @@ Plugin Prefix: "&l[&aDivisions&r&l]&r"
 
 Default Division Gold Amount: 100
 Invite Cooldown: 5
+
+Damage Calculations:
+
+  Scale:
+    Melee Damage Scale: 1.35
+    Toughness Scale: 1.2
+    Bow Damage Scale: 1.2
+
+  Division Scale:
+    Melee Damage Division Scale: 1.35
+    Ranged Damage Division Scale: 1.35
