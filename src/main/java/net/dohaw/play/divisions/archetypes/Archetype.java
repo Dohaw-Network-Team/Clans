@@ -15,7 +15,7 @@ public abstract class Archetype {
     public static final ArchetypeWrapper WIZARD = new Wizard(ArchetypeKey.WIZARD);
     public static final ArchetypeWrapper CLERIC = new Cleric(ArchetypeKey.CLERIC);
 
-    public static Map<ArchetypeKey, ArchetypeWrapper> archetypes = new HashMap<>();
+
 
     public static ArchetypeWrapper getByKey(ArchetypeKey archetypeKey){
         return archetypes.get(archetypeKey);
@@ -35,6 +35,6 @@ public abstract class Archetype {
         if(archetypes.containsKey(archetype.getKEY())){
             throw new IllegalArgumentException("This archetype is already registered!");
         }
-        archetypes.put(archetype.getKEY(), archetype);
+        archetypes.put((ArchetypeKey) archetype.getKEY(), archetype);
     }
 }

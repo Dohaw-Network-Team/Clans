@@ -1,17 +1,16 @@
-package net.dohaw.play.divisions.archetypes.specializations.archer;
+package net.dohaw.play.divisions.archetypes.specializations.duelist;
 
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SoulPiercing extends SpecialityWrapper {
+public class Uniform extends SpecialityWrapper {
 
-    public SoulPiercing(SpecialityKey KEY) {
+    public Uniform(SpecialityKey KEY) {
         super(KEY);
     }
 
@@ -22,8 +21,6 @@ public class SoulPiercing extends SpecialityWrapper {
 
     @Override
     public Map<Stat, Double> getMaxStats() {
-        return new HashMap<Stat, Double>(){{
-        }};
+        return null;
     }
-
 }

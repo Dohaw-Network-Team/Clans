@@ -5,39 +5,32 @@ import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 
 public enum SpecialityKey {
 
-    DIRECT("Direct", ArchetypeKey.CLERIC),
-    SPREAD("Spread", ArchetypeKey.CLERIC),
-    VAMPIRIC("Vampiric", ArchetypeKey.CLERIC),
+    DIRECT,
+    SPREAD,
+    VAMPIRIC,
 
-    TEMPEST("Tempest", ArchetypeKey.WIZARD),
-    ICE("Ice", ArchetypeKey.WIZARD),
-    FIRE("Fire", ArchetypeKey.WIZARD),
+    TEMPEST,
+    ICE,
+    FIRE,
 
-    SOUL_PIERCING("Soul Piercing", ArchetypeKey.ARCHER),
-    CLOAK("Cloak", ArchetypeKey.ARCHER),
-    DECEPTION("Deception", ArchetypeKey.ARCHER),
-    CONTROL("Control", ArchetypeKey.ARCHER),
+    SOUL_PIERCING,
+    CLOAK,
+    DECEPTION,
+    CONTROL,
 
-    ELEMENTAL("Elemental", ArchetypeKey.EVOKER),
-    DESTRUCTION("Destruction", ArchetypeKey.EVOKER),
-    CONSCIOUS("Conscious", ArchetypeKey.EVOKER),
+    ELEMENTAL,
+    DESTRUCTION,
+    CONSCIOUS,
 
-    ORDER("Order", ArchetypeKey.CRUSADER),
-    PROTECTION("Protection", ArchetypeKey.CRUSADER),
+    ORDER,
+    PROTECTION,
 
-    VENOM("Venom", ArchetypeKey.ASSASSIN),
-    PROACTIVE("Pro-active", ArchetypeKey.ASSASSIN),
-    SHADOW("Shadow", ArchetypeKey.ASSASSIN),
+    VENOM,
+    PROACTIVE,
+    SHADOW,
 
-    UNIFORM("Uniform", ArchetypeKey.DUELIST),
-    SOUL("Soul", ArchetypeKey.DUELIST),
-    PSYCHOTIC("Psychotic", ArchetypeKey.DUELIST);
-
-    @Getter private ArchetypeKey archetype;
-    @Getter private String key;
-    SpecialityKey(String key, ArchetypeKey archetype){
-        this.archetype = archetype;
-        this.key = key;
-    }
+    UNIFORM,
+    SOUL,
+    PSYCHOTIC
 
 }

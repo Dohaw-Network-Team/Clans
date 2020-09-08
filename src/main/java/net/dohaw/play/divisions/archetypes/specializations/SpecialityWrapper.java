@@ -1,16 +1,16 @@
 package net.dohaw.play.divisions.archetypes.specializations;
 
 
-import lombok.Getter;
+import net.dohaw.play.divisions.Stat;
+import net.dohaw.play.divisions.archetypes.Wrapper;
 
 import java.util.List;
+import java.util.Map;
 
-public abstract class SpecialityWrapper {
-
-    @Getter protected final SpecialityKey KEY;
+public abstract class SpecialityWrapper extends Wrapper {
 
     public SpecialityWrapper(final SpecialityKey KEY){
-        this.KEY = KEY;
+        super(KEY);
     }
 
     public String getName(){
@@ -19,5 +19,7 @@ public abstract class SpecialityWrapper {
     }
 
     public abstract List<String> getAliases();
+
+    public abstract Map<Stat, Double> getMaxStats();
 
 }

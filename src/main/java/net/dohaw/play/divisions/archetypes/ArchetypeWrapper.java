@@ -8,12 +8,10 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ArchetypeWrapper {
+public abstract class ArchetypeWrapper extends Wrapper{
 
-    @Getter protected final ArchetypeKey KEY;
-
-    public ArchetypeWrapper(ArchetypeKey ARCHETYPE) {
-        this.KEY = ARCHETYPE;
+    public ArchetypeWrapper(ArchetypeKey KEY) {
+        super(KEY);
     }
 
     public String getName(){
