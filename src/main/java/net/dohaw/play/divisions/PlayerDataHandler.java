@@ -4,6 +4,9 @@ import me.c10coding.coreapi.helpers.EnumHelper;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.specializations.Speciality;
+import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
+import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
@@ -100,6 +103,14 @@ public class PlayerDataHandler {
         }
         data.setArchetype(archetype);
 
+        SpecialityWrapper speciality;
+        if(playerConfig.get("Speciality") == null){
+            speciality = null;
+        }else{
+            speciality = (SpecialityWrapper) Speciality.getByKey(SpecialityKey.valueOf(playerConfig.getString("Speciality")));
+        }
+        data.setSpeciality(speciality);
+
         return data;
     }
 
@@ -189,6 +200,13 @@ public class PlayerDataHandler {
             config.set("Archetype", null);
         }else{
             config.set("Archetype", archetype.getKEY());
+        }
+
+        SpecialityWrapper speciality = playerData.getSpeciality();
+        if(speciality == null){
+            config.set("Speciality", null);
+        }else{
+            config.set("Speciality", speciality.getKEY());
         }
 
         double xp = playerData.getExp();

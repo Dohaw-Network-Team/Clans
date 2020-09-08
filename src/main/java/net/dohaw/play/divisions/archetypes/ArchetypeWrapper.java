@@ -14,8 +14,10 @@ public abstract class ArchetypeWrapper extends Wrapper{
         super(KEY);
     }
 
-    public abstract ItemStack[] getBeginnerItems();
+    public abstract List<ItemStack> getBeginnerItems();
 
     public abstract Map<SpecialityKey, Speciality> getSpecialities();
+
+    public abstract List<ItemStack> getProficientItems();
 
 }

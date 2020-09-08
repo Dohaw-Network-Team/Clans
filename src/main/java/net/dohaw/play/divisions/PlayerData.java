@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.OfflinePlayer;
@@ -30,6 +31,7 @@ public class PlayerData {
         Archetype stuff
      */
     @Getter @Setter private ArchetypeWrapper archetype;
+    @Getter @Setter private SpecialityWrapper speciality;
     @Getter @Setter private EnumMap<Stat, Double> statLevels = new EnumMap<>(Stat.class);
 
     @Getter private EnumMap<Permission, Object> permissions = new EnumMap<>(Permission.class);
