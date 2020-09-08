@@ -96,7 +96,7 @@ public class PlayerDataHandler {
         if(playerConfig.get("Archetype") == null){
             archetype = null;
         }else{
-            archetype = Archetype.getByKey(ArchetypeKey.valueOf(playerConfig.getString("Archetype")));
+            archetype = (ArchetypeWrapper) Archetype.getByKey(ArchetypeKey.valueOf(playerConfig.getString("Archetype")));
         }
         data.setArchetype(archetype);
 

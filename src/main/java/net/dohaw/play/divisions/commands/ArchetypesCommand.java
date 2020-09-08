@@ -38,7 +38,7 @@ public class ArchetypesCommand implements CommandExecutor {
                 if(Archetype.getByAlias(archetypeAlias) != null){
 
                     Player player = Bukkit.getPlayer(playerName);
-                    ArchetypeWrapper archetype = Archetype.getByAlias(archetypeAlias);
+                    ArchetypeWrapper archetype = (ArchetypeWrapper) Archetype.getByAlias(archetypeAlias);
 
                     UUID playerUUID = player.getUniqueId();
                     PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);

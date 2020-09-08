@@ -3,8 +3,7 @@ package net.dohaw.play.divisions;
 import lombok.Getter;
 import me.c10coding.coreapi.BetterJavaPlugin;
 import net.dohaw.play.divisions.archetypes.Archetype;
-import net.dohaw.play.divisions.archetypes.ArchetypeKey;
-import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.commands.ArchetypesCommand;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
@@ -22,7 +21,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /*
@@ -68,6 +66,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         loadDefaultRankPermissions();
         loadManagerData();
         registerArchetypes();
+        registerSpecialities();
 
         registerEvents(new GeneralListener(this));
         registerCommand("divisions", new DivisionsCommand(this));
@@ -82,13 +81,36 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
     }
 
     private void registerArchetypes(){
-        Archetype.registerArchetype(Archetype.ASSASSIN);
-        Archetype.registerArchetype(Archetype.ARCHER);
-        Archetype.registerArchetype(Archetype.CRUSADER);
-        Archetype.registerArchetype(Archetype.DUELIST);
-        Archetype.registerArchetype(Archetype.EVOKER);
-        Archetype.registerArchetype(Archetype.WIZARD);
-        Archetype.registerArchetype(Archetype.CLERIC);
+        Archetype.registerWrapper(Archetype.ASSASSIN);
+        Archetype.registerWrapper(Archetype.ARCHER);
+        Archetype.registerWrapper(Archetype.CRUSADER);
+        Archetype.registerWrapper(Archetype.DUELIST);
+        Archetype.registerWrapper(Archetype.EVOKER);
+        Archetype.registerWrapper(Archetype.WIZARD);
+        Archetype.registerWrapper(Archetype.CLERIC);
+    }
+
+    private void registerSpecialities(){
+        Speciality.registerWrapper(Speciality.CONTROL);
+        Speciality.registerWrapper(Speciality.DECEPTION);
+        Speciality.registerWrapper(Speciality.SOUL_PIERCING);
+        Speciality.registerWrapper(Speciality.PROACTIVE);
+        Speciality.registerWrapper(Speciality.SHADOW);
+        Speciality.registerWrapper(Speciality.VENOM);
+        Speciality.registerWrapper(Speciality.DIRECT);
+        Speciality.registerWrapper(Speciality.SPREAD);
+        Speciality.registerWrapper(Speciality.VAMPIRIC);
+        Speciality.registerWrapper(Speciality.ORDER);
+        Speciality.registerWrapper(Speciality.PROTECTION);
+        Speciality.registerWrapper(Speciality.PSYCHOTIC);
+        Speciality.registerWrapper(Speciality.SOUL);
+        Speciality.registerWrapper(Speciality.UNIFORM);
+        Speciality.registerWrapper(Speciality.CONSCIOUS);
+        Speciality.registerWrapper(Speciality.DESTRUCTION);
+        Speciality.registerWrapper(Speciality.ELEMENTAL);
+        Speciality.registerWrapper(Speciality.FIRE);
+        Speciality.registerWrapper(Speciality.ICE);
+        Speciality.registerWrapper(Speciality.TEMPEST);
     }
 
     private boolean setupEconomy() {

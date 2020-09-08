@@ -3,6 +3,7 @@ package net.dohaw.play.divisions.archetypes.specializations;
 
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.WrapperHolder;
 import net.dohaw.play.divisions.archetypes.specializations.archer.Cloak;
 import net.dohaw.play.divisions.archetypes.specializations.archer.Control;
 import net.dohaw.play.divisions.archetypes.specializations.archer.Deception;
@@ -25,10 +26,7 @@ import net.dohaw.play.divisions.archetypes.specializations.wizard.Fire;
 import net.dohaw.play.divisions.archetypes.specializations.wizard.Ice;
 import net.dohaw.play.divisions.archetypes.specializations.wizard.Tempest;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public abstract class Speciality {
+public abstract class Speciality extends WrapperHolder {
 
     public static final SpecialityWrapper CLOAK = new Cloak(SpecialityKey.CLOAK);
 
@@ -71,8 +69,5 @@ public abstract class Speciality {
     public static final SpecialityWrapper ICE = new Ice(SpecialityKey.ICE);
 
     public static final SpecialityWrapper TEMPEST = new Tempest(SpecialityKey.TEMPEST);
-
-    public static Map<ArchetypeKey, SpecialityWrapper> specs = new HashMap<>();
-
 
 }

@@ -14,13 +14,6 @@ public abstract class ArchetypeWrapper extends Wrapper{
         super(KEY);
     }
 
-    public String getName(){
-        String archetypeStr = KEY.name();
-        return archetypeStr.substring(0, 1).toUpperCase() + archetypeStr.substring(1).toLowerCase();
-    }
-
-    public abstract List<String> getAliases();
-
     public abstract ItemStack[] getBeginnerItems();
 
     public abstract Map<SpecialityKey, Speciality> getSpecialities();
