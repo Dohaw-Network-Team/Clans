@@ -25,7 +25,7 @@ public class WrapperHolder {
         if(wrappers.containsKey(wrapper.getKEY())){
             throw new IllegalArgumentException("This archetype is already registered!");
         }
-        wrappers.put((ArchetypeKey) wrapper.getKEY(), wrapper);
+        wrappers.put(wrapper.getKEY(), wrapper);
     }
 
 }

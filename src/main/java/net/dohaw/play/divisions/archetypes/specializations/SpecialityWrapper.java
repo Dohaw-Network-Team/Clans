@@ -14,4 +14,6 @@ public abstract class SpecialityWrapper extends Wrapper {
 
     public abstract Map<Stat, Double> getMaxStats();
 
+    public abstract boolean canDuelWield();
+
 }

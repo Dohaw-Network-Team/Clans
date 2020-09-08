@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.managers;
 
-import net.dohaw.play.divisions.CustomItem;
+import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.DivisionsPlugin;
 
 import java.util.ArrayList;

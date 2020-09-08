@@ -17,7 +17,9 @@ public abstract class Wrapper {
 
     public String getName(){
         String archetypeStr = KEY.name();
-        return archetypeStr.substring(0, 1).toUpperCase() + archetypeStr.substring(1).toLowerCase();
+        archetypeStr = archetypeStr.substring(0, 1).toUpperCase() + archetypeStr.substring(1).toLowerCase();
+        archetypeStr = archetypeStr.replace("_", " ");
+        return archetypeStr;
     }
 
 }
