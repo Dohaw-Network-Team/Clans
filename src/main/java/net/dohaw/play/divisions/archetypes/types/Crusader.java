@@ -1,7 +1,6 @@
 package net.dohaw.play.divisions.archetypes.types;
 
-import net.dohaw.play.divisions.archetypes.Archetype;
-import net.dohaw.play.divisions.archetypes.ArchetypeName;
+import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 
 import java.util.Arrays;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public class Crusader extends ArchetypeWrapper {
 
-    public Crusader(ArchetypeName ARCHETYPE) {
+    public Crusader(ArchetypeKey ARCHETYPE) {
         super(ARCHETYPE);
     }
 

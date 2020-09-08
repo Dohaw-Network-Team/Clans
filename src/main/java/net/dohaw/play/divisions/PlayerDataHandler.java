@@ -1,6 +1,9 @@
 package net.dohaw.play.divisions;
 
 import me.c10coding.coreapi.helpers.EnumHelper;
+import net.dohaw.play.divisions.archetypes.Archetype;
+import net.dohaw.play.divisions.archetypes.ArchetypeKey;
+import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
@@ -50,7 +53,8 @@ public class PlayerDataHandler {
         return data;
     }
 
-    public PlayerData loadPlayerAttributes(FileConfiguration playerConfig, PlayerData data){
+    public PlayerData loadArchetypeData(FileConfiguration playerConfig, PlayerData data){
+
         EnumMap<Stat, Double> stats = new EnumMap<>(Stat.class);
         for(Stat stat : Stat.values()){
             String statKey = enumHelper.enumToName(stat);
@@ -71,6 +75,30 @@ public class PlayerDataHandler {
             mana = playerConfig.getDouble("Mana");
         }
         data.setMana(mana);
+
+        int level;
+        if(playerConfig.get("Level") == null){
+            level = 1;
+        }else{
+            level = playerConfig.getInt("Level");
+        }
+        data.setLevel(level);
+
+        double exp;
+        if(playerConfig.get("EXP") == null){
+            exp = 0;
+        }else{
+            exp = playerConfig.getDouble("EXP");
+        }
+        data.setExp(exp);
+
+        ArchetypeWrapper archetype;
+        if(playerConfig.get("Archetype") == null){
+            archetype = null;
+        }else{
+            archetype = Archetype.getByKey(ArchetypeKey.valueOf(playerConfig.getString("Archetype")));
+        }
+        data.setArchetype(archetype);
 
         return data;
     }
@@ -156,6 +184,19 @@ public class PlayerDataHandler {
             config.set("Stats.Attributes." + key, value);
         }
 
+        ArchetypeWrapper archetype = playerData.getArchetype();
+        if(archetype == null){
+            config.set("Archetype", null);
+        }else{
+            config.set("Archetype", archetype.getKEY());
+        }
+
+        double xp = playerData.getExp();
+        int level = playerData.getLevel();
+
+        config.set("XP", xp);
+        config.set("Level", level);
+
         double mana = playerData.getMana();
         config.set("Mana", mana);
 
@@ -189,7 +230,7 @@ public class PlayerDataHandler {
 
         data = loadPlayerPermissions(playerDataConfig, data);
         data = loadPlayerStats(playerDataConfig, data);
-        data = loadPlayerAttributes(playerDataConfig, data);
+        data = loadArchetypeData(playerDataConfig, data);
         return data;
     }
 

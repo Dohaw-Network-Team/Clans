@@ -2,6 +2,10 @@ package net.dohaw.play.divisions;
 
 import lombok.Getter;
 import me.c10coding.coreapi.BetterJavaPlugin;
+import net.dohaw.play.divisions.archetypes.Archetype;
+import net.dohaw.play.divisions.archetypes.ArchetypeKey;
+import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.commands.ArchetypesCommand;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
 import net.dohaw.play.divisions.events.GeneralListener;
@@ -18,6 +22,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /*
@@ -62,16 +67,28 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
 
         loadDefaultRankPermissions();
         loadManagerData();
+        registerArchetypes();
 
         registerEvents(new GeneralListener(this));
         registerCommand("divisions", new DivisionsCommand(this));
         registerCommand("divisionsconfirm", new ConfirmableCommands(this));
+        registerCommand("archetypes", new ArchetypesCommand(this));
 
     }
 
     @Override
     public void onDisable() {
         saveManagerData();
+    }
+
+    private void registerArchetypes(){
+        Archetype.registerArchetype(Archetype.ASSASSIN);
+        Archetype.registerArchetype(Archetype.ARCHER);
+        Archetype.registerArchetype(Archetype.CRUSADER);
+        Archetype.registerArchetype(Archetype.DUELIST);
+        Archetype.registerArchetype(Archetype.EVOKER);
+        Archetype.registerArchetype(Archetype.WIZARD);
+        Archetype.registerArchetype(Archetype.CLERIC);
     }
 
     private boolean setupEconomy() {

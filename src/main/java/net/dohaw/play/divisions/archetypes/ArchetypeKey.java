@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.Arrays;
 import java.util.List;
 
-public enum ArchetypeName {
+public enum ArchetypeKey {
 
     ASSASSIN,
     CRUSADER,
