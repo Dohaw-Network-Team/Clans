@@ -1,4 +1,4 @@
-package net.dohaw.play.divisions.menus;
+package net.dohaw.play.divisions.menus.permissions;
 
 import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.chat.ChatFactory;

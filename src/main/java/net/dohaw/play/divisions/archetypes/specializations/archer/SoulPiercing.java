@@ -26,4 +26,9 @@ public class SoulPiercing extends SpecialityWrapper {
         }};
     }
 
+    @Override
+    public boolean canDuelWield() {
+        return false;
+    }
+
 }

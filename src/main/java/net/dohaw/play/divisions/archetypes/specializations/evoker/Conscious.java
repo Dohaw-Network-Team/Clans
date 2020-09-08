@@ -23,4 +23,9 @@ public class Conscious extends SpecialityWrapper {
     public Map<Stat, Double> getMaxStats() {
         return null;
     }
+
+    @Override
+    public boolean canDuelWield() {
+        return false;
+    }
 }

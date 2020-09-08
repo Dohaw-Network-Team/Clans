@@ -4,14 +4,17 @@ import lombok.Getter;
 import me.c10coding.coreapi.BetterJavaPlugin;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
+import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.commands.ArchetypesCommand;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
+import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.events.GeneralListener;
 import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.files.MessagesConfig;
 import net.dohaw.play.divisions.files.StatsConfig;
+import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.runnables.InviteTimer;
@@ -38,6 +41,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
 
     @Getter private DivisionsManager divisionsManager;
     @Getter private PlayerDataManager playerDataManager;
+    @Getter private CustomItemManager customItemManager;
     @Getter private DefaultPermConfig defaultPermConfig;
     @Getter private MessagesConfig messagesConfig;
     @Getter private StatsConfig statsConfig;
@@ -65,8 +69,13 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
 
         loadDefaultRankPermissions();
         loadManagerData();
+
+        /*
+            Just puts the static contents into a map so that it's easy to filter specific things.
+         */
         registerArchetypes();
         registerSpecialities();
+        registerSpells();
 
         registerEvents(new GeneralListener(this));
         registerCommand("divisions", new DivisionsCommand(this));
@@ -111,6 +120,12 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         Speciality.registerWrapper(Speciality.FIRE);
         Speciality.registerWrapper(Speciality.ICE);
         Speciality.registerWrapper(Speciality.TEMPEST);
+    }
+
+    private void registerSpells(){
+        Spell.registerWrapper(Spell.FROST_STRIKE);
+        Spell.registerWrapper(Spell.INVISIBLE_STRIKE);
+        Spell.registerWrapper(Spell.SMITE);
     }
 
     private boolean setupEconomy() {
@@ -163,9 +178,11 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
 
         divisionsManager = new DivisionsManager(this);
         playerDataManager = new PlayerDataManager(this);
+        customItemManager = new CustomItemManager(this);
 
         playerDataManager.loadContents();
         divisionsManager.loadContents();
+        customItemManager.loadContents();
 
         playerDataManager.setPlayerDivisions();
     }

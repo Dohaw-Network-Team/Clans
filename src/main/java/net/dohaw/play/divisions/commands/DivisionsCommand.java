@@ -10,7 +10,7 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.files.MessagesConfig;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.menus.PermissionsMenu;
+import net.dohaw.play.divisions.menus.permissions.PermissionsMenu;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;

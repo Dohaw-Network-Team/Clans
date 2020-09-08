@@ -1,10 +1,9 @@
-package net.dohaw.play.divisions.menus;
+package net.dohaw.play.divisions.menus.permissions;
 
 import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.chat.ChatFactory;
 import me.c10coding.coreapi.helpers.EnumHelper;
 import me.c10coding.coreapi.menus.Menu;
-import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

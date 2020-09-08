@@ -1,18 +1,20 @@
-package net.dohaw.play.divisions.menus;
+package net.dohaw.play.divisions.menus.itemcreation;
 
 import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.menus.Menu;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public class ItemCreationMenu extends Menu {
+public class CreateItemMenu extends Menu {
 
-    public ItemCreationMenu(APIHook plugin) {
-        super(plugin, "Item Creation", 45);
+    public CreateItemMenu(APIHook plugin) {
+        super(plugin, "Create Item", 45);
     }
 
     @Override
     public void initializeItems(Player p) {
+
+
 
     }
 

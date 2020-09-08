@@ -2,16 +2,20 @@ package net.dohaw.play.divisions.managers;
 
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.files.CustomItemsConfig;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomItemManager implements Manager{
 
-    private List<CustomItem> customItems = new ArrayList<>();
+    private Map<String, CustomItem> customItems = new HashMap<>();
+    private CustomItemsConfig customItemsConfig;
 
     public CustomItemManager(DivisionsPlugin plugin){
-
+        this.customItemsConfig = new CustomItemsConfig(plugin);
     }
 
     @Override
@@ -26,12 +30,12 @@ public class CustomItemManager implements Manager{
 
     @Override
     public void saveContents() {
-
+        customItemsConfig.saveCustomItems(customItems);
     }
 
     @Override
     public void loadContents() {
-
+        this.customItems = customItemsConfig.loadCustomItems();
     }
 
     @Override

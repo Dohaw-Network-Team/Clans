@@ -18,6 +18,10 @@ public enum Rank {
         -1 - Lower
      */
 
+    /*
+        Use #ordinal() next time
+     */
+
     public static int isAHigherRank(Rank rank1, Rank rank2){
         List<Rank> ranks = list();
         if(ranks.indexOf(rank1) > ranks.indexOf(rank2)){
