@@ -13,6 +13,7 @@ public enum ArchetypeKey {
     DUELIST,
     ARCHER,
     WIZARD,
+    TREE,
     CLERIC
 
 }

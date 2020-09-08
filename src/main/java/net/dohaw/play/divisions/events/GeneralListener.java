@@ -155,7 +155,11 @@ public class GeneralListener implements Listener {
             double dmgScale = damageType == DamageType.RANGED ? defaultConfig.getBowDamageScale() : defaultConfig.getMeleeDamageScale();
             double dmgDivisionScale = damageType == DamageType.RANGED ? defaultConfig.getRangedDamageDivisionScale() : defaultConfig.getMeleeDamageDivisionScale();
 
-            dmg = DamageCalculator.factorInDamage(pd, dmg, dmgScale, dmgDivisionScale);
+            if(damageType == DamageType.RANGED){
+                dmg = DamageCalculator.factorInDamage(pd, dmg, dmgScale, dmgDivisionScale, true);
+            }else{
+                dmg = DamageCalculator.factorInDamage(pd, dmg, dmgScale, dmgDivisionScale, false);
+            }
 
         }
 

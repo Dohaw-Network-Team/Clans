@@ -8,10 +8,15 @@ import java.util.EnumMap;
 
 public class DamageCalculator {
 
-    public static double factorInDamage(PlayerData data, double dmg, double dmgScale, double divider){
+    public static double factorInDamage(PlayerData data, double dmg, double dmgScale, double divider, boolean isBowDamage){
         EnumMap<Stat, Double> skills = data.getStatLevels();
-        double strengthLvl = skills.get(Stat.STRENGTH);
-        return (dmg + (Math.pow(strengthLvl, dmgScale))) / divider;
+        double damageEnhancer;
+        if(isBowDamage){
+            damageEnhancer = skills.get(Stat.PIERCING);
+        }else{
+            damageEnhancer = skills.get(Stat.STRENGTH);
+        }
+        return (dmg + (Math.pow(damageEnhancer, dmgScale))) / divider;
     }
 
     public static double factorInToughness(PlayerData data, double dmg, double toughnessScale){

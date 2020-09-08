@@ -97,6 +97,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         Archetype.registerWrapper(Archetype.EVOKER);
         Archetype.registerWrapper(Archetype.WIZARD);
         Archetype.registerWrapper(Archetype.CLERIC);
+        Archetype.registerWrapper(Archetype.TREE);
     }
 
     private void registerSpecialities(){

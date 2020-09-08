@@ -9,5 +9,6 @@ public enum Stat {
     STEALTHINESS,
     ACCURACY,
     LUCK,
+    PIERCING,
     MAX_HEALTH
 }

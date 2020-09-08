@@ -12,6 +12,7 @@ public abstract class Archetype extends WrapperHolder{
     public static final ArchetypeWrapper DUELIST = new Duelist(ArchetypeKey.DUELIST);
     public static final ArchetypeWrapper EVOKER = new Evoker(ArchetypeKey.EVOKER);
     public static final ArchetypeWrapper WIZARD = new Wizard(ArchetypeKey.WIZARD);
+    public static final ArchetypeWrapper TREE = new Tree(ArchetypeKey.TREE);
     public static final ArchetypeWrapper CLERIC = new Cleric(ArchetypeKey.CLERIC);
 
 }
