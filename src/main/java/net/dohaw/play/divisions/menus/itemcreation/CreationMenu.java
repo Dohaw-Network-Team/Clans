@@ -11,10 +11,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
-public class ItemCreationMenu extends Menu implements Listener {
+public class CreationMenu extends Menu implements Listener {
 
-    public ItemCreationMenu(APIHook plugin) {
-        super(plugin, "Item Creation", 45);
+    public CreationMenu(APIHook plugin) {
+        super(plugin, null,"Item Creation", 45);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -43,9 +43,11 @@ public class ItemCreationMenu extends Menu implements Listener {
         Menu newMenu = null;
         switch(slotClicked){
             case 20:
-                newMenu = new CreateItemMenu(plugin);
+                newMenu = new CreateItemMenu(plugin, this);
+                break;
             case 24:
-                newMenu = new DisplayItemFiltersMenu(plugin);
+                newMenu = new ItemFiltersMenu(plugin, this);
+                break;
         }
 
         if(newMenu != null){

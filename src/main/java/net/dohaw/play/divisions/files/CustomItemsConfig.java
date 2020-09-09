@@ -9,13 +9,12 @@ import net.dohaw.play.divisions.customitems.ItemType;
 import net.dohaw.play.divisions.customitems.Rarity;
 import net.dohaw.play.divisions.customitems.types.Armor;
 import net.dohaw.play.divisions.customitems.types.Consumable;
-import net.dohaw.play.divisions.customitems.types.Gem;
+import net.dohaw.play.divisions.customitems.types.Gemstone;
 import net.dohaw.play.divisions.customitems.types.Weapon;
 import net.dohaw.play.divisions.utils.EnchantmentSerializer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -51,8 +50,8 @@ public class CustomItemsConfig extends Config {
 
                     CustomItem cItem;
                     switch (itemType) {
-                        case GEM:
-                            cItem = new Gem(key, itemType, material, displayName);
+                        case GEMSTONE:
+                            cItem = new Gemstone(key, itemType, material, displayName);
                         case ARMOR:
                             cItem = new Armor(key, itemType, material, displayName);
                         case WEAPON:

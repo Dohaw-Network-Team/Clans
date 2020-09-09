@@ -4,5 +4,5 @@ public enum ItemType {
     WEAPON,
     ARMOR,
     CONSUMABLE,
-    GEM
+    GEMSTONE
 }

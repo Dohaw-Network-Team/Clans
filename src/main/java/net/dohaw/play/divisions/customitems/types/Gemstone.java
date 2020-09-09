@@ -5,10 +5,9 @@ import net.dohaw.play.divisions.customitems.ItemType;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class Gem extends CustomItem {
+public class Gemstone extends CustomItem {
 
-
-    public Gem(String KEY, ItemType itemType, Material material, String displayName) {
+    public Gemstone(String KEY, ItemType itemType, Material material, String displayName) {
         super(KEY, itemType, material, displayName);
     }
 

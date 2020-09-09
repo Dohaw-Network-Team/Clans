@@ -7,8 +7,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class CreateItemMenu extends Menu {
 
-    public CreateItemMenu(APIHook plugin) {
-        super(plugin, "Create Item", 45);
+    public CreateItemMenu(APIHook plugin, Menu previousMenu) {
+        super(plugin, previousMenu,"Create Item", 45);
     }
 
     @Override
