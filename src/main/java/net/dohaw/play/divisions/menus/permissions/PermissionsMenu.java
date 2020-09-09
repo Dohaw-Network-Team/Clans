@@ -25,8 +25,12 @@ public class PermissionsMenu extends Menu implements Listener {
     private EnumHelper enumHelper;
     private ChatFactory chatFactory;
 
+    /*
+        Making previous menu null because it works right now without the previousMenu object
+     */
+
     public PermissionsMenu(JavaPlugin plugin) {
-        super((APIHook) plugin, "Permissions", 45);
+        super((APIHook) plugin, null,"Permissions", 45);
         this.enumHelper = ((DivisionsPlugin)plugin).getAPI().getEnumHelper();
         this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
         Bukkit.getPluginManager().registerEvents(this, plugin);

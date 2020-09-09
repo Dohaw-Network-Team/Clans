@@ -6,6 +6,7 @@ depend:
   - CoreAPI
   - Vault
 commands:
+
   divisions:
     description: "Base command for this plugin"
     aliases:
@@ -19,3 +20,12 @@ commands:
       - ar
       - arch
       - arc
+  customitems:
+    description: "Brings up menus for creating custom items"
+    aliases:
+      - cui
+      - customi
+      - citems
+      - citem
+      - customitem
+      - ci

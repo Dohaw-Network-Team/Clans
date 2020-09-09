@@ -18,8 +18,12 @@ import java.util.ArrayList;
 
 public class RanksMenu extends Menu implements Listener {
 
+    /*
+        Making previous menu null because it works right now without the previousMenu object
+     */
+
     public RanksMenu(JavaPlugin plugin) {
-        super((APIHook) plugin, "Rank Permissions", 9);
+        super((APIHook) plugin, null, "Rank Permissions", 9);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

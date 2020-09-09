@@ -32,8 +32,12 @@ public class MemberPermissionsMenu extends Menu implements Listener {
     private PlayerDataManager playerDataManager;
     private PlayerData playerData;
 
+    /*
+        Making previous menu null because it works right now without the previousMenu object
+     */
+
     public MemberPermissionsMenu(JavaPlugin plugin, PlayerData playerData) {
-        super((APIHook) plugin, playerData.getPLAYER_NAME() + " Permissions", 45);
+        super((APIHook) plugin, null,playerData.getPLAYER_NAME() + " Permissions", 45);
         this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
         this.enumHelper = ((DivisionsPlugin)plugin).getAPI().getEnumHelper();
         this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();

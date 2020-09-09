@@ -4,6 +4,7 @@ import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.helpers.EnumHelper;
 import me.c10coding.coreapi.menus.Menu;
 import net.dohaw.play.divisions.customitems.Rarity;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,7 @@ public class ItemRarityFiltersMenu extends Menu implements Listener {
     public ItemRarityFiltersMenu(APIHook plugin, Menu previousMenu) {
         super(plugin, previousMenu, "Rarity Filters", 36);
         this.enumHelper = plugin.getAPI().getEnumHelper();
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override

@@ -5,15 +5,16 @@ import me.c10coding.coreapi.menus.Menu;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
-public class CreationMenu extends Menu implements Listener {
+public class CustomItemsMenu extends Menu implements Listener {
 
-    public CreationMenu(APIHook plugin) {
+    public CustomItemsMenu(APIHook plugin) {
         super(plugin, null,"Item Creation", 45);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -28,6 +29,7 @@ public class CreationMenu extends Menu implements Listener {
         fillMenu(false);
     }
 
+    @EventHandler
     @Override
     protected void onInventoryClick(InventoryClickEvent e) {
 

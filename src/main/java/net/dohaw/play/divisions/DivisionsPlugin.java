@@ -7,6 +7,7 @@ import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.commands.ArchetypesCommand;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
+import net.dohaw.play.divisions.commands.CustomItemsCommand;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.events.GeneralListener;
@@ -81,6 +82,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         registerCommand("divisions", new DivisionsCommand(this));
         registerCommand("divisionsconfirm", new ConfirmableCommands(this));
         registerCommand("archetypes", new ArchetypesCommand(this));
+        registerCommand("customitems", new CustomItemsCommand(this));
 
     }
 
@@ -162,11 +164,15 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
             }
         }
 
-        File[] files = {new File(getDataFolder(), "config.yml"),
-                new File(getDataFolder(), "divisionsList.yml"),
-                new File(getDataFolder(), "defaultPerms.yml"),
-                new File(getDataFolder(), "stats.yml"),
-                new File(getDataFolder(), "messages.yml")};
+        File[] files = {
+            new File(getDataFolder(), "config.yml"),
+            new File(getDataFolder(), "divisionsList.yml"),
+            new File(getDataFolder(), "defaultPerms.yml"),
+            new File(getDataFolder(), "stats.yml"),
+            new File(getDataFolder(), "customItems.yml"),
+            new File(getDataFolder(), "messages.yml")
+        };
+
         for(File f : files){
             if(!f.exists()) {
                 saveResource(f.getName(), false);
@@ -189,6 +195,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
     }
 
     public void saveManagerData(){
+
         if(divisionsManager != null){
             divisionsManager.saveContents();
         }
@@ -196,6 +203,11 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         if(playerDataManager != null){
             playerDataManager.saveContents();
         }
+
+        if(customItemManager != null){
+            customItemManager.saveContents();
+        }
+
     }
 
     public void loadDefaultRankPermissions(){

@@ -28,8 +28,12 @@ public class MembersMenu extends Menu implements Listener {
     private Player player;
     private ChatFactory chatFactory;
 
+    /*
+        Making previous menu null because it works right now without the previousMenu object
+     */
+
     public MembersMenu(JavaPlugin plugin, Player player) {
-        super((APIHook) plugin, "Member Permissions", 45);
+        super((APIHook) plugin, null, "Member Permissions", 45);
         this.player = player;
         this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
         Bukkit.getPluginManager().registerEvents(this, plugin);

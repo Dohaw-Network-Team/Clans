@@ -36,8 +36,12 @@ public class RankPermissionsMenu extends Menu implements Listener {
     private EnumHelper enumHelper;
     private ChatFactory chatFactory;
 
+    /*
+        Making previous menu null because it works right now without the previousMenu object
+     */
+
     public RankPermissionsMenu(JavaPlugin plugin, final String rankName) {
-        super((APIHook) plugin, rankName + " Permissions", 45);
+        super((APIHook) plugin, null,rankName + " Permissions", 45);
         this.rankName = rankName;
         this.divisionsManager = ((DivisionsPlugin)plugin).getDivisionsManager();
         this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
