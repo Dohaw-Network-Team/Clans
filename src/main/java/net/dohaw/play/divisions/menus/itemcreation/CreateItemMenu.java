@@ -1,25 +1,175 @@
 package net.dohaw.play.divisions.menus.itemcreation;
 
+import com.sun.org.apache.xpath.internal.operations.Div;
+import lombok.Setter;
 import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.PlayerData;
+import net.dohaw.play.divisions.customitems.CustomItem;
+import net.dohaw.play.divisions.customitems.ItemCreationSession;
+import net.dohaw.play.divisions.customitems.ItemType;
+import net.dohaw.play.divisions.managers.CustomItemManager;
+import net.dohaw.play.divisions.managers.PlayerDataManager;
+import net.dohaw.play.divisions.prompts.ItemCreationSessionPrompt;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
-public class CreateItemMenu extends Menu {
+import java.util.ArrayList;
+import java.util.List;
 
-    public CreateItemMenu(APIHook plugin, Menu previousMenu) {
+public class CreateItemMenu extends Menu implements Listener {
+
+    @Setter private ItemCreationSession session;
+    private PlayerDataManager playerDataManager;
+
+    public CreateItemMenu(APIHook plugin, Menu previousMenu, ItemCreationSession session) {
         super(plugin, previousMenu,"Create Item", 45);
+        this.session = session;
+        this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void initializeItems(Player p) {
 
+        Material sessionMat = session.getMaterial();
+        String sessionDisplayName = session.getDisplayName();
+        String sessionKey = session.getKey();
+        ItemType sessionItemType = session.getItemType();
 
+        /*
+            Change Material
+         */
+        inv.setItem(10, createGuiItem(sessionMat, "&eChange Material", new ArrayList<>()));
 
+        /*
+            Change Display Name
+         */
+        List<String> displayNameLore = new ArrayList<String>(){{
+            add("&cCurrent Display Name: &e" + sessionDisplayName);
+        }};
+        inv.setItem(12, createGuiItem(Material.PAPER, "&eChange Display Name", displayNameLore));
+
+        /*
+            Change Key
+         */
+        List<String> keyLore = new ArrayList<String>(){{
+            add("&cCurrent Key: &e" + sessionKey);
+        }};
+        inv.setItem(14, createGuiItem(Material.TRIPWIRE_HOOK, "&eChange Key", keyLore));
+
+        /*
+            Change Item Type
+         */
+        List<String> itemTypeLore = new ArrayList<String>(){{
+            add("&cCurrent Item Type: &e" + sessionItemType);
+        }};
+        Material itemTypeMat;
+        if(sessionItemType == ItemType.ARMOR){
+            itemTypeMat = Material.IRON_CHESTPLATE;
+        }else if(sessionItemType == ItemType.CONSUMABLE){
+            itemTypeMat = Material.PORKCHOP;
+        }else if(sessionItemType == ItemType.GEMSTONE){
+            itemTypeMat = Material.DIAMOND;
+        }else{
+            itemTypeMat = Material.DIAMOND_SWORD;
+        }
+        inv.setItem(16, createGuiItem(itemTypeMat, "&eChange Item Type", itemTypeLore));
+
+        //Abort button
+        inv.setItem(inv.getSize() - 9, createGuiItem(Material.BARRIER, "&cAbort Creation", new ArrayList<>()));
+
+        //Done button
+        inv.setItem(inv.getSize() - 5, createGuiItem(Material.EMERALD_BLOCK, "&aCreate Item", new ArrayList<>()));
+
+        setFillerMaterial(Material.BLACK_STAINED_GLASS_PANE);
+        setBackMaterial(Material.ARROW);
+        fillMenu(true);
     }
 
+    public void clearItems(){
+        inv.clear();
+    }
+
+    @EventHandler
     @Override
     protected void onInventoryClick(InventoryClickEvent e) {
 
+        Player player = (Player) e.getWhoClicked();
+        int slotClicked = e.getSlot();
+        ItemStack clickedItem = e.getCurrentItem();
+
+        if(e.getClickedInventory() == null) return;
+        if(!e.getClickedInventory().equals(inv)) return;
+        e.setCancelled(true);
+        if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
+
+        int abortCreationSlot = inv.getSize() - 9;
+        int createItemSlot = inv.getSize() - 5;
+        PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
+
+        if(slotClicked == 10 || slotClicked == 12 || slotClicked == 14){
+
+            ItemCreationSessionPrompt.Change change;
+            if(slotClicked == 10){
+                change = ItemCreationSessionPrompt.Change.MATERIAL;
+            }else if(slotClicked == 12){
+                change = ItemCreationSessionPrompt.Change.DISPLAY_NAME;
+            }else{
+                change = ItemCreationSessionPrompt.Change.KEY;
+            }
+
+            ConversationFactory cf = new ConversationFactory(plugin);
+            Conversation conv = cf.withFirstPrompt(new ItemCreationSessionPrompt(change, this, session, ((DivisionsPlugin)plugin).getPlayerDataManager() )).buildConversation(player);
+            conv.begin();
+
+            player.closeInventory();
+
+        }else if(slotClicked == 16){
+
+            ItemType nextItemType = ItemType.getNextItemType(session.getItemType());
+            session.setItemType(nextItemType);
+
+            List<String> itemTypeLore = new ArrayList<String>(){{
+                add("&cCurrent Item Type: " + nextItemType);
+            }};
+            inv.setItem(16, createGuiItem(nextItemType.getMenuMat(), "&eChange Item Type", itemTypeLore));
+
+            /*
+                Saves the session to the player data object.
+             */
+            pd.setItemCreationSession(session);
+
+            playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+
+        }else if(slotClicked == abortCreationSlot){
+            clearPlayerDataSession(pd);
+            chatFactory.sendPlayerMessage("The item creation session has been aborted!", false, player, null);
+            player.closeInventory();
+        }else if(slotClicked == createItemSlot){
+
+            CustomItem cItem = session.toItem();
+            CustomItemManager cim = ((DivisionsPlugin)plugin).getCustomItemManager();
+            cim.addCustomItem(cItem);
+
+            clearPlayerDataSession(pd);
+            chatFactory.sendPlayerMessage("The item creation session has been created!", false, player, null);
+            player.closeInventory();
+        }
+
     }
+
+    private void clearPlayerDataSession(PlayerData pd){
+        pd.setItemCreationSession(new ItemCreationSession());
+        playerDataManager.updatePlayerData(pd.getPLAYER_UUID(), pd);
+    }
+
 }

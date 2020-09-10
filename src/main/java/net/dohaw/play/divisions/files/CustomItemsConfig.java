@@ -74,8 +74,12 @@ public class CustomItemsConfig extends Config {
                     }
                     cItem.setEnchants(enchants);
 
-                    Rarity rarity = Rarity.valueOf(startPath + ".Rarity");
-                    cItem.setRarity(rarity);
+                    if(config.getString(startPath + ".Rarity") != null){
+                        Rarity rarity = Rarity.valueOf(config.getString(startPath + ".Rarity"));
+                        cItem.setRarity(rarity);
+                    }else{
+                        cItem.setRarity(Rarity.UNCOMMON);
+                    }
 
                     boolean isSpellItem = config.getBoolean(startPath + ".Is Spell Item");
                     cItem.setSpellItem(isSpellItem);

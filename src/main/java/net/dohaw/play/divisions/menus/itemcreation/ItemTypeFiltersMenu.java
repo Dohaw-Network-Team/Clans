@@ -27,10 +27,10 @@ public class ItemTypeFiltersMenu extends Menu implements Listener {
     @Override
     public void initializeItems(Player p) {
 
-        inv.setItem(10, createGuiItem(Material.IRON_HELMET, "Armor", new ArrayList<>()));
-        inv.setItem(12, createGuiItem(Material.PORKCHOP, "Consumable", new ArrayList<>()));
-        inv.setItem(14, createGuiItem(Material.DIAMOND, "Gemstone", new ArrayList<>()));
-        inv.setItem(16, createGuiItem(Material.DIAMOND_SWORD, "Weapon", new ArrayList<>()));
+        inv.setItem(10, createGuiItem(Material.IRON_HELMET, "&eArmor", new ArrayList<>()));
+        inv.setItem(12, createGuiItem(Material.PORKCHOP, "&eConsumable", new ArrayList<>()));
+        inv.setItem(14, createGuiItem(Material.DIAMOND, "&eGemstone", new ArrayList<>()));
+        inv.setItem(16, createGuiItem(Material.DIAMOND_SWORD, "&eWeapon", new ArrayList<>()));
 
         setBackMaterial(Material.ARROW);
         setFillerMaterial(Material.BLACK_STAINED_GLASS_PANE);
@@ -68,7 +68,7 @@ public class ItemTypeFiltersMenu extends Menu implements Listener {
         }
 
         if(itemType != null){
-            ItemDisplayMenu newMenu = new ItemDisplayMenu(plugin, this, enumHelper.enumToName(itemType), ItemFilter.ITEM_TYPES, itemType);
+            ItemDisplayMenu newMenu = new ItemDisplayMenu(plugin, this, enumHelper.enumToName(itemType), ItemFilter.ITEM_TYPES, itemType, 0);
             newMenu.initializeItems(player);
             player.closeInventory();
             newMenu.openInventory(player);

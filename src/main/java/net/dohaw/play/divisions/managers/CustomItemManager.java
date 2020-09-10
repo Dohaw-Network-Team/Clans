@@ -2,6 +2,9 @@ package net.dohaw.play.divisions.managers;
 
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.customitems.ItemType;
+import net.dohaw.play.divisions.customitems.Rarity;
+import net.dohaw.play.divisions.customitems.types.Armor;
 import net.dohaw.play.divisions.files.CustomItemsConfig;
 
 import java.util.ArrayList;
@@ -20,7 +23,45 @@ public class CustomItemManager implements Manager{
 
     @Override
     public Object getContents() {
-        return null;
+        return new ArrayList<>(customItems.values());
+    }
+
+    public List<CustomItem> getByRarity(Rarity rarity){
+        List<CustomItem> cItems = new ArrayList<>();
+        for(Map.Entry<String, CustomItem> entry : customItems.entrySet()){
+            CustomItem item = entry.getValue();
+            if(item.getRarity() == rarity){
+                cItems.add(item);
+            }
+        }
+        return cItems;
+    }
+
+    public List<CustomItem> getSpellItems(){
+        List<CustomItem> cItems = new ArrayList<>();
+        for(Map.Entry<String, CustomItem> entry : customItems.entrySet()){
+            CustomItem item = entry.getValue();
+            if(item.isSpellItem()){
+                cItems.add(item);
+            }
+        }
+        return cItems;
+    }
+
+    public List<CustomItem> getByItemType(ItemType type){
+        List<CustomItem> cItems = new ArrayList<>();
+        for(Map.Entry<String, CustomItem> entry : customItems.entrySet()){
+            CustomItem item = entry.getValue();
+            if(item.getItemType() == type){
+                cItems.add(item);
+            }
+        }
+        return cItems;
+    }
+
+    public void addCustomItem(CustomItem cItem){
+        String key = cItem.getKEY();
+        customItems.put(key, cItem);
     }
 
     @Override

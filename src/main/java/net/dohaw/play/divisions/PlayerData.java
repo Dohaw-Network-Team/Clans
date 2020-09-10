@@ -5,6 +5,7 @@ import lombok.Setter;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
+import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.OfflinePlayer;
@@ -26,6 +27,7 @@ public class PlayerData {
     @Getter @Setter private int kills, casualties, shrinesConquered, level;
     @Getter @Setter private double heartsDestroyed, exp, mana;
     @Getter @Setter private DivisionChannel channel = DivisionChannel.NONE;
+    @Getter @Setter private ItemCreationSession itemCreationSession = new ItemCreationSession();
 
     /*
         Archetype stuff

@@ -5,13 +5,12 @@ import lombok.Setter;
 import net.dohaw.play.divisions.Stat;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class CustomItem {
+public class CustomItem {
 
     @Getter private final String KEY;
     @Getter @Setter private String displayName;
@@ -30,6 +29,9 @@ public abstract class CustomItem {
         this.KEY = KEY;
     }
 
-    public abstract ItemStack getItemStack();
+    @Override
+    public String toString(){
+        return "[key: " + KEY + ", name: " + displayName + ", type: " + itemType + ", material: " + material;
+    }
 
 }

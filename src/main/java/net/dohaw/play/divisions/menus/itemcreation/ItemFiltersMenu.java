@@ -22,7 +22,7 @@ public class ItemFiltersMenu extends Menu implements Listener {
     @Override
     public void initializeItems(Player p) {
 
-        inv.setItem(10, createGuiItem(Material.ACACIA_SAPLING, "&4All Items", new ArrayList<>()));
+        inv.setItem(10, createGuiItem(Material.ACACIA_SAPLING, "&eAll Items", new ArrayList<>()));
         inv.setItem(12, createGuiItem(Material.BLAZE_POWDER, "&eSpell Items", new ArrayList<>()));
         inv.setItem(14, createGuiItem(Material.GRASS_BLOCK, "&eBy Item Type", new ArrayList<>()));
         inv.setItem(16, createGuiItem(Material.DIAMOND, "&eBy Rarity", new ArrayList<>()));
@@ -49,10 +49,10 @@ public class ItemFiltersMenu extends Menu implements Listener {
         Menu newMenu = null;
         switch(matClicked){
             case ACACIA_SAPLING:
-                newMenu = new ItemDisplayMenu(plugin, this, "All Items", null, null);
+                newMenu = new ItemDisplayMenu(plugin, this, "All Items", null, null, 0);
                 break;
             case BLAZE_POWDER:
-                newMenu = new ItemDisplayMenu(plugin, this,"Spell Items", ItemFilter.SPELL_ITEMS, null);
+                newMenu = new ItemDisplayMenu(plugin, this,"Spell Items", ItemFilter.SPELL_ITEMS, null, 0);
                 break;
             case GRASS_BLOCK:
                 newMenu = new ItemTypeFiltersMenu(plugin, this);

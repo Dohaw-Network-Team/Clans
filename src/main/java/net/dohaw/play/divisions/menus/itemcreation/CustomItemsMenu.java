@@ -2,6 +2,9 @@ package net.dohaw.play.divisions.menus.itemcreation;
 
 import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.PlayerData;
+import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -45,7 +48,9 @@ public class CustomItemsMenu extends Menu implements Listener {
         Menu newMenu = null;
         switch(slotClicked){
             case 20:
-                newMenu = new CreateItemMenu(plugin, this);
+                PlayerData pd = ((DivisionsPlugin)plugin).getPlayerDataManager().getPlayerByUUID(player.getUniqueId());
+                ItemCreationSession session = pd.getItemCreationSession();
+                newMenu = new CreateItemMenu(plugin, this, session);
                 break;
             case 24:
                 newMenu = new ItemFiltersMenu(plugin, this);

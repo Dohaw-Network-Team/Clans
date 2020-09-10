@@ -19,7 +19,7 @@ public class ItemRarityFiltersMenu extends Menu implements Listener {
     private EnumHelper enumHelper;
 
     public ItemRarityFiltersMenu(APIHook plugin, Menu previousMenu) {
-        super(plugin, previousMenu, "Rarity Filters", 36);
+        super(plugin, previousMenu, "Rarity Filters", 54);
         this.enumHelper = plugin.getAPI().getEnumHelper();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -71,8 +71,10 @@ public class ItemRarityFiltersMenu extends Menu implements Listener {
         }
 
         if(rarity != null){
-            ItemDisplayMenu newMenu = new ItemDisplayMenu(plugin, this, enumHelper.enumToName(rarity), ItemFilter.RARITY, rarity);
+            ItemDisplayMenu newMenu = new ItemDisplayMenu(plugin, this, enumHelper.enumToName(rarity), ItemFilter.RARITY, rarity, 0);
             newMenu.initializeItems(player);
+            player.closeInventory();
+            newMenu.openInventory(player);
         }else if(backMat == clickedItem.getType()){
             goToPreviousMenu(player);
         }
