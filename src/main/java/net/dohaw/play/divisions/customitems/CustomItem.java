@@ -6,6 +6,7 @@ import net.dohaw.play.divisions.Stat;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class CustomItem {
 
     @Getter private final String KEY;
     @Getter @Setter private String displayName;
-    @Getter @Setter private List<String> lore;
+    @Getter @Setter private List<String> lore = new ArrayList<>();
     @Getter @Setter private Material material;
     @Getter @Setter private boolean isSpellItem;
     @Getter @Setter private ItemType itemType;

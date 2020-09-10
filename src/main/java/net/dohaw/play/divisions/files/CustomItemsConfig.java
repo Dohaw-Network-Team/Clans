@@ -119,10 +119,18 @@ public class CustomItemsConfig extends Config {
             Map<Enchantment, Integer> enchants = customItem.getEnchants();
             Map<Stat, Double> addedStats = customItem.getAddedStats();
 
+            /*
+                Can't be null
+             */
             config.set(startPath + ".Material", mat.toString());
             config.set(startPath + ".Display Name", displayName);
             config.set(startPath + ".Lore", lore);
-            config.set(startPath + ".Rarity", rarity);
+
+            // Isn't always set
+            if(rarity != null){
+                config.set(startPath + ".Rarity", rarity.name());
+            }
+
             config.set(startPath + ".Is Spell Item", isSpellItem);
 
             List<String> enchLines = new ArrayList<>();
