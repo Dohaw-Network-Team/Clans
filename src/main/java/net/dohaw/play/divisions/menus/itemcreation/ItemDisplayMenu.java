@@ -67,7 +67,6 @@ public class ItemDisplayMenu extends Menu implements Listener {
 
             for(CustomItem ci : thisPageCustomItems){
 
-                Bukkit.broadcastMessage(ci.toString());
                 String displayName = ci.getDisplayName();
                 Material material = ci.getMaterial();
                 List<String> lore = ci.getLore();
