@@ -20,6 +20,7 @@ import java.util.List;
 
 public class ItemDisplayMenu extends Menu implements Listener {
 
+    private final String MENU_TITLE;
     private final ItemFilter FILTER_CATEGORY;
     private final Enum FILTER;
     private CustomItemManager customItemManager;
@@ -39,6 +40,7 @@ public class ItemDisplayMenu extends Menu implements Listener {
         this.FILTER = FILTER;
         this.customItemManager = ((DivisionsPlugin)plugin).getCustomItemManager();
         this.pageNum = pageNum;
+        this.MENU_TITLE = menuTitle;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -106,9 +108,9 @@ public class ItemDisplayMenu extends Menu implements Listener {
         if(e.getClickedInventory() == null) return;
         if(!e.getClickedInventory().equals(inv)) return;
         e.setCancelled(true);
-        if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
+        if(clickedItem == null || clickedItem.getType().equals(Material.AIR) || clickedItem.getType().equals(fillerMat)) return;
 
-        int backPageSLot = inv.getSize() - 9;
+        int backPageSlot = inv.getSize() - 9;
         int backSlot = inv.getSize() - 5;
         int nextPageSlot = inv.getSize() - 1;
 
@@ -116,6 +118,33 @@ public class ItemDisplayMenu extends Menu implements Listener {
         if(slotClicked == backSlot){
             player.closeInventory();
             previousMenu.openInventory(player);
+        }else if(slotClicked == backPageSlot || slotClicked == nextPageSlot){
+
+            int newPageNum = pageNum;
+
+            if(pageNum == 0 && slotClicked == backPageSlot){
+                return;
+            }
+
+            if(slotClicked == backPageSlot){
+                newPageNum--;
+            }else{
+                newPageNum++;
+            }
+            Menu newPage = new ItemDisplayMenu(plugin, previousMenu, MENU_TITLE, FILTER_CATEGORY, FILTER, newPageNum);
+            newPage.initializeItems(player);
+            player.closeInventory();
+            newPage.openInventory(player);
+        }else{
+
+            CustomItem itemClicked = thisPageCustomItems.get(slotClicked);
+            String itemClickedKey = itemClicked.getKEY();
+
+            EditItemMenu editItemMenu = new EditItemMenu(plugin, this, itemClickedKey);
+            editItemMenu.initializeItems(player);
+            player.closeInventory();
+            editItemMenu.openInventory(player);
+
         }
 
     }

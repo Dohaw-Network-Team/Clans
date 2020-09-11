@@ -152,4 +152,10 @@ public class CustomItemsConfig extends Config {
 
     }
 
+    public void deleteItem(String key, ItemType type){
+        String path = "Custom Items." + type + "." + key;
+        config.set(path, null);
+        saveConfig();
+    }
+
 }

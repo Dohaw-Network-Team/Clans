@@ -68,6 +68,11 @@ public class CustomItemManager implements Manager{
         customItems.put(key, cItem);
     }
 
+    public void deleteItem(String key){
+        customItems.remove(key);
+        customItemsConfig.saveConfig();
+    }
+
     @Override
     public boolean hasContent(Object obj) {
         return false;
