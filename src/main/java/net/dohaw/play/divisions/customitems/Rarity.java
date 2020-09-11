@@ -17,4 +17,15 @@ public enum Rarity {
         this.menuMat = menuMat;
     }
 
+    public static Rarity getNextItemType(Rarity rarity){
+        Rarity[] types = Rarity.values();
+        int ord = rarity.ordinal();
+        //last one
+        if(ord == types.length - 1){
+            return types[0];
+        }else{
+            return types[ord + 1];
+        }
+    }
+
 }

@@ -1,6 +1,5 @@
 package net.dohaw.play.divisions.menus.itemcreation.lore;
 
-import com.sun.org.apache.xpath.internal.operations.Div;
 import lombok.Setter;
 import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.menus.Menu;
@@ -8,7 +7,7 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import net.dohaw.play.divisions.menus.itemcreation.CreateItemMenu;
 import net.dohaw.play.divisions.menus.itemcreation.CustomItemsMenu;
-import net.dohaw.play.divisions.prompts.ItemCreationSessionPrompt;
+import net.dohaw.play.divisions.prompts.itemcreation.ItemCreationSessionPrompt;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
@@ -22,13 +21,13 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayItemLoreMenu extends Menu implements Listener {
+public class DisplayLoreMenu extends Menu implements Listener {
 
     @Setter
     private ItemCreationSession session;
     private final Material ITEM_MAT = Material.PAPER;
 
-    public DisplayItemLoreMenu(APIHook plugin, Menu previousMenu, ItemCreationSession session) {
+    public DisplayLoreMenu(APIHook plugin, Menu previousMenu, ItemCreationSession session) {
         super(plugin, previousMenu, "Change Lore", 45);
         this.session = session;
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -78,7 +77,7 @@ public class DisplayItemLoreMenu extends Menu implements Listener {
 
         if(clickedItem.getType() == ITEM_MAT){
 
-            EditItemLoreLineMenu newMenu = new EditItemLoreLineMenu(plugin, this, session, slotClicked);
+            EditLoreLineMenu newMenu = new EditLoreLineMenu(plugin, this, session, slotClicked);
 
             newMenu.initializeItems(player);
             player.closeInventory();

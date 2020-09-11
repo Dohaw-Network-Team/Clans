@@ -6,7 +6,7 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import net.dohaw.play.divisions.menus.itemcreation.CreateItemMenu;
 import net.dohaw.play.divisions.menus.itemcreation.CustomItemsMenu;
-import net.dohaw.play.divisions.prompts.ItemCreationSessionPrompt;
+import net.dohaw.play.divisions.prompts.itemcreation.ItemCreationSessionPrompt;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
@@ -20,12 +20,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditItemLoreLineMenu extends Menu implements Listener {
+public class EditLoreLineMenu extends Menu implements Listener {
 
     private ItemCreationSession session;
     private int indexLoreLine;
 
-    public EditItemLoreLineMenu(APIHook plugin, DisplayItemLoreMenu previousMenu, ItemCreationSession session, int indexLoreLine) {
+    public EditLoreLineMenu(APIHook plugin, DisplayLoreMenu previousMenu, ItemCreationSession session, int indexLoreLine) {
         super(plugin, previousMenu, "Edit Lore Line", 27);
         this.session = session;
         this.indexLoreLine = indexLoreLine;
@@ -68,7 +68,7 @@ public class EditItemLoreLineMenu extends Menu implements Listener {
             lore.remove(indexLoreLine);
             session.setLore(lore);
 
-            DisplayItemLoreMenu dilm = (DisplayItemLoreMenu) previousMenu;
+            DisplayLoreMenu dilm = (DisplayLoreMenu) previousMenu;
             dilm.setSession(session);
 
             dilm.clearItems();

@@ -11,8 +11,8 @@ import net.dohaw.play.divisions.customitems.ItemType;
 import net.dohaw.play.divisions.customitems.Rarity;
 import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.menus.itemcreation.lore.DisplayItemLoreMenu;
-import net.dohaw.play.divisions.prompts.ItemCreationSessionPrompt;
+import net.dohaw.play.divisions.menus.itemcreation.lore.DisplayLoreMenu;
+import net.dohaw.play.divisions.prompts.itemcreation.ItemCreationSessionPrompt;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
@@ -173,11 +173,32 @@ public class CreateItemMenu extends Menu implements Listener {
 
             playerDataManager.updatePlayerData(player.getUniqueId(), pd);
 
-        }else if(slotClicked == 30){
-            DisplayItemLoreMenu dilm = new DisplayItemLoreMenu(plugin, this, session);
+        }else if(slotClicked == 30) {
+            DisplayLoreMenu dilm = new DisplayLoreMenu(plugin, this, session);
             dilm.initializeItems(player);
             player.closeInventory();
             dilm.openInventory(player);
+        }else if(slotClicked == 28) {
+
+            Rarity nextRarity = Rarity.getNextItemType(session.getRarity());
+            session.setRarity(nextRarity);
+
+            List<String> itemTypeLore = new ArrayList<String>() {{
+                add("&cCurrent Rarity: &e" + nextRarity);
+            }};
+            inv.setItem(16, createGuiItem(nextRarity.getMenuMat(), "&eChange Rarity", itemTypeLore));
+
+            /*
+                Saves the session to the player data object.
+             */
+            pd.setItemCreationSession(session);
+
+            playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+
+        }else if(slotClicked == 32){
+
+
+
         }else if(slotClicked == abortCreationSlot){
             clearPlayerDataSession(pd);
             chatFactory.sendPlayerMessage("The item creation session has been aborted!", false, player, null);
@@ -199,6 +220,7 @@ public class CreateItemMenu extends Menu implements Listener {
         }
 
     }
+
 
     private void clearPlayerDataSession(PlayerData pd){
         pd.setItemCreationSession(new ItemCreationSession());
