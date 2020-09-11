@@ -52,11 +52,16 @@ public class EditEnchantMenu extends Menu implements Listener {
         if(clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
         if(slotClicked == 13){
+
             Map<Enchantment, Integer> enchants = session.getEnchants();
             enchants.remove(enchantmentEditing);
             session.setEnchants(enchants);
             ((DisplayEnchantsMenu)previousMenu).setSession(session);
+
+            previousMenu.clearItems();
+            previousMenu.initializeItems(player);
             goToPreviousMenu(player);
+
         }else if(clickedItem.getType() == backMat){
             goToPreviousMenu(player);
         }

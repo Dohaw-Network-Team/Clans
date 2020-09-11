@@ -3,9 +3,16 @@ package net.dohaw.play.divisions.menus.itemcreation.enchants;
 import lombok.Setter;
 import me.c10coding.coreapi.APIHook;
 import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
+import net.dohaw.play.divisions.managers.CustomItemManager;
+import net.dohaw.play.divisions.menus.itemcreation.CreateItemMenu;
+import net.dohaw.play.divisions.menus.itemcreation.CustomItemsMenu;
+import net.dohaw.play.divisions.prompts.itemcreation.ItemCreationSessionPrompt;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,8 +26,7 @@ import java.util.Map;
 
 public class DisplayEnchantsMenu extends Menu implements Listener {
 
-    @Setter
-    private ItemCreationSession session;
+    @Setter private ItemCreationSession session;
     private final Material ITEM_MAT = Material.NAME_TAG;
     private final Material ADD_ENCHANT_MAT = Material.SLIME_BLOCK;
 
@@ -38,15 +44,17 @@ public class DisplayEnchantsMenu extends Menu implements Listener {
 
             Enchantment ench = entry.getKey();
             int level = entry.getValue();
-            String enchName = "&e" + ench.getName();
+            String enchName = "&e" + ench.getKey().getKey();
 
             List<String> lore = new ArrayList<String>(){{
-                add("Level: " + level);
+                add("&cLevel: &e" + level);
             }};
 
             inv.addItem(createGuiItem(ITEM_MAT, enchName, lore));
 
         }
+
+        inv.setItem(inv.getSize() - 9, createGuiItem(ADD_ENCHANT_MAT, "&eAdd Enchantment", new ArrayList<>()));
 
         setBackMaterial(Material.ARROW);
         setFillerMaterial(Material.BLACK_STAINED_GLASS_PANE);
@@ -80,6 +88,14 @@ public class DisplayEnchantsMenu extends Menu implements Listener {
         }else if(clickedItem.getType() == backMat){
             goToPreviousMenu(player);
         }else if(clickedItem.getType() == ADD_ENCHANT_MAT){
+
+            DivisionsPlugin divPlugin = (DivisionsPlugin) plugin;
+            CustomItemManager cim = divPlugin.getCustomItemManager();
+
+            ConversationFactory cf = new ConversationFactory(plugin);
+            Conversation conv = cf.withFirstPrompt(new ItemCreationSessionPrompt(cim, ItemCreationSessionPrompt.Change.ENCHANTMENT, new CreateItemMenu(plugin, new CustomItemsMenu(plugin), session), session, ((DivisionsPlugin)plugin).getPlayerDataManager() )).withLocalEcho(false).buildConversation(player);
+            conv.begin();
+            player.closeInventory();
 
         }
 

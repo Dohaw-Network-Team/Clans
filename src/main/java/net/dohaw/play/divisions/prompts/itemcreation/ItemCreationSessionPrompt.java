@@ -123,6 +123,7 @@ public class ItemCreationSessionPrompt extends StringPrompt {
 
             session.setLore(lore);
             player.sendRawMessage("The lore for this custom item has been updated!");
+
         }else if(change == Change.ENCHANTMENT){
 
             Map<Enchantment, Integer> currentEnchants = session.getEnchants();
@@ -131,6 +132,8 @@ public class ItemCreationSessionPrompt extends StringPrompt {
 
             if(requestedEnchantment != null){
                 if(!currentEnchants.containsKey(requestedEnchantment)){
+
+                    return new EnchantmentLevelPrompt(requestedEnchantment, previousMenu, session, playerDataManager);
 
                 }else{
                     player.sendRawMessage("The enchantment requested is already on this item!");

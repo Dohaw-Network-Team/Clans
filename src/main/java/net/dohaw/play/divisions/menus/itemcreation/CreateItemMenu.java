@@ -11,6 +11,7 @@ import net.dohaw.play.divisions.customitems.ItemType;
 import net.dohaw.play.divisions.customitems.Rarity;
 import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
+import net.dohaw.play.divisions.menus.itemcreation.enchants.DisplayEnchantsMenu;
 import net.dohaw.play.divisions.menus.itemcreation.lore.DisplayLoreMenu;
 import net.dohaw.play.divisions.prompts.itemcreation.ItemCreationSessionPrompt;
 import org.bukkit.Bukkit;
@@ -105,6 +106,12 @@ public class CreateItemMenu extends Menu implements Listener {
         }};
         inv.setItem(34, createGuiItem(Material.SLIME_BALL, "&eChange Stats", statsLore));
 
+        boolean isSpellItem = session.isSpellItem();
+        List<String> spellLore = new ArrayList<String>(){{
+           add("&cIs Spell Item: &e" + isSpellItem);
+        }};
+        inv.setItem(40, createGuiItem(Material.BLAZE_POWDER, "&eChange If Spell Item", spellLore));
+
         //Abort button
         inv.setItem(inv.getSize() - 9, createGuiItem(Material.BARRIER, "&cAbort Creation", new ArrayList<>()));
 
@@ -183,10 +190,10 @@ public class CreateItemMenu extends Menu implements Listener {
             Rarity nextRarity = Rarity.getNextItemType(session.getRarity());
             session.setRarity(nextRarity);
 
-            List<String> itemTypeLore = new ArrayList<String>() {{
+            List<String> rarityLore = new ArrayList<String>() {{
                 add("&cCurrent Rarity: &e" + nextRarity);
             }};
-            inv.setItem(16, createGuiItem(nextRarity.getMenuMat(), "&eChange Rarity", itemTypeLore));
+            inv.setItem(28, createGuiItem(nextRarity.getMenuMat(), "&eChange Rarity", rarityLore));
 
             /*
                 Saves the session to the player data object.
@@ -195,9 +202,35 @@ public class CreateItemMenu extends Menu implements Listener {
 
             playerDataManager.updatePlayerData(player.getUniqueId(), pd);
 
-        }else if(slotClicked == 32){
+        }else if(slotClicked == 32) {
 
+            DisplayEnchantsMenu dem = new DisplayEnchantsMenu(plugin, this, session);
+            dem.initializeItems(player);
+            player.closeInventory();
+            dem.openInventory(player);
 
+        }else if(slotClicked == 34) {
+
+            DisplayStatsMenu dsm = new DisplayStatsMenu(plugin, this, session);
+            dsm.initializeItems(player);
+            player.closeInventory();
+            dsm.openInventory(player);
+
+        }else if(slotClicked == 40){
+
+            boolean isSpellItem = session.isSpellItem();
+            isSpellItem = !isSpellItem;
+
+            boolean finalIsSpellItem = isSpellItem;
+            List<String> spellLore = new ArrayList<String>(){{
+                add("&cIs Spell Item: &e" + finalIsSpellItem);
+            }};
+            inv.setItem(40, createGuiItem(Material.BLAZE_POWDER, "&eChange If Spell Item", spellLore));
+
+            session.setSpellItem(isSpellItem);
+
+            pd.setItemCreationSession(session);
+            playerDataManager.updatePlayerData(player.getUniqueId(), pd);
 
         }else if(slotClicked == abortCreationSlot){
             clearPlayerDataSession(pd);
@@ -217,6 +250,8 @@ public class CreateItemMenu extends Menu implements Listener {
             clearPlayerDataSession(pd);
             chatFactory.sendPlayerMessage("The item creation session has been created!", false, player, null);
             player.closeInventory();
+        }else if(slotClicked == (inv.getSize() - 1)){
+            goToPreviousMenu(player);
         }
 
     }
