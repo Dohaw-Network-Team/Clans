@@ -40,7 +40,6 @@ public class DivisionsConfigHandler{
     public HashMap<String, Division> loadDivisions(){
 
         HashMap<String, Division> divisionsMap = new HashMap<>();
-        int amountLoaded = 0;
         for(String divisionName : dlc.getListOfDivisions()){
             File divisionFile = new File(plugin.getDataFolder() + File.separator + "/divisionsData", divisionName + ".yml");
             if(divisionFile.exists()){
@@ -53,11 +52,9 @@ public class DivisionsConfigHandler{
                 }
                 Division loadedDivision = loadDivision(divisionName, divisionConfig, status);
                 divisionsMap.put(divisionName, loadedDivision);
-                amountLoaded++;
             }
         }
 
-        plugin.getLogger().info("Loaded " + amountLoaded + " division(s) into memory");
         return divisionsMap;
     }
 

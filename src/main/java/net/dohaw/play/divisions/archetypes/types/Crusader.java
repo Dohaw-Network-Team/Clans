@@ -9,7 +9,7 @@ import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class Crusader extends ArchetypeWrapper {
     }
 
     @Override
-    public List<ItemStack> getProficientItems() {
+    public List<Material> getProficientItems() {
         return null;
     }
 
@@ -43,7 +43,7 @@ public class Crusader extends ArchetypeWrapper {
     }
 
     @Override
-    public List<ItemStack> getDefaultItems() {
+    public List<String> getDefaultItems() {
         return null;
     }
 

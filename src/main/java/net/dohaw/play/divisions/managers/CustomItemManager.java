@@ -14,11 +14,13 @@ import java.util.Map;
 
 public class CustomItemManager implements Manager{
 
+    private DivisionsPlugin plugin;
     private Map<String, CustomItem> customItems = new HashMap<>();
     private CustomItemsConfig customItemsConfig;
 
     public CustomItemManager(DivisionsPlugin plugin){
         this.customItemsConfig = new CustomItemsConfig(plugin);
+        this.plugin = plugin;
     }
 
     @Override
@@ -86,6 +88,7 @@ public class CustomItemManager implements Manager{
     @Override
     public void loadContents() {
         this.customItems = customItemsConfig.loadCustomItems();
+        plugin.getLogger().info("Loaded " + customItems.size() + " custom item(s) into memory");
     }
 
     @Override

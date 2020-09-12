@@ -1,8 +1,10 @@
 package net.dohaw.play.divisions.menus.itemcreation;
 
 import me.c10coding.coreapi.APIHook;
+import me.c10coding.coreapi.helpers.EnumHelper;
 import me.c10coding.coreapi.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.customitems.ItemType;
 import net.dohaw.play.divisions.customitems.Rarity;
@@ -17,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ItemDisplayMenu extends Menu implements Listener {
 
@@ -24,6 +27,7 @@ public class ItemDisplayMenu extends Menu implements Listener {
     private final ItemFilter FILTER_CATEGORY;
     private final Enum FILTER;
     private CustomItemManager customItemManager;
+    private EnumHelper enumHelper;
 
     private List<CustomItem> allCustomItems = new ArrayList<>();
     private List<CustomItem> thisPageCustomItems = new ArrayList<>();
@@ -39,6 +43,7 @@ public class ItemDisplayMenu extends Menu implements Listener {
         this.FILTER_CATEGORY = FILTER_CATEGORY;
         this.FILTER = FILTER;
         this.customItemManager = ((DivisionsPlugin)plugin).getCustomItemManager();
+        this.enumHelper = plugin.getAPI().getEnumHelper();
         this.pageNum = pageNum;
         this.MENU_TITLE = menuTitle;
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -71,7 +76,20 @@ public class ItemDisplayMenu extends Menu implements Listener {
 
                 String displayName = ci.getDisplayName();
                 Material material = ci.getMaterial();
-                List<String> lore = ci.getLore();
+
+                List<String> lore = new ArrayList<>();
+                String key = ci.getKEY();
+
+                lore.add("&cKey: &e" + key);
+                lore.add("===========");
+                lore.add("&bStats:");
+
+                Map<Stat, Double> stats = ci.getAddedStats();
+                for(Map.Entry<Stat, Double> entry : stats.entrySet()){
+                    String statStr = enumHelper.enumToConfigKey(entry.getKey());
+                    double statValue = entry.getValue();
+                    lore.add("&c" + statStr + ": &e" + statValue);
+                }
 
                 inv.addItem(createGuiItem(material, displayName, lore));
 

@@ -9,7 +9,7 @@ import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 
 import java.util.*;
 
@@ -25,12 +25,12 @@ public class Wizard extends ArchetypeWrapper {
     }
 
     @Override
-    public List<ItemStack> getDefaultItems() {
+    public List<String> getDefaultItems() {
         return new ArrayList<>();
     }
 
     @Override
-    public List<ItemStack> getProficientItems() {
+    public List<Material> getProficientItems() {
         return null;
     }
 

@@ -48,6 +48,7 @@ public class DivisionsManager implements Manager {
     public void loadContents() {
         DivisionsConfigHandler dch = new DivisionsConfigHandler(plugin);
         this.divisions = dch.loadDivisions();
+        plugin.getLogger().info("Loaded " + divisions.size() + " division(s) into memory");
     }
 
     @Override

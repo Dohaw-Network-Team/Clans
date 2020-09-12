@@ -9,12 +9,9 @@ import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Evoker extends ArchetypeWrapper {
 
@@ -28,7 +25,7 @@ public class Evoker extends ArchetypeWrapper {
     }
 
     @Override
-    public List<ItemStack> getProficientItems() {
+    public List<Material> getProficientItems() {
         return null;
     }
 
@@ -48,8 +45,10 @@ public class Evoker extends ArchetypeWrapper {
     }
 
     @Override
-    public List<ItemStack> getDefaultItems() {
-        return null;
+    public List<String> getDefaultItems() {
+        return new ArrayList<String>(){{
+            add("evoker_staff");
+        }};
     }
 
     @Override
