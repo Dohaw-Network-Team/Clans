@@ -11,7 +11,7 @@ import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.PlayerData;
-import net.dohaw.play.divisions.utils.DamageCalculator;
+import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.DivisionChat;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -156,9 +156,9 @@ public class GeneralListener implements Listener {
             double dmgDivisionScale = damageType == DamageType.RANGED ? defaultConfig.getRangedDamageDivisionScale() : defaultConfig.getMeleeDamageDivisionScale();
 
             if(damageType == DamageType.RANGED){
-                dmg = DamageCalculator.factorInDamage(pd, dmg, dmgScale, dmgDivisionScale, true);
+                dmg = Calculator.factorInDamage(pd, dmg, true);
             }else{
-                dmg = DamageCalculator.factorInDamage(pd, dmg, dmgScale, dmgDivisionScale, false);
+                dmg = Calculator.factorInDamage(pd, dmg, false);
             }
 
         }
@@ -175,7 +175,7 @@ public class GeneralListener implements Listener {
             PlayerData pd = playerDataManager.getPlayerByUUID(damageTaker.getUniqueId());
 
             double toughnessScale = defaultConfig.getToughnessScale();
-            dmg = DamageCalculator.factorInToughness(pd, dmg, toughnessScale);
+            dmg = Calculator.factorInToughness(pd, dmg);
 
         }
 

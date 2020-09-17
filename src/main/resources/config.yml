@@ -13,3 +13,6 @@ Damage Calculations:
   Division Scale:
     Melee Damage Division Scale: 1.35
     Ranged Damage Division Scale: 1.35
+    Raw Stat Division Scale: 60
+    Raw Stat Division Totality Scale: 2.5
+

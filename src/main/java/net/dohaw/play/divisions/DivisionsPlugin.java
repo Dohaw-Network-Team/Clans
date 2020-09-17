@@ -19,6 +19,7 @@ import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.runnables.InviteTimer;
+import net.dohaw.play.divisions.utils.Calculator;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitTask;
@@ -67,6 +68,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         this.messagesConfig = new MessagesConfig(this);
         this.statsConfig = new StatsConfig(this);
         this.defaultConfig = new DefaultConfig(this);
+        Calculator.setDefaultConfig(defaultConfig);
 
         loadDefaultRankPermissions();
         loadManagerData();

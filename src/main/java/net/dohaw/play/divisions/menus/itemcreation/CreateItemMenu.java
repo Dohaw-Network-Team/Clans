@@ -239,7 +239,7 @@ public class CreateItemMenu extends Menu implements Listener {
         }else if(slotClicked == createItemSlot){
 
             if(!session.getKey().equalsIgnoreCase("none")){
-                CustomItem cItem = session.toItem();
+                CustomItem cItem = session.toItem(chatFactory);
                 CustomItemManager cim = ((DivisionsPlugin)plugin).getCustomItemManager();
                 cim.addCustomItem(cItem);
             }else{

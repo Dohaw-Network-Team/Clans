@@ -2,6 +2,7 @@ package net.dohaw.play.divisions.customitems;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.c10coding.coreapi.chat.ChatFactory;
 import net.dohaw.play.divisions.Stat;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -36,7 +37,10 @@ public class ItemCreationSession {
 
     public ItemCreationSession(){}
 
-    public CustomItem toItem(){
+    public CustomItem toItem(ChatFactory chatFactory){
+
+        lore = chatFactory.colorLore(lore);
+        displayName = chatFactory.colorString(displayName);
         CustomItem ci = new CustomItem(key, itemType, material, displayName);
         ci.setLore(lore);
         ci.setRarity(rarity);

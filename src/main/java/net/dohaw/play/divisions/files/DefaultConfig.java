@@ -33,5 +33,13 @@ public class DefaultConfig extends Config {
         return config.getDouble("Damage Calculations.Division Scale.Ranged Damage Division Scale");
     }
 
+    public double getRawStatDivisionScale(){
+        return config.getDouble("Raw Stat Division Scale");
+    }
+
+    public double getRawStatDivisionTotalityScale(){
+        return config.getDouble("Raw Stat Division Totality Scale");
+    }
+
 
 }
