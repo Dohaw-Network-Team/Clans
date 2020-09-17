@@ -40,12 +40,12 @@ public class Evoker extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<Stat, Double> getDefaultStats() {
+    public EnumMap<Stat, Double> getDefaultStats() {
         return null;
     }
 
     @Override
-    public List<String> getDefaultItems() {
+    public List<Object> getDefaultItems() {
         return new ArrayList<String>(){{
             add("evoker_staff");
         }};

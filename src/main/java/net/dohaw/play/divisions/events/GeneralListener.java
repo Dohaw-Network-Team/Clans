@@ -151,10 +151,6 @@ public class GeneralListener implements Listener {
             }
 
             PlayerData pd = playerDataManager.getPlayerByUUID(damager.getUniqueId());
-
-            double dmgScale = damageType == DamageType.RANGED ? defaultConfig.getBowDamageScale() : defaultConfig.getMeleeDamageScale();
-            double dmgDivisionScale = damageType == DamageType.RANGED ? defaultConfig.getRangedDamageDivisionScale() : defaultConfig.getMeleeDamageDivisionScale();
-
             if(damageType == DamageType.RANGED){
                 dmg = Calculator.factorInDamage(pd, dmg, true);
             }else{
@@ -174,7 +170,6 @@ public class GeneralListener implements Listener {
             }
             PlayerData pd = playerDataManager.getPlayerByUUID(damageTaker.getUniqueId());
 
-            double toughnessScale = defaultConfig.getToughnessScale();
             dmg = Calculator.factorInToughness(pd, dmg);
 
         }

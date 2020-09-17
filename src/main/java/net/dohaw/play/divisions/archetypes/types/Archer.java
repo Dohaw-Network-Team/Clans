@@ -11,10 +11,7 @@ import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import org.bukkit.Material;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Archer extends ArchetypeWrapper {
 
@@ -28,7 +25,7 @@ public class Archer extends ArchetypeWrapper {
     }
 
     @Override
-    public List<String> getDefaultItems() {
+    public List<Object> getDefaultItems() {
         return null;
     }
 
@@ -53,7 +50,7 @@ public class Archer extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<Stat, Double> getDefaultStats() {
+    public EnumMap<Stat, Double> getDefaultStats() {
         return null;
     }
 

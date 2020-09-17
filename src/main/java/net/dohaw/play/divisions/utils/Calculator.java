@@ -14,12 +14,18 @@ public class Calculator {
     public static double factorInDamage(PlayerData data, double dmg, boolean isBowDamage){
         EnumMap<Stat, Double> skills = data.getStatLevels();
         double damageEnhancer;
+        double dmgScale;
+        double dmgDivisionScale;
         if(isBowDamage){
+            dmgDivisionScale = defaultConfig.getRangedDamageDivisionScale();
+            dmgScale = defaultConfig.getBowDamageScale();
             damageEnhancer = skills.get(Stat.PIERCING);
         }else{
+            dmgDivisionScale = defaultConfig.getMeleeDamageDivisionScale();
+            dmgScale = defaultConfig.getMeleeDamageScale();
             damageEnhancer = skills.get(Stat.STRENGTH);
         }
-        return (dmg + (Math.pow(damageEnhancer, defaultConfig.getMeleeDamageScale()))) / defaultConfig.getMeleeDamageDivisionScale();
+        return (dmg + (Math.pow(damageEnhancer, dmgScale))) / dmgDivisionScale;
     }
 
     public static double factorInToughness(PlayerData data, double dmg){

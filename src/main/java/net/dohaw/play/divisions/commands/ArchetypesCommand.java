@@ -5,13 +5,20 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.customitems.CustomItem;
+import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ArchetypesCommand implements CommandExecutor {
@@ -19,11 +26,13 @@ public class ArchetypesCommand implements CommandExecutor {
     private DivisionsPlugin plugin;
     private PlayerDataManager playerDataManager;
     private ChatFactory chatFactory;
+    private CustomItemManager customItemManager;
 
     public ArchetypesCommand(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.chatFactory = plugin.getAPI().getChatFactory();
         this.playerDataManager = plugin.getPlayerDataManager();
+        this.customItemManager = plugin.getCustomItemManager();
     }
 
     @Override
@@ -46,8 +55,11 @@ public class ArchetypesCommand implements CommandExecutor {
                     if(pd.getArchetype() == null){
 
                         pd.setArchetype(archetype);
-                        playerDataManager.updatePlayerData(playerUUID, pd);
 
+                        pd.setStatLevels(archetype.getDefaultStats());
+                        giveDefaultItems(player, archetype);
+
+                        playerDataManager.updatePlayerData(playerUUID, pd);
                         chatFactory.sendPlayerMessage("You have given this player the archetype " + archetype.getName() + "!", true, sender, plugin.getPluginPrefix());
 
                     }else{
@@ -94,6 +106,39 @@ public class ArchetypesCommand implements CommandExecutor {
             chatFactory.sendPlayerMessage("You have reset your archetype as well as your archetype stats!", true, pd.getPLAYER().getPlayer(), plugin.getPluginPrefix());
         }else{
             chatFactory.sendPlayerMessage("You don't have an archetype right now!", true, pd.getPLAYER().getPlayer(), plugin.getPluginPrefix());
+        }
+
+        UUID playerUUID = pd.getPLAYER_UUID();
+        Player player = Bukkit.getPlayer(playerUUID);
+        player.getInventory().clear();
+
+        player.performCommand("/spawn");
+
+    }
+
+    private void giveDefaultItems(Player player, ArchetypeWrapper archetype){
+
+        PlayerInventory playerInv = player.getInventory();
+        List<Object> defaultItems = archetype.getDefaultItems();
+
+        List<ItemStack> items = new ArrayList<>();
+        for(Object obj : defaultItems){
+            if(obj instanceof Material){
+                Material mat = (Material) obj;
+                ItemStack item = new ItemStack(mat);
+                items.add(item);
+            }else if(obj instanceof String){
+                String customItemKey = (String) obj;
+                if(customItemManager.hasExistingKey(customItemKey)){
+                    CustomItem ci = customItemManager.getByKey(customItemKey);
+                    ItemStack item = ci.toItemStack();
+                    items.add(item);
+                }
+            }
+        }
+
+        for(ItemStack stack : items){
+            playerInv.addItem(stack);
         }
 
     }

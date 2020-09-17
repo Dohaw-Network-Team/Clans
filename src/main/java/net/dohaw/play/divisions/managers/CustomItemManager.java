@@ -61,6 +61,10 @@ public class CustomItemManager implements Manager{
         return cItems;
     }
 
+    public CustomItem getByKey(String key){
+        return customItems.get(key);
+    }
+
     public boolean hasExistingKey(String key){
         return customItems.containsKey(key);
     }

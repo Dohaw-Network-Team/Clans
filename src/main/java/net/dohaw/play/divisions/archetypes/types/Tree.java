@@ -10,6 +10,7 @@ import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import org.bukkit.Material;
 
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,12 +23,12 @@ public class Tree extends ArchetypeWrapper {
     }
 
     @Override
-    public List<String> getDefaultItems() {
+    public List<Object> getDefaultItems() {
         return null;
     }
 
     @Override
-    public Map<Stat, Double> getDefaultStats() {
+    public EnumMap<Stat, Double> getDefaultStats() {
         return null;
     }
 
