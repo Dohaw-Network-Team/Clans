@@ -30,8 +30,8 @@ public class Archer extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpecialityKey, SpecialityWrapper> getSpecialities() {
-        return new HashMap<SpecialityKey, SpecialityWrapper>(){{
+    public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
+        return new EnumMap<SpecialityKey, SpecialityWrapper>(SpecialityKey.class){{
             put(SpecialityKey.CLOAK, Speciality.CLOAK);
             put(SpecialityKey.CONTROL, Speciality.CONTROL);
             put(SpecialityKey.DECEPTION, Speciality.DECEPTION);
@@ -45,7 +45,7 @@ public class Archer extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpellKey, SpellWrapper> getSpells() {
+    public EnumMap<SpellKey, SpellWrapper> getSpells() {
         return null;
     }
 

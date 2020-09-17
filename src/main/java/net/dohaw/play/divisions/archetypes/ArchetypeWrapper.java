@@ -9,7 +9,6 @@ import org.bukkit.Material;
 
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class ArchetypeWrapper extends Wrapper{
 
@@ -24,12 +23,12 @@ public abstract class ArchetypeWrapper extends Wrapper{
 
     public abstract EnumMap<Stat, Double> getDefaultStats();
 
-    public abstract Map<SpecialityKey, SpecialityWrapper> getSpecialities();
+    public abstract EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities();
 
     public abstract List<Material> getProficientItems();
 
     public abstract RegenType getRegenType();
 
-    public abstract Map<SpellKey, SpellWrapper> getSpells();
+    public abstract EnumMap<SpellKey, SpellWrapper> getSpells();
 
 }

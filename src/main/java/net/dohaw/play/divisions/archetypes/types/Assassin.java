@@ -34,7 +34,7 @@ public class Assassin extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpecialityKey, SpecialityWrapper> getSpecialities() {
+    public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
         return new HashMap<SpecialityKey, SpecialityWrapper>(){{
             put(SpecialityKey.PROACTIVE, Speciality.PROACTIVE);
             put(SpecialityKey.SHADOW, Speciality.SHADOW);
@@ -53,7 +53,7 @@ public class Assassin extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpellKey, SpellWrapper> getSpells() {
+    public EnumMap<SpellKey, SpellWrapper> getSpells() {
         return null;
     }
 }

@@ -35,7 +35,7 @@ public class Evoker extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpellKey, SpellWrapper> getSpells() {
+    public EnumMap<SpellKey, SpellWrapper> getSpells() {
         return null;
     }
 
@@ -52,7 +52,7 @@ public class Evoker extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpecialityKey, SpecialityWrapper> getSpecialities() {
+    public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
         return new HashMap<SpecialityKey, SpecialityWrapper>(){{
             put(SpecialityKey.CONSCIOUS, Speciality.CONSCIOUS);
             put(SpecialityKey.DESTRUCTION, Speciality.DESTRUCTION);

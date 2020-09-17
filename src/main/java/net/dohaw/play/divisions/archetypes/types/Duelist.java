@@ -40,7 +40,7 @@ public class Duelist extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpellKey, SpellWrapper> getSpells() {
+    public EnumMap<SpellKey, SpellWrapper> getSpells() {
         return null;
     }
 
@@ -50,7 +50,7 @@ public class Duelist extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpecialityKey, SpecialityWrapper> getSpecialities() {
+    public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
         return new HashMap<SpecialityKey, SpecialityWrapper>(){{
             put(SpecialityKey.PSYCHOTIC, Speciality.PSYCHOTIC);
             put(SpecialityKey.SOUL, Speciality.SOUL);

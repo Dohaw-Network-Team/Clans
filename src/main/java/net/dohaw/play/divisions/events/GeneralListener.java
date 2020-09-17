@@ -4,6 +4,9 @@ import me.c10coding.coreapi.chat.ChatFactory;
 import net.dohaw.play.divisions.DamageType;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.spells.Spell;
+import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
 import net.dohaw.play.divisions.events.custom.TemporaryPlayerDataCreationEvent;
@@ -22,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.projectiles.ProjectileSource;
@@ -176,6 +180,18 @@ public class GeneralListener implements Listener {
 
         e.setDamage(dmg);
 
+    }
+
+    @EventHandler
+    public void onSpellUse(PlayerInteractEvent e){
+        Player player = e.getPlayer();
+        if(playerDataManager.getPlayerByUUID(player.getUniqueId()) != null){
+            PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
+            if(pd.getArchetype() != null){
+                ArchetypeWrapper archetype = pd.getArchetype();
+                List<SpellWrapper> archetypeSpells = Spell.getArchetypeSpells(archetype);
+            }
+        }
     }
 
     private Entity getPotentialPlayerFromProjectile(Entity entity){

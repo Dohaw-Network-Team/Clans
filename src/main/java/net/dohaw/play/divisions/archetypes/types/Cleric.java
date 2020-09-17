@@ -7,6 +7,7 @@ import net.dohaw.play.divisions.archetypes.RegenType;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
+import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import org.bukkit.Material;
@@ -30,8 +31,10 @@ public class Cleric extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpellKey, SpellWrapper> getSpells() {
-        return null;
+    public EnumMap<SpellKey, SpellWrapper> getSpells() {
+        return new EnumMap<SpellKey, SpellWrapper>(SpellKey.class){{
+           put(SpellKey.SMITE, Spell.SMITE);
+        }};
     }
 
     @Override
@@ -45,8 +48,8 @@ public class Cleric extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpecialityKey, SpecialityWrapper> getSpecialities() {
-        return new HashMap<SpecialityKey, SpecialityWrapper>(){{
+    public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
+        return new EnumMap<SpecialityKey, SpecialityWrapper>(SpecialityKey.class){{
             put(SpecialityKey.DIRECT, Speciality.DIRECT);
             put(SpecialityKey.SPREAD, Speciality.SPREAD);
             put(SpecialityKey.VAMPIRIC, Speciality.VAMPIRIC);

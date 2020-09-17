@@ -12,7 +12,6 @@ import org.bukkit.Material;
 
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 public class Tree extends ArchetypeWrapper {
     /*
@@ -33,7 +32,7 @@ public class Tree extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpecialityKey, SpecialityWrapper> getSpecialities() {
+    public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
         return null;
     }
 
@@ -48,7 +47,7 @@ public class Tree extends ArchetypeWrapper {
     }
 
     @Override
-    public Map<SpellKey, SpellWrapper> getSpells() {
+    public EnumMap<SpellKey, SpellWrapper> getSpells() {
         return null;
     }
 

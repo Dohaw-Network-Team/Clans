@@ -4,20 +4,21 @@ import lombok.Getter;
 import lombok.Setter;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.Wrapper;
-import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpellWrapper extends Wrapper {
+public abstract class SpellWrapper extends Wrapper {
 
     @Getter @Setter private ArchetypeKey archetype;
     @Getter @Setter private String customItemBindedToKey;
+    @Getter private int levelUnlocked;
 
-    public SpellWrapper(String customItemBindedToKey, ArchetypeKey archetype, Enum KEY) {
+    public SpellWrapper(String customItemBindedToKey, ArchetypeKey archetype, Enum KEY, int levelUnlocked) {
         super(KEY);
         this.customItemBindedToKey = customItemBindedToKey;
         this.archetype = archetype;
+        this.levelUnlocked = levelUnlocked;
     }
 
     @Override
@@ -26,5 +27,7 @@ public class SpellWrapper extends Wrapper {
             add(getName());
         }};
     }
+
+    public abstract void execute();
 
 }
