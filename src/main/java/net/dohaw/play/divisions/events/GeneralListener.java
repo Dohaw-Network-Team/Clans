@@ -7,6 +7,7 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
 import net.dohaw.play.divisions.events.custom.TemporaryPlayerDataCreationEvent;
@@ -18,6 +19,7 @@ import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.DivisionChat;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -28,6 +30,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.List;
@@ -182,14 +185,33 @@ public class GeneralListener implements Listener {
 
     }
 
+    /*
+        Thing that casts spells.
+     */
     @EventHandler
     public void onSpellUse(PlayerInteractEvent e){
         Player player = e.getPlayer();
         if(playerDataManager.getPlayerByUUID(player.getUniqueId()) != null){
             PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
             if(pd.getArchetype() != null){
-                ArchetypeWrapper archetype = pd.getArchetype();
-                List<SpellWrapper> archetypeSpells = Spell.getArchetypeSpells(archetype);
+                if(e.getItem() != null){
+
+                    ItemStack stack = e.getItem();
+                    ArchetypeWrapper archetype = pd.getArchetype();
+                    String customItemKey = CustomItem.getCustomItemKey(stack);
+
+                    if(customItemKey != null){
+                        if(!customItemKey.isEmpty()){
+                            SpellWrapper spell = Spell.getSpellByItemKey(customItemKey);
+                            if(archetype.getKEY() == spell.getArchetype()){
+                                if(spell != null){
+                                    spell.execute(player);
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
         }
     }

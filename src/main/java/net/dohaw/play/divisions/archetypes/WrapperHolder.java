@@ -1,7 +1,5 @@
 package net.dohaw.play.divisions.archetypes;
 
-import org.bukkit.Bukkit;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +28,7 @@ public class WrapperHolder {
 
     public static void registerWrapper(Wrapper wrapper){
         if(wrappers.containsKey(wrapper.getKEY())){
-            throw new IllegalArgumentException("This wrapper () is already registered!");
+            throw new IllegalArgumentException("This wrapper (" + wrapper.KEY + ") is already registered!");
         }
         wrappers.put(wrapper.getKEY(), wrapper);
     }

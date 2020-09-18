@@ -82,7 +82,6 @@ public class ArchetypesCommand implements CommandExecutor {
                     PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);
 
                     resetArchetype(pd);
-
                 }else{
                     chatFactory.sendPlayerMessage("This player either isn't online or isn't valid!", true, sender, plugin.getPluginPrefix());
                 }
