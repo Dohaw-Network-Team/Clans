@@ -61,8 +61,10 @@ public class CustomItem {
             }
         }
 
+        stack.setItemMeta(meta);
         addNBTData(stack);
 
+        return stack;
     }
 
     private void addNBTData(ItemStack stack){
@@ -95,13 +97,16 @@ public class CustomItem {
 
 
         NBTTagCompound maxHealth = new NBTTagCompound();
+
+        double maxHealthStatValue = addedStats.get(Stat.MAX_HEALTH);
         maxHealth.setString("AttributeName", "generic.maxHealth");
         maxHealth.setString("Name", "generic.maxHealth");
-        maxHealth.setDouble("Amount", Calculator.getStatFromItem());
+        maxHealth.setDouble("Amount", Calculator.getStatFromItem(maxHealthStatValue));
 
-
-
-
+        UUID randMaxHealthUUID = UUID.randomUUID();
+        maxHealth.setLong("UUIDLeast", randMaxHealthUUID.getLeastSignificantBits());
+        maxHealth.setLong("UUIDMost", randMaxHealthUUID.getMostSignificantBits());
+        modifiers.add(maxHealth);
 
         nmsStack.setTag(nmsComp);
         CraftItemStack.asBukkitCopy(nmsStack);

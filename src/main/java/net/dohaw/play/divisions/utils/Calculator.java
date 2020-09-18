@@ -9,7 +9,7 @@ import java.util.EnumMap;
 
 public class Calculator {
 
-    private static DefaultConfig defaultConfig;
+    private static DefaultConfig config;
 
     public static double factorInDamage(PlayerData data, double dmg, boolean isBowDamage){
         EnumMap<Stat, Double> skills = data.getStatLevels();
@@ -17,12 +17,12 @@ public class Calculator {
         double dmgScale;
         double dmgDivisionScale;
         if(isBowDamage){
-            dmgDivisionScale = defaultConfig.getRangedDamageDivisionScale();
-            dmgScale = defaultConfig.getBowDamageScale();
+            dmgDivisionScale = config.getRangedDamageDivisionScale();
+            dmgScale = config.getBowDamageScale();
             damageEnhancer = skills.get(Stat.PIERCING);
         }else{
-            dmgDivisionScale = defaultConfig.getMeleeDamageDivisionScale();
-            dmgScale = defaultConfig.getMeleeDamageScale();
+            dmgDivisionScale = config.getMeleeDamageDivisionScale();
+            dmgScale = config.getMeleeDamageScale();
             damageEnhancer = skills.get(Stat.STRENGTH);
         }
         return (dmg + (Math.pow(damageEnhancer, dmgScale))) / dmgDivisionScale;
@@ -31,15 +31,15 @@ public class Calculator {
     public static double factorInToughness(PlayerData data, double dmg){
         EnumMap<Stat, Double> skills = data.getStatLevels();
         double toughnessLvl = skills.get(Stat.FORTITUDE);
-        return dmg - (Math.pow(toughnessLvl, defaultConfig.getToughnessScale()));
+        return dmg - (Math.pow(toughnessLvl, config.getToughnessScale()));
     }
 
     public static double getStatFromItem(double rawStatOnItem){
-        return (rawStatOnItem / defaultConfig.getRawStatDivisionScale()) / defaultConfig.getRawStatDivisionTotalityScale();
+        return (rawStatOnItem / config.getRawStatDivisionScale()) / config.getRawStatDivisionTotalityScale();
     }
 
     public static void setDefaultConfig(DefaultConfig defaultConfig){
-        defaultConfig = defaultConfig;
+        config = defaultConfig;
     }
 
 

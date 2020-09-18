@@ -31,13 +31,6 @@ public class Cleric extends ArchetypeWrapper {
     }
 
     @Override
-    public EnumMap<SpellKey, SpellWrapper> getSpells() {
-        return new EnumMap<SpellKey, SpellWrapper>(SpellKey.class){{
-           put(SpellKey.SMITE, Spell.SMITE);
-        }};
-    }
-
-    @Override
     public List<Object> getDefaultItems() {
         return null;
     }

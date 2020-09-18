@@ -35,25 +35,24 @@ public class Evoker extends ArchetypeWrapper {
     }
 
     @Override
-    public EnumMap<SpellKey, SpellWrapper> getSpells() {
-        return null;
-    }
-
-    @Override
     public EnumMap<Stat, Double> getDefaultStats() {
         return null;
     }
 
     @Override
     public List<Object> getDefaultItems() {
-        return new ArrayList<String>(){{
+        return new ArrayList<Object>(){{
             add("evoker_staff");
+            add(Material.LEATHER_CHESTPLATE);
+            add(Material.LEATHER_HELMET);
+            add(Material.LEATHER_LEGGINGS);
+            add(Material.LEATHER_BOOTS);
         }};
     }
 
     @Override
     public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
-        return new HashMap<SpecialityKey, SpecialityWrapper>(){{
+        return new EnumMap<SpecialityKey, SpecialityWrapper>(SpecialityKey.class){{
             put(SpecialityKey.CONSCIOUS, Speciality.CONSCIOUS);
             put(SpecialityKey.DESTRUCTION, Speciality.DESTRUCTION);
             put(SpecialityKey.ELEMENTAL, Speciality.ELEMENTAL);

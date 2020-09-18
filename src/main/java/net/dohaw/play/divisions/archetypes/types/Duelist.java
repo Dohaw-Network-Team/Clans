@@ -40,18 +40,13 @@ public class Duelist extends ArchetypeWrapper {
     }
 
     @Override
-    public EnumMap<SpellKey, SpellWrapper> getSpells() {
-        return null;
-    }
-
-    @Override
     public List<Object> getDefaultItems() {
         return null;
     }
 
     @Override
     public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
-        return new HashMap<SpecialityKey, SpecialityWrapper>(){{
+        return new EnumMap<SpecialityKey, SpecialityWrapper>(SpecialityKey.class){{
             put(SpecialityKey.PSYCHOTIC, Speciality.PSYCHOTIC);
             put(SpecialityKey.SOUL, Speciality.SOUL);
             put(SpecialityKey.UNIFORM, Speciality.UNIFORM);

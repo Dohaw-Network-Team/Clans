@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.archetypes.spells;
 
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
+import org.bukkit.entity.Player;
 
 public class FrostStrike extends SpellWrapper{
 
@@ -9,7 +10,7 @@ public class FrostStrike extends SpellWrapper{
     }
 
     @Override
-    public void execute() {
+    public void execute(Player player) {
 
     }
 }

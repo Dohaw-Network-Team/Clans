@@ -44,10 +44,10 @@ public class ArchetypesCommand implements CommandExecutor {
             String archetypeAlias = args[2];
 
             if(Bukkit.getPlayer(playerName) != null){
-                if(Archetype.getByAlias(archetypeAlias) != null){
+                if(Archetype.getArchetypeByAlias(archetypeAlias) != null){
 
                     Player player = Bukkit.getPlayer(playerName);
-                    ArchetypeWrapper archetype = (ArchetypeWrapper) Archetype.getByAlias(archetypeAlias);
+                    ArchetypeWrapper archetype = (ArchetypeWrapper) Archetype.getArchetypeByAlias(archetypeAlias);
 
                     UUID playerUUID = player.getUniqueId();
                     PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);
@@ -56,7 +56,7 @@ public class ArchetypesCommand implements CommandExecutor {
 
                         pd.setArchetype(archetype);
 
-                        pd.setStatLevels(archetype.getDefaultStats());
+                        //pd.setStatLevels(archetype.getDefaultStats());
                         giveDefaultItems(player, archetype);
 
                         playerDataManager.updatePlayerData(playerUUID, pd);

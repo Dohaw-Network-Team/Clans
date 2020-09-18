@@ -45,11 +45,6 @@ public class Archer extends ArchetypeWrapper {
     }
 
     @Override
-    public EnumMap<SpellKey, SpellWrapper> getSpells() {
-        return null;
-    }
-
-    @Override
     public EnumMap<Stat, Double> getDefaultStats() {
         return null;
     }

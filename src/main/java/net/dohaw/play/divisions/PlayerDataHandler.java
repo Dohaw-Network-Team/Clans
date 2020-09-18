@@ -199,7 +199,7 @@ public class PlayerDataHandler {
         if(archetype == null){
             config.set("Archetype", null);
         }else{
-            config.set("Archetype", archetype.getKEY());
+            config.set("Archetype", archetype.getKEY().name());
         }
 
         SpecialityWrapper speciality = playerData.getSpeciality();

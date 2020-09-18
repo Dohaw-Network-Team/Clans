@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.Wrapper;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,6 @@ public abstract class SpellWrapper extends Wrapper {
         }};
     }
 
-    public abstract void execute();
+    public abstract void execute(Player player);
 
 }

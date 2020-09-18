@@ -40,13 +40,8 @@ public class Wizard extends ArchetypeWrapper {
     }
 
     @Override
-    public EnumMap<SpellKey, SpellWrapper> getSpells() {
-        return null;
-    }
-
-    @Override
     public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
-        return new HashMap<SpecialityKey, SpecialityWrapper>(){{
+        return new EnumMap<SpecialityKey, SpecialityWrapper>(SpecialityKey.class){{
             put(SpecialityKey.FIRE, Speciality.FIRE);
             put(SpecialityKey.ICE, Speciality.ICE);
             put(SpecialityKey.TEMPEST, Speciality.TEMPEST);

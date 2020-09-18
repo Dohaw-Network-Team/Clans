@@ -1,6 +1,8 @@
 package net.dohaw.play.divisions.archetypes.spells;
 
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class Smite extends SpellWrapper{
 
@@ -9,7 +11,7 @@ public class Smite extends SpellWrapper{
     }
 
     @Override
-    public void execute() {
-
+    public void execute(Player player) {
+        Bukkit.broadcastMessage("Executed!");
     }
 }

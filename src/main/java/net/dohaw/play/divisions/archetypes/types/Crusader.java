@@ -30,11 +30,6 @@ public class Crusader extends ArchetypeWrapper {
     }
 
     @Override
-    public EnumMap<SpellKey, SpellWrapper> getSpells() {
-        return null;
-    }
-
-    @Override
     public EnumMap<Stat, Double> getDefaultStats() {
         return null;
     }
@@ -46,7 +41,7 @@ public class Crusader extends ArchetypeWrapper {
 
     @Override
     public EnumMap<SpecialityKey, SpecialityWrapper> getSpecialities() {
-        return new HashMap<SpecialityKey, SpecialityWrapper>(){{
+        return new EnumMap<SpecialityKey, SpecialityWrapper>(SpecialityKey.class){{
             put(SpecialityKey.ORDER, Speciality.ORDER);
             put(SpecialityKey.PROTECTION, Speciality.PROTECTION);
         }};

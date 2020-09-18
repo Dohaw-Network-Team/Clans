@@ -29,6 +29,4 @@ public abstract class ArchetypeWrapper extends Wrapper{
 
     public abstract RegenType getRegenType();
 
-    public abstract EnumMap<SpellKey, SpellWrapper> getSpells();
-
 }
