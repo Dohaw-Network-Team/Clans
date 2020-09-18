@@ -12,9 +12,9 @@ import java.util.Map;
 
 public abstract class Spell extends WrapperHolder {
 
-    public static final SpellWrapper INVISIBLE_STRIKE = new InvisibleStrike("evoker_default_staff", ArchetypeKey.EVOKER, SpellKey.INVISIBLE_STRIKE, 1);
-    public static final SpellWrapper SMITE = new Smite("cleric_default_staff", ArchetypeKey.CLERIC, SpellKey.SMITE, 1);
-    public static final SpellWrapper FROST_STRIKE = new FrostStrike("wizard_default_staff", ArchetypeKey.WIZARD, SpellKey.FROST_STRIKE, 1);
+    public static final SpellWrapper INVISIBLE_STRIKE = new InvisibleStrike("", ArchetypeKey.EVOKER, SpellKey.INVISIBLE_STRIKE, 1);
+    public static final SpellWrapper SMITE = new Smite("", ArchetypeKey.CLERIC, SpellKey.SMITE, 1);
+    public static final SpellWrapper FROST_STRIKE = new FrostStrike("", ArchetypeKey.WIZARD, SpellKey.FROST_STRIKE, 1);
 
     public static SpellWrapper getSpellByItemKey(String customItemKey){
         for(Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()){

@@ -16,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,18 +47,18 @@ public class ArchetypesCommand implements CommandExecutor {
             if(Bukkit.getPlayer(playerName) != null){
                 if(Archetype.getArchetypeByAlias(archetypeAlias) != null){
 
-                    Player player = Bukkit.getPlayer(playerName);
+                    Player playerGettingArch = Bukkit.getPlayer(playerName);
                     ArchetypeWrapper archetype = (ArchetypeWrapper) Archetype.getArchetypeByAlias(archetypeAlias);
 
-                    UUID playerUUID = player.getUniqueId();
+                    UUID playerUUID = playerGettingArch.getUniqueId();
                     PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);
 
                     if(pd.getArchetype() == null){
 
                         pd.setArchetype(archetype);
 
-                        //pd.setStatLevels(archetype.getDefaultStats());
-                        giveDefaultItems(player, archetype);
+                        pd.setStatLevels(archetype.getDefaultStats());
+                        giveDefaultItems(playerGettingArch, archetype);
 
                         playerDataManager.updatePlayerData(playerUUID, pd);
                         chatFactory.sendPlayerMessage("You have given this player the archetype " + archetype.getName() + "!", true, sender, plugin.getPluginPrefix());
@@ -126,6 +127,9 @@ public class ArchetypesCommand implements CommandExecutor {
             if(obj instanceof Material){
                 Material mat = (Material) obj;
                 ItemStack item = new ItemStack(mat);
+                if(mat == Material.ARROW){
+                    item.setAmount(128);
+                }
                 items.add(item);
             }else if(obj instanceof String){
                 String customItemKey = (String) obj;

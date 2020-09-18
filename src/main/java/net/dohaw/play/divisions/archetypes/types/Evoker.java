@@ -36,13 +36,23 @@ public class Evoker extends ArchetypeWrapper {
 
     @Override
     public EnumMap<Stat, Double> getDefaultStats() {
-        return null;
+        return new EnumMap<Stat, Double>(Stat.class){{
+            put(Stat.STRENGTH, 1.0);
+            put(Stat.SPELL_POWER, 2.0);
+            put(Stat.FORTITUDE, 1.0);
+            put(Stat.MITIGATION, 1.0);
+            put(Stat.QUICKNESS, 1.0);
+            put(Stat.STEALTHINESS, 1.0);
+            put(Stat.ACCURACY, 1.0);
+            put(Stat.LUCK, 1.0);
+            put(Stat.PIERCING, 1.0);
+            put(Stat.MAX_HEALTH, 1.0);
+        }};
     }
 
     @Override
     public List<Object> getDefaultItems() {
         return new ArrayList<Object>(){{
-            add("evoker_staff");
             add(Material.LEATHER_CHESTPLATE);
             add(Material.LEATHER_HELMET);
             add(Material.LEATHER_LEGGINGS);

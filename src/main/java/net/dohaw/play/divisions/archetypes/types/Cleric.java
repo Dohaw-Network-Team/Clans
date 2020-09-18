@@ -32,12 +32,28 @@ public class Cleric extends ArchetypeWrapper {
 
     @Override
     public List<Object> getDefaultItems() {
-        return null;
+        return Arrays.asList(
+                Material.LEATHER_HELMET,
+                Material.LEATHER_CHESTPLATE,
+                Material.LEATHER_LEGGINGS,
+                Material.LEATHER_BOOTS
+        );
     }
 
     @Override
     public EnumMap<Stat, Double> getDefaultStats() {
-        return null;
+        return new EnumMap<Stat, Double>(Stat.class){{
+            put(Stat.STRENGTH, 1.0);
+            put(Stat.SPELL_POWER, 1.0);
+            put(Stat.FORTITUDE, 1.0);
+            put(Stat.MITIGATION, 2.0);
+            put(Stat.QUICKNESS, 1.0);
+            put(Stat.STEALTHINESS, 1.0);
+            put(Stat.ACCURACY, 1.0);
+            put(Stat.LUCK, 1.0);
+            put(Stat.PIERCING, 1.0);
+            put(Stat.MAX_HEALTH, 1.0);
+        }};
     }
 
     @Override
