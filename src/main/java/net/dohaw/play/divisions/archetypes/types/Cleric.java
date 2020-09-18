@@ -33,6 +33,7 @@ public class Cleric extends ArchetypeWrapper {
     @Override
     public List<Object> getDefaultItems() {
         return Arrays.asList(
+                "smite_spell",
                 Material.LEATHER_HELMET,
                 Material.LEATHER_CHESTPLATE,
                 Material.LEATHER_LEGGINGS,

@@ -37,4 +37,15 @@ public abstract class Spell extends WrapperHolder {
         return spells;
     }
 
+    public static List<SpellWrapper> getArchetypeSpellsUnlocked(ArchetypeWrapper archetype, int level){
+        List<SpellWrapper> archetypeSpells = getArchetypeSpells(archetype);
+        List<SpellWrapper> spellsUnlocked = new ArrayList<>();
+        for(SpellWrapper wrapper : archetypeSpells){
+            if(wrapper.getLevelUnlocked() == level){
+                spellsUnlocked.add(wrapper);
+            }
+        }
+        return spellsUnlocked;
+    }
+
 }

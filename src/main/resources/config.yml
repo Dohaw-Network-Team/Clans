@@ -3,6 +3,9 @@ Plugin Prefix: "&l[&aDivisions&r&l]&r"
 Default Division Gold Amount: 100
 Invite Cooldown: 5
 
+Regen Increment: 10
+Base Regen: 100
+
 Damage Calculations:
 
   Scale:
@@ -15,4 +18,3 @@ Damage Calculations:
     Ranged Damage Division Scale: 1.35
     Raw Stat Division Scale: 60
     Raw Stat Division Totality Scale: 1.665
-

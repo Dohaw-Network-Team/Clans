@@ -4,9 +4,12 @@ import me.c10coding.coreapi.chat.ChatFactory;
 import net.dohaw.play.divisions.DamageType;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.archetypes.Archetype;
+import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.types.Wizard;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
@@ -193,11 +196,11 @@ public class GeneralListener implements Listener {
         Player player = e.getPlayer();
         if(playerDataManager.getPlayerByUUID(player.getUniqueId()) != null){
             PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
-            if(pd.getArchetype() != null){
+            ArchetypeWrapper archetype = pd.getArchetype();
+            if(archetype != null){
                 if(e.getItem() != null){
 
                     ItemStack stack = e.getItem();
-                    ArchetypeWrapper archetype = pd.getArchetype();
                     String customItemKey = CustomItem.getCustomItemKey(stack);
 
                     if(customItemKey != null){
@@ -210,7 +213,6 @@ public class GeneralListener implements Listener {
                             }
                         }
                     }
-
                 }
             }
         }

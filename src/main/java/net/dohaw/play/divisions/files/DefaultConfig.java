@@ -41,5 +41,13 @@ public class DefaultConfig extends Config {
         return config.getDouble("Raw Stat Division Totality Scale");
     }
 
+    public double getRegenIncrement(){
+        return config.getDouble("Regen Increment");
+    }
+
+    public double getBaseRegen(){
+        return config.getDouble("Base Regen");
+    }
+
 
 }

@@ -24,9 +24,7 @@ public class PlayerDataHandler {
 
     private DivisionsPlugin plugin;
     private EnumHelper enumHelper;
-
     private DefaultPermConfig defaultPermConfig;
-    private Economy e;
 
     /*
         Pretty much just gets the permissions that are specific to a player in a division
@@ -34,7 +32,6 @@ public class PlayerDataHandler {
     public PlayerDataHandler(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.enumHelper = plugin.getAPI().getEnumHelper();
-        this.e = DivisionsPlugin.getEconomy();
         this.defaultPermConfig = plugin.getDefaultPermConfig();
     }
 
@@ -71,13 +68,13 @@ public class PlayerDataHandler {
         }
         data.setStatLevels(stats);
 
-        double mana;
-        if(playerConfig.get("Mana") == null){
-            mana = 100;
+        double regen;
+        if(playerConfig.get("Regen") == null){
+            regen = 100;
         }else{
-            mana = playerConfig.getDouble("Mana");
+            regen = playerConfig.getDouble("Regen");
         }
-        data.setMana(mana);
+        data.setRegen(regen);
 
         int level;
         if(playerConfig.get("Level") == null){
@@ -215,8 +212,8 @@ public class PlayerDataHandler {
         config.set("XP", xp);
         config.set("Level", level);
 
-        double mana = playerData.getMana();
-        config.set("Mana", mana);
+        double regen = playerData.getRegen();
+        config.set("Regen", regen);
 
         try {
             config.save(playerFile);

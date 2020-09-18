@@ -6,10 +6,13 @@ import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
+import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
+import net.dohaw.play.divisions.runnables.Regener;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.EnumMap;
 import java.util.UUID;
@@ -25,9 +28,11 @@ public class PlayerData {
 
     @Getter @Setter private Rank rank;
     @Getter @Setter private int kills, casualties, shrinesConquered, level;
-    @Getter @Setter private double heartsDestroyed, exp, mana;
+    @Getter @Setter private double heartsDestroyed, exp, regen;
     @Getter @Setter private DivisionChannel channel = DivisionChannel.NONE;
     @Getter @Setter private ItemCreationSession itemCreationSession = new ItemCreationSession();
+
+    @Getter @Setter private Regener regener;
 
     /*
         Archetype stuff
@@ -52,6 +57,20 @@ public class PlayerData {
 
     public void putPermission(Permission perm, Object value){
         permissions.put(perm, value);
+    }
+
+    public void startRegener(DivisionsPlugin plugin, long interval){
+        regener = new Regener(plugin, this);
+        regener.runTaskTimer(plugin, 0L, interval);
+    }
+
+    public void stopRegener(){
+        regener.cancel();
+    }
+
+    public void restartRegener(DivisionsPlugin plugin, long interval){
+        stopRegener();
+        startRegener(plugin, interval);
     }
 
     public boolean hasPermission(Permission perm){

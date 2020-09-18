@@ -53,6 +53,7 @@ public class Evoker extends ArchetypeWrapper {
     @Override
     public List<Object> getDefaultItems() {
         return new ArrayList<Object>(){{
+            add("invisible_strike_spell");
             add(Material.LEATHER_CHESTPLATE);
             add(Material.LEATHER_HELMET);
             add(Material.LEATHER_LEGGINGS);

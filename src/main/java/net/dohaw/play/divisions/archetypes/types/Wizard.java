@@ -39,6 +39,7 @@ public class Wizard extends ArchetypeWrapper {
     @Override
     public List<Object> getDefaultItems() {
         return Arrays.asList(
+                "frost_strike_spell",
                 Material.LEATHER_HELMET,
                 Material.LEATHER_CHESTPLATE,
                 Material.LEATHER_LEGGINGS,

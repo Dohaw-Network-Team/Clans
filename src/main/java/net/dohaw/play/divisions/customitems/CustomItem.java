@@ -95,7 +95,6 @@ public class CustomItem {
         quickness.setLong("UUIDMost", randQuicknessUUID.getMostSignificantBits());
         modifiers.add(quickness);
 
-
         NBTTagCompound maxHealth = new NBTTagCompound();
 
         double maxHealthStatValue = addedStats.get(Stat.MAX_HEALTH);
@@ -120,6 +119,15 @@ public class CustomItem {
             return nmsComp.getString("Key");
         }
         return null;
+    }
+
+    public static double getCustomItemStat(ItemStack stack, Stat stat){
+        net.minecraft.server.v1_16_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound nmsComp = nmsStack.getTag();
+        if(nmsComp != null){
+            return nmsComp.getDouble(stat.name());
+        }
+        return 0;
     }
 
     @Override

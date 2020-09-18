@@ -75,8 +75,9 @@ public class CustomItemManager implements Manager{
     }
 
     public void deleteItem(String key){
+        ItemType itemType = getByKey(key).getItemType();
         customItems.remove(key);
-        customItemsConfig.saveConfig();
+        customItemsConfig.deleteItem(key, itemType);
     }
 
     @Override

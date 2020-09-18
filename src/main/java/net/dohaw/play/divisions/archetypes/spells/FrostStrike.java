@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.archetypes.spells;
 
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
+import net.dohaw.play.divisions.archetypes.RegenType;
 import org.bukkit.entity.Player;
 
 public class FrostStrike extends SpellWrapper{
@@ -12,5 +13,20 @@ public class FrostStrike extends SpellWrapper{
     @Override
     public void execute(Player player) {
 
+    }
+
+    @Override
+    public RegenType getRegenTypeAffected() {
+        return RegenType.MANA;
+    }
+
+    @Override
+    public double getCooldown() {
+        return 0.5;
+    }
+
+    @Override
+    public double getPercentageRegenAffected() {
+        return 0.10;
     }
 }

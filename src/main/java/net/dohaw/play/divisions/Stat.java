@@ -14,7 +14,8 @@ public enum Stat {
     ACCURACY(Material.BOW, 32),
     LUCK(Material.EXPERIENCE_BOTTLE, 34),
     PIERCING(Material.ARROW, 38),
-    MAX_HEALTH(Material.PORKCHOP, 42);
+    MAX_HEALTH(Material.PORKCHOP, 42),
+    RESTORATION(Material.GREEN_DYE, 44);
 
     @Getter private Material menuMat;
     @Getter private int menuSlot;

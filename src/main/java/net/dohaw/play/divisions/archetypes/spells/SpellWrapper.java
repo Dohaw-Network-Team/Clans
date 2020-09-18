@@ -3,6 +3,7 @@ package net.dohaw.play.divisions.archetypes.spells;
 import lombok.Getter;
 import lombok.Setter;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
+import net.dohaw.play.divisions.archetypes.RegenType;
 import net.dohaw.play.divisions.archetypes.Wrapper;
 import org.bukkit.entity.Player;
 
@@ -30,5 +31,11 @@ public abstract class SpellWrapper extends Wrapper {
     }
 
     public abstract void execute(Player player);
+
+    public abstract RegenType getRegenTypeAffected();
+
+    public abstract double getPercentageRegenAffected();
+
+    public abstract double getCooldown();
 
 }
