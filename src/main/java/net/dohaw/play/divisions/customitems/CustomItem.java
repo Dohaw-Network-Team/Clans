@@ -113,6 +113,15 @@ public class CustomItem {
 
     }
 
+    public static String getCustomItemKey(ItemStack stack){
+        net.minecraft.server.v1_16_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound nmsComp = nmsStack.getTag();
+        if(nmsComp != null){
+            return nmsComp.getString("Key");
+        }
+        return null;
+    }
+
     @Override
     public String toString(){
         return "[key: " + KEY + ", name: " + displayName + ", type: " + itemType + ", material: " + material;

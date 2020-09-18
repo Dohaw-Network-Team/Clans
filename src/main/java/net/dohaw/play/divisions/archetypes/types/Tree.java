@@ -6,8 +6,6 @@ import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.RegenType;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
-import net.dohaw.play.divisions.archetypes.spells.SpellKey;
-import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import org.bukkit.Material;
 
 import java.util.Arrays;
