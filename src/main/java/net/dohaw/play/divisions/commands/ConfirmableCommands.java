@@ -66,7 +66,7 @@ public class ConfirmableCommands implements CommandExecutor {
 
                         for(UUID uuid : division.getPlayers()){
                             PlayerData member = playerDataManager.getPlayerByUUID(uuid);
-                            if(member.getPLAYER().isOnline()){
+                            if(member.getPlayer().isOnline()){
                                 Player onlinePlayer = Bukkit.getPlayer(member.getPLAYER_UUID());
                                 chatFactory.sendPlayerMessage("The player &e" + player.getName() + "&f has joined the division", true, onlinePlayer, prefix);
                             }

@@ -71,7 +71,6 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         Calculator.setDefaultConfig(defaultConfig);
 
         loadDefaultRankPermissions();
-        loadManagerData();
 
         /*
             Just puts the static contents into a map so that it's easy to filter specific things.
@@ -79,6 +78,8 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         registerArchetypes();
         registerSpecialities();
         registerSpells();
+
+        loadManagerData();
 
         registerEvents(new GeneralListener(this));
         registerCommand("divisions", new DivisionsCommand(this));

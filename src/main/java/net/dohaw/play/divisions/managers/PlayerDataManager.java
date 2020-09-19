@@ -43,7 +43,7 @@ public class PlayerDataManager implements Manager{
 
     public PlayerData getByPlayerObj(Player player){
         for(PlayerData data : playerDataList){
-            if(data.getPLAYER().getPlayer().equals(player)){
+            if(data.getPlayer().getPlayer().equals(player)){
                 return data;
             }
         }

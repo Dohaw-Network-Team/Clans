@@ -41,13 +41,16 @@ public class DefaultConfig extends Config {
         return config.getDouble("Raw Stat Division Totality Scale");
     }
 
-    public double getRegenIncrement(){
-        return config.getDouble("Regen Increment");
+    public double getBaseRegenerationAmount(){
+        return config.getDouble("Base Regeneration Amount");
     }
 
-    public double getBaseRegen(){
-        return config.getDouble("Base Regen");
+    public double getBaseRegenerationMax(){
+        return config.getDouble("Base Regeneration Max");
     }
 
+    public long getBaseRegenerationInterval(){
+        return (long) config.getDouble("Base Regeneration Interval");
+    }
 
 }

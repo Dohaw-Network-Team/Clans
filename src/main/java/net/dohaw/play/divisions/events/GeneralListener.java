@@ -122,7 +122,7 @@ public class GeneralListener implements Listener {
                     PlayerData pData = playerDataManager.getPlayerByUUID(memberUUID);
 
                     DivisionChannel pChannel = pData.getChannel();
-                    OfflinePlayer op = pData.getPLAYER();
+                    OfflinePlayer op = pData.getPlayer();
 
                     if(op.isOnline()){
                         if(pChannel == channel){
@@ -203,6 +203,7 @@ public class GeneralListener implements Listener {
                     ItemStack stack = e.getItem();
                     String customItemKey = CustomItem.getCustomItemKey(stack);
 
+                    Bukkit.broadcastMessage(customItemKey);
                     if(customItemKey != null){
                         if(!customItemKey.isEmpty()){
                             SpellWrapper spell = Spell.getSpellByItemKey(customItemKey);

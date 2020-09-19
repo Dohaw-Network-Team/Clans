@@ -10,8 +10,10 @@ import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.runnables.Regener;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.EnumMap;
@@ -19,7 +21,6 @@ import java.util.UUID;
 
 public class PlayerData {
 
-    @Getter final private OfflinePlayer PLAYER;
     @Getter final private String PLAYER_NAME;
     @Getter final private UUID PLAYER_UUID;
     @Getter final private FileConfiguration PLAYER_CONFIG;
@@ -44,7 +45,6 @@ public class PlayerData {
     @Getter private EnumMap<Permission, Object> permissions = new EnumMap<>(Permission.class);
 
     public PlayerData(final OfflinePlayer PLAYER, final FileConfiguration PLAYER_CONFIG, Rank rank){
-        this.PLAYER = PLAYER;
         this.PLAYER_NAME = PLAYER.getName();
         this.PLAYER_UUID = PLAYER.getUniqueId();
         this.rank = rank;
@@ -60,7 +60,7 @@ public class PlayerData {
     }
 
     public void startRegener(DivisionsPlugin plugin, long interval){
-        regener = new Regener(plugin, this);
+        regener = new Regener(plugin, PLAYER_UUID);
         regener.runTaskTimer(plugin, 0L, interval);
     }
 
@@ -75,6 +75,10 @@ public class PlayerData {
 
     public boolean hasPermission(Permission perm){
         return permissions.get(perm) != null;
+    }
+
+    public OfflinePlayer getPlayer(){
+        return Bukkit.getOfflinePlayer(getPLAYER_UUID());
     }
 
 }

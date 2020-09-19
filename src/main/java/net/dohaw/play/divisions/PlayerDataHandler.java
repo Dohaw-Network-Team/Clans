@@ -10,6 +10,7 @@ import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
+import net.dohaw.play.divisions.utils.Calculator;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -246,6 +247,14 @@ public class PlayerDataHandler {
         data = loadPlayerPermissions(playerDataConfig, data);
         data = loadPlayerStats(playerDataConfig, data);
         data = loadArchetypeData(playerDataConfig, data);
+
+        if(data.getPlayer().isOnline() && data.getArchetype() != null){
+            Bukkit.broadcastMessage("Interval: " + Calculator.calculateRegenInterval(data));
+            Bukkit.broadcastMessage("Regen Amount: " + Calculator.calculateRegen(data));
+            Bukkit.broadcastMessage("Regen Max: " + Calculator.calculateMaxRegen(data));
+            data.startRegener(plugin, Calculator.calculateRegenInterval(data));
+        }
+
         return data;
     }
 

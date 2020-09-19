@@ -4,6 +4,7 @@ import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.files.DefaultConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -42,27 +43,44 @@ public class Calculator {
     }
 
     public static double calculateMaxRegen(PlayerData pd){
-        return (config.getBaseRegen() + (Math.pow(pd.getLevel(), 6) + getTotalStat(pd, Stat.RESTORATION)));
+        return (config.getBaseRegenerationMax() + (Math.pow(pd.getLevel(), 6) + getTotalStat(pd, Stat.RESTORATION)));
     }
 
     public static double calculateRegen(PlayerData pd){
-        double restoLevel = pd.getStatLevels().get(Stat.RESTORATION);
-        if(restoLevel == 1){
-            return config.getRegenIncrement();
+        double totalResto = getTotalStat(pd, Stat.RESTORATION);
+        if(totalResto == 1){
+            return config.getBaseRegenerationAmount();
         }else{
-            return Math.pow(restoLevel, 2) + config.getRegenIncrement();
+            return Math.pow(totalResto, 2) + config.getBaseRegenerationAmount();
+        }
+    }
+
+    public static long calculateRegenInterval(PlayerData pd){
+        double totalResto = getTotalStat(pd, Stat.RESTORATION);
+        double baseRegenInterval = config.getBaseRegenerationInterval();
+        Bukkit.broadcastMessage("Total Resto: " + totalResto);
+        if(totalResto != 0){
+            return (long) (baseRegenInterval - (totalResto / 2.0));
+        }else{
+            return (long) baseRegenInterval;
         }
     }
 
     public static double getTotalStat(PlayerData data, Stat stat){
 
         double statLevelValue = data.getStatLevels().get(stat);
-        Player player = data.getPLAYER().getPlayer();
+        Player player = data.getPlayer().getPlayer();
         PlayerInventory playerInventory = player.getInventory();
 
         double totalStatValue = statLevelValue;
         for(ItemStack stack : playerInventory.getContents()){
-            totalStatValue += getStatFromItem(CustomItem.getCustomItemStat(stack, stat));
+            if(stack != null){
+                double rawCustomItemStat = CustomItem.getCustomItemStat(stack, stat);
+                if(rawCustomItemStat != 0){
+                    double customItemStat = getStatFromItem(rawCustomItemStat);
+                    totalStatValue += customItemStat;
+                }
+            }
         }
 
         return totalStatValue;

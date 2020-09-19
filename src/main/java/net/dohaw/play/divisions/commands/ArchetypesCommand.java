@@ -80,8 +80,8 @@ public class ArchetypesCommand implements CommandExecutor {
                     Player player = Bukkit.getPlayer(playerName);
                     UUID playerUUID = player.getUniqueId();
                     PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);
-
                     resetArchetype(pd);
+
                 }else{
                     chatFactory.sendPlayerMessage("This player either isn't online or isn't valid!", true, sender, plugin.getPluginPrefix());
                 }
@@ -102,10 +102,11 @@ public class ArchetypesCommand implements CommandExecutor {
 
         if(pd.getArchetype() != null){
             pd.setArchetype(null);
+            pd.stopRegener();
             playerDataManager.updatePlayerData(pd.getPLAYER_UUID(), pd);
-            chatFactory.sendPlayerMessage("You have reset your archetype as well as your archetype stats!", true, pd.getPLAYER().getPlayer(), plugin.getPluginPrefix());
+            chatFactory.sendPlayerMessage("You have reset your archetype as well as your archetype stats!", true, pd.getPlayer().getPlayer(), plugin.getPluginPrefix());
         }else{
-            chatFactory.sendPlayerMessage("You don't have an archetype right now!", true, pd.getPLAYER().getPlayer(), plugin.getPluginPrefix());
+            chatFactory.sendPlayerMessage("You don't have an archetype right now!", true, pd.getPlayer().getPlayer(), plugin.getPluginPrefix());
         }
 
         UUID playerUUID = pd.getPLAYER_UUID();

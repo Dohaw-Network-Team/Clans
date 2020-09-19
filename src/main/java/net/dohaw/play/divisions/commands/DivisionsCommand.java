@@ -477,7 +477,7 @@ public class DivisionsCommand implements CommandExecutor {
         chatFactory.sendPlayerMessage("&eName: &c" + division.getName(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&ePower: &c" + division.getPower(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&eGold: &c" + division.getGoldAmount(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eLeader: &c" + division.getLeader().getPLAYER().getName(), true, playerToSendTo, prefix);
+        chatFactory.sendPlayerMessage("&eLeader: &c" + division.getLeader().getPlayer().getName(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&eKills: &c" + division.getKills(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&eCasualties: &c" + division.getCasualties(), true, playerToSendTo, prefix);
         chatFactory.sendPlayerMessage("&eNumber members: &c" + division.getPlayers().size(), true, playerToSendTo, prefix);

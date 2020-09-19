@@ -3,8 +3,9 @@ Plugin Prefix: "&l[&aDivisions&r&l]&r"
 Default Division Gold Amount: 100
 Invite Cooldown: 5
 
-Regen Increment: 10
-Base Regen: 100
+Base Regeneration Interval: 20
+Base Regeneration Amount: 10
+Base Regeneration Max: 100
 
 Damage Calculations:
 
