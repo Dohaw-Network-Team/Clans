@@ -59,19 +59,8 @@ public abstract class Spell extends WrapperHolder {
         return entity.hasMetadata("spell_key");
     }
 
-    public static boolean canUseSpell(PlayerData pd, SpellWrapper spell){
-
-        double regen = pd.getRegen();
-        double maxRegen = Calculator.calculateMaxRegen(pd);
-        double percentageRegenCost = spell.getPercentageRegenAffected();
-        double regenCost = maxRegen * percentageRegenCost;
-
-        if(regen >= regenCost){
-            return !pd.isOnCooldown(spell.getKEY().toString());
-        }
-
-        return false;
-
+    public static boolean hasEnoughRegen(PlayerData pd, SpellWrapper spell){
+        return pd.getRegen() >= Calculator.getSpellRegenCost(pd, spell);
     }
 
 }

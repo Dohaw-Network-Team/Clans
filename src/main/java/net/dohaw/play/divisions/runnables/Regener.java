@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.utils.Calculator;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class Regener extends BukkitRunnable {
         if(playerRegen != maxRegen){
             double finalPlayerRegen = playerRegen + Calculator.calculateRegen(data);
             if(maxRegen <= finalPlayerRegen){
-                data.setRegen(data.getRegen() + Calculator.calculateRegen(data));
+                data.setRegen(playerRegen + Calculator.calculateRegen(data));
             }else{
                 data.setRegen(maxRegen);
             }

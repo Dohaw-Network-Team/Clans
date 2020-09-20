@@ -2,6 +2,7 @@ package net.dohaw.play.divisions.utils;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
+import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.files.DefaultConfig;
 import org.bukkit.Bukkit;
@@ -88,7 +89,7 @@ public class Calculator {
     /*
         Reduces the percentage of regen a spell costs based on your restoration levels
      */
-    public static double getSpellRegenCost(PlayerData pd, double percentageOfRegen){
+    public static double getSpellPercentageRegenCost(PlayerData pd, double percentageOfRegen){
 
         double totalResto = getTotalStat(pd, Stat.RESTORATION);
         if(totalResto != 1){
@@ -104,6 +105,17 @@ public class Calculator {
 
         }
         return percentageOfRegen;
+    }
+
+    public static double getSpellRegenCost(PlayerData pd, SpellWrapper spell){
+        double maxRegen = Calculator.calculateMaxRegen(pd);
+        double percentageRegenCost = getSpellPercentageRegenCost(pd, spell.getPercentageRegenAffected());
+        double regenCost = maxRegen * percentageRegenCost;
+        return regenCost;
+    }
+
+    public static double getCooldownTimeLeft(long cooldownEnd){
+        return cooldownEnd - System.currentTimeMillis();
     }
 
     public static void setDefaultConfig(DefaultConfig defaultConfig){

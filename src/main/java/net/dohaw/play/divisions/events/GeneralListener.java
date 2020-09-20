@@ -4,12 +4,9 @@ import me.c10coding.coreapi.chat.ChatFactory;
 import net.dohaw.play.divisions.DamageType;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
-import net.dohaw.play.divisions.archetypes.Archetype;
-import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
-import net.dohaw.play.divisions.archetypes.types.Wizard;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
@@ -23,7 +20,6 @@ import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.DivisionChat;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -209,31 +205,40 @@ public class GeneralListener implements Listener {
                     if(customItemKey != null){
                         if(!customItemKey.isEmpty()){
                             SpellWrapper spell = Spell.getSpellByItemKey(customItemKey);
+                            String spellKey = spell.getKEY().toString();
                             if(archetype.getKEY() == spell.getArchetype()){
                                 if(spell != null){
                                     int playerLevel = pd.getLevel();
                                     if(spell.getLevelUnlocked() <= playerLevel){
-                                        if(Spell.canUseSpell(pd, spell)){
+                                        if(!pd.isOnCooldown(spellKey)) {
 
-                                            /*
-                                                Adds the cooldown to a map within the PlayerData object. Delays a task to remove the spell from the map to signal that it's not on cooldown
-                                             */
-                                            double spellCooldown = spell.getCooldown();
-                                            String spellKey = spell.getKEY().toString();
-                                            UUID playerUUID = player.getUniqueId();
+                                            if (Spell.hasEnoughRegen(pd, spell)) {
 
-                                            pd.addCoolDown(spellKey, spellCooldown);
-                                            playerDataManager.updatePlayerData(playerUUID, pd);
+                                                /*
+                                                    Adds the cooldown to a map within the PlayerData object. Delays a task to remove the spell from the map to signal that it's not on cooldown
+                                                 */
+                                                double spellCooldown = spell.getCooldown();
+                                                long schedulerDelay = (long) (spellCooldown * 20);
+                                                UUID playerUUID = player.getUniqueId();
 
-                                            Bukkit.broadcastMessage("Testing" + pd.getSpellCoolDowns().toString());
+                                                pd.addCoolDown(spellKey, spellCooldown);
 
-                                            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () ->{
-                                                pd.removeCoolDown(spellKey);
-                                                Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(spellKey, playerUUID));
+                                                double regenCost = Calculator.getSpellRegenCost(pd, spell);
+                                                double playerRegen = pd.getRegen();
+                                                pd.setRegen(playerRegen - regenCost);
+                                                spell.execute(player, true);
+
                                                 playerDataManager.updatePlayerData(playerUUID, pd);
-                                            }, (long) spellCooldown);
-                                            spell.execute(player, true);
 
+                                                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                                                    pd.removeCoolDown(spellKey);
+                                                    Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(spellKey, playerUUID));
+                                                    playerDataManager.updatePlayerData(playerUUID, pd);
+                                                }, schedulerDelay);
+
+                                            }
+
+                                        }else{
                                         }
                                     }
                                 }

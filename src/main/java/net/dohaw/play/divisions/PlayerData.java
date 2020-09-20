@@ -85,6 +85,10 @@ public class PlayerData {
         return spellCoolDowns.containsKey(spellKey);
     }
 
+    public long getCooldownEnd(String spellKey){
+        return spellCoolDowns.get(spellKey);
+    }
+
     public boolean hasPermission(Permission perm){
         return permissions.get(perm) != null;
     }
