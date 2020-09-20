@@ -2,21 +2,19 @@ package net.dohaw.play.divisions;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
-import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.runnables.Regener;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerData {
@@ -33,14 +31,14 @@ public class PlayerData {
     @Getter @Setter private DivisionChannel channel = DivisionChannel.NONE;
     @Getter @Setter private ItemCreationSession itemCreationSession = new ItemCreationSession();
 
-    @Getter @Setter private Regener regener;
-
     /*
         Archetype stuff
      */
     @Getter @Setter private ArchetypeWrapper archetype;
     @Getter @Setter private SpecialityWrapper speciality;
+    @Getter @Setter private Regener regener;
     @Getter @Setter private EnumMap<Stat, Double> statLevels = new EnumMap<>(Stat.class);
+    @Getter private Map<String, Long> spellCoolDowns = new HashMap<>();
 
     @Getter private EnumMap<Permission, Object> permissions = new EnumMap<>(Permission.class);
 
@@ -71,6 +69,20 @@ public class PlayerData {
     public void restartRegener(DivisionsPlugin plugin, long interval){
         stopRegener();
         startRegener(plugin, interval);
+    }
+
+    public void addCoolDown(String spellKey, double coolDownTime){
+        long millis = (long) (coolDownTime * 1000);
+        long millisCooldownEnd = millis + System.currentTimeMillis();
+        spellCoolDowns.put(spellKey, millisCooldownEnd);
+    }
+
+    public void removeCoolDown(String spellKey){
+        spellCoolDowns.remove(spellKey);
+    }
+
+    public boolean isOnCooldown(String spellKey){
+        return spellCoolDowns.containsKey(spellKey);
     }
 
     public boolean hasPermission(Permission perm){

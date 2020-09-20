@@ -53,4 +53,18 @@ public class DefaultConfig extends Config {
         return (long) config.getDouble("Base Regeneration Interval");
     }
 
+    /*
+        How much each Restoration point reduces the percentage of the spell regen cost
+     */
+    public double getPercentageReductionPerRestoPoint(){
+        return config.getDouble("Percentage Reduction Per Restoration Point");
+    }
+
+    /*
+        The minimum percentage of regen that a spell should cost
+     */
+    public double getMinimumPercentageSpellCost(){
+        return config.getDouble("Mininmum Regeneration Percentage");
+    }
+
 }

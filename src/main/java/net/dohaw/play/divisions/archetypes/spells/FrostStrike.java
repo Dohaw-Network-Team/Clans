@@ -11,13 +11,23 @@ public class FrostStrike extends SpellWrapper{
     }
 
     @Override
-    public void execute(Player player) {
+    public RegenType getRegenTypeAffected() {
+        return RegenType.MANA;
+    }
+
+    @Override
+    public void execute(Player player, boolean outOrIn) {
 
     }
 
     @Override
-    public RegenType getRegenTypeAffected() {
-        return RegenType.MANA;
+    public boolean displayCooldownMessage() {
+        return false;
+    }
+
+    @Override
+    public double alterDamage() {
+        return 0;
     }
 
     @Override

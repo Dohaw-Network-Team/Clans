@@ -3,6 +3,7 @@ package net.dohaw.play.divisions.commands;
 import me.c10coding.coreapi.chat.ChatFactory;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
+import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.customitems.CustomItem;
@@ -102,6 +103,10 @@ public class ArchetypesCommand implements CommandExecutor {
 
         if(pd.getArchetype() != null){
             pd.setArchetype(null);
+            pd.setLevel(1);
+            pd.setExp(0);
+            pd.setSpeciality(null);
+            pd.setStatLevels(Stat.getDefaultStats());
             pd.stopRegener();
             playerDataManager.updatePlayerData(pd.getPLAYER_UUID(), pd);
             chatFactory.sendPlayerMessage("You have reset your archetype as well as your archetype stats!", true, pd.getPlayer().getPlayer(), plugin.getPluginPrefix());

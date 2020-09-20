@@ -13,6 +13,7 @@ import net.dohaw.play.divisions.archetypes.types.Wizard;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
+import net.dohaw.play.divisions.events.custom.SpellCooldownDoneEvent;
 import net.dohaw.play.divisions.events.custom.TemporaryPlayerDataCreationEvent;
 import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.managers.DivisionsManager;
@@ -41,12 +42,14 @@ import java.util.UUID;
 
 public class GeneralListener implements Listener {
 
+    private DivisionsPlugin plugin;
     private PlayerDataManager playerDataManager;
     private ChatFactory chatFactory;
     private DivisionsManager divisionsManager;
     private DefaultConfig defaultConfig;
 
     public GeneralListener(DivisionsPlugin plugin){
+        this.plugin = plugin;
         this.playerDataManager = plugin.getPlayerDataManager();
         this.chatFactory = plugin.getAPI().getChatFactory();
         this.divisionsManager = plugin.getDivisionsManager();
@@ -203,13 +206,36 @@ public class GeneralListener implements Listener {
                     ItemStack stack = e.getItem();
                     String customItemKey = CustomItem.getCustomItemKey(stack);
 
-                    Bukkit.broadcastMessage(customItemKey);
                     if(customItemKey != null){
                         if(!customItemKey.isEmpty()){
                             SpellWrapper spell = Spell.getSpellByItemKey(customItemKey);
                             if(archetype.getKEY() == spell.getArchetype()){
                                 if(spell != null){
-                                    spell.execute(player);
+                                    int playerLevel = pd.getLevel();
+                                    if(spell.getLevelUnlocked() <= playerLevel){
+                                        if(Spell.canUseSpell(pd, spell)){
+
+                                            /*
+                                                Adds the cooldown to a map within the PlayerData object. Delays a task to remove the spell from the map to signal that it's not on cooldown
+                                             */
+                                            double spellCooldown = spell.getCooldown();
+                                            String spellKey = spell.getKEY().toString();
+                                            UUID playerUUID = player.getUniqueId();
+
+                                            pd.addCoolDown(spellKey, spellCooldown);
+                                            playerDataManager.updatePlayerData(playerUUID, pd);
+
+                                            Bukkit.broadcastMessage("Testing" + pd.getSpellCoolDowns().toString());
+
+                                            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () ->{
+                                                pd.removeCoolDown(spellKey);
+                                                Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(spellKey, playerUUID));
+                                                playerDataManager.updatePlayerData(playerUUID, pd);
+                                            }, (long) spellCooldown);
+                                            spell.execute(player, true);
+
+                                        }
+                                    }
                                 }
                             }
                         }

@@ -249,9 +249,6 @@ public class PlayerDataHandler {
         data = loadArchetypeData(playerDataConfig, data);
 
         if(data.getPlayer().isOnline() && data.getArchetype() != null){
-            Bukkit.broadcastMessage("Interval: " + Calculator.calculateRegenInterval(data));
-            Bukkit.broadcastMessage("Regen Amount: " + Calculator.calculateRegen(data));
-            Bukkit.broadcastMessage("Regen Max: " + Calculator.calculateMaxRegen(data));
             data.startRegener(plugin, Calculator.calculateRegenInterval(data));
         }
 

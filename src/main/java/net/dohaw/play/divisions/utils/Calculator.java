@@ -58,7 +58,6 @@ public class Calculator {
     public static long calculateRegenInterval(PlayerData pd){
         double totalResto = getTotalStat(pd, Stat.RESTORATION);
         double baseRegenInterval = config.getBaseRegenerationInterval();
-        Bukkit.broadcastMessage("Total Resto: " + totalResto);
         if(totalResto != 0){
             return (long) (baseRegenInterval - (totalResto / 2.0));
         }else{
@@ -84,6 +83,27 @@ public class Calculator {
         }
 
         return totalStatValue;
+    }
+
+    /*
+        Reduces the percentage of regen a spell costs based on your restoration levels
+     */
+    public static double getSpellRegenCost(PlayerData pd, double percentageOfRegen){
+
+        double totalResto = getTotalStat(pd, Stat.RESTORATION);
+        if(totalResto != 1){
+
+            double reductionPerRestoPoint = config.getPercentageReductionPerRestoPoint();
+            double reduction = percentageOfRegen - (reductionPerRestoPoint * totalResto);
+            double minPercentageSpellCost = config.getMinimumPercentageSpellCost();
+            if(reduction < minPercentageSpellCost){
+                return minPercentageSpellCost;
+            }else{
+                return reduction;
+            }
+
+        }
+        return percentageOfRegen;
     }
 
     public static void setDefaultConfig(DefaultConfig defaultConfig){

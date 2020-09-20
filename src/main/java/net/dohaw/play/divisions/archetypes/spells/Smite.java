@@ -12,11 +12,6 @@ public class Smite extends SpellWrapper{
     }
 
     @Override
-    public void execute(Player player) {
-        Bukkit.broadcastMessage("Executed!");
-    }
-
-    @Override
     public RegenType getRegenTypeAffected() {
         return RegenType.MANA;
     }
@@ -29,5 +24,20 @@ public class Smite extends SpellWrapper{
     @Override
     public double getCooldown() {
         return 0.5;
+    }
+
+    @Override
+    public void execute(Player player, boolean outOrIn) {
+
+    }
+
+    @Override
+    public double alterDamage() {
+        return 0;
+    }
+
+    @Override
+    public boolean displayCooldownMessage() {
+        return false;
     }
 }

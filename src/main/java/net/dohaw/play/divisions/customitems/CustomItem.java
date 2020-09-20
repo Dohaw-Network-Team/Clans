@@ -7,6 +7,7 @@ import net.dohaw.play.divisions.utils.Calculator;
 import net.minecraft.server.v1_16_R2.NBTTagCompound;
 import net.minecraft.server.v1_16_R2.NBTTagList;
 import net.minecraft.server.v1_16_R2.NBTTagString;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
@@ -62,12 +63,12 @@ public class CustomItem {
         }
 
         stack.setItemMeta(meta);
-        addNBTData(stack);
+        stack = addNBTData(stack);
 
         return stack;
     }
 
-    private void addNBTData(ItemStack stack){
+    private ItemStack addNBTData(ItemStack stack){
 
         net.minecraft.server.v1_16_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
         NBTTagCompound nmsComp = nmsStack.getOrCreateTag();
@@ -108,7 +109,7 @@ public class CustomItem {
         modifiers.add(maxHealth);
 
         nmsStack.setTag(nmsComp);
-        CraftItemStack.asBukkitCopy(nmsStack);
+        return CraftItemStack.asBukkitCopy(nmsStack);
 
     }
 

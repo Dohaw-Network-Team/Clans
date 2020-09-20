@@ -30,12 +30,19 @@ public abstract class SpellWrapper extends Wrapper {
         }};
     }
 
-    public abstract void execute(Player player);
+    /*
+        isOut == whether we are executing on the player that is doing the spell or the player that is being affected by the spell
+     */
+    public abstract void execute(Player player, boolean isOut);
 
     public abstract RegenType getRegenTypeAffected();
 
     public abstract double getPercentageRegenAffected();
 
     public abstract double getCooldown();
+
+    public abstract boolean displayCooldownMessage();
+
+    public abstract double alterDamage();
 
 }

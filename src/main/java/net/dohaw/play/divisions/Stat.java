@@ -3,6 +3,8 @@ package net.dohaw.play.divisions;
 import lombok.Getter;
 import org.bukkit.Material;
 
+import java.util.EnumMap;
+
 public enum Stat {
 
     STRENGTH(Material.GOLDEN_SWORD, 10),
@@ -31,6 +33,14 @@ public enum Stat {
             }
         }
         return null;
+    }
+
+    public static EnumMap<Stat, Double> getDefaultStats(){
+        EnumMap<Stat, Double> defaultStats = new EnumMap<Stat, Double>(Stat.class);
+        for(Stat stat : Stat.values()){
+            defaultStats.put(stat, 1.0);
+        }
+        return defaultStats;
     }
 
 }

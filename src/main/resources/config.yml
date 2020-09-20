@@ -6,6 +6,8 @@ Invite Cooldown: 5
 Base Regeneration Interval: 20
 Base Regeneration Amount: 10
 Base Regeneration Max: 100
+Percentage Reduction Per Restoration Point: 0.03
+Mininmum Regeneration Percentage: 0.05
 
 Damage Calculations:
 

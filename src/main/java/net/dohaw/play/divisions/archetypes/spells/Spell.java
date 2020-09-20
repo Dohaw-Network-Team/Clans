@@ -1,10 +1,14 @@
 package net.dohaw.play.divisions.archetypes.spells;
 
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.Wrapper;
 import net.dohaw.play.divisions.archetypes.WrapperHolder;
+import net.dohaw.play.divisions.utils.Calculator;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Projectile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +16,18 @@ import java.util.Map;
 
 public abstract class Spell extends WrapperHolder {
 
-    public static final SpellWrapper INVISIBLE_STRIKE = new InvisibleStrike("", ArchetypeKey.EVOKER, SpellKey.INVISIBLE_STRIKE, 1);
-    public static final SpellWrapper SMITE = new Smite("", ArchetypeKey.CLERIC, SpellKey.SMITE, 1);
-    public static final SpellWrapper FROST_STRIKE = new FrostStrike("", ArchetypeKey.WIZARD, SpellKey.FROST_STRIKE, 1);
+    public static final SpellWrapper INVISIBLE_STRIKE = new InvisibleStrike("invisible_strike_spell", ArchetypeKey.EVOKER, SpellKey.INVISIBLE_STRIKE, 1);
+    public static final SpellWrapper SMITE = new Smite("smite_spell", ArchetypeKey.CLERIC, SpellKey.SMITE, 1);
+    public static final SpellWrapper FROST_STRIKE = new FrostStrike("frost_strike", ArchetypeKey.WIZARD, SpellKey.FROST_STRIKE, 1);
 
     public static SpellWrapper getSpellByItemKey(String customItemKey){
         for(Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()){
-            SpellWrapper spell = (SpellWrapper) entry.getValue();
-            if(spell.getCustomItemBindedToKey().equalsIgnoreCase(customItemKey)){
-                return spell;
+            Wrapper wrapper = entry.getValue();
+            if(wrapper instanceof SpellWrapper){
+                SpellWrapper spell = (SpellWrapper) entry.getValue();
+                if(spell.getCustomItemBindedToKey().equalsIgnoreCase(customItemKey)){
+                    return spell;
+                }
             }
         }
         return null;
@@ -46,6 +53,25 @@ public abstract class Spell extends WrapperHolder {
             }
         }
         return spellsUnlocked;
+    }
+
+    public static boolean isSpellEntity(Entity entity){
+        return entity.hasMetadata("spell_key");
+    }
+
+    public static boolean canUseSpell(PlayerData pd, SpellWrapper spell){
+
+        double regen = pd.getRegen();
+        double maxRegen = Calculator.calculateMaxRegen(pd);
+        double percentageRegenCost = spell.getPercentageRegenAffected();
+        double regenCost = maxRegen * percentageRegenCost;
+
+        if(regen >= regenCost){
+            return !pd.isOnCooldown(spell.getKEY().toString());
+        }
+
+        return false;
+
     }
 
 }
