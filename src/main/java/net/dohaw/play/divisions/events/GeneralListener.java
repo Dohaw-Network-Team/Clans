@@ -6,7 +6,7 @@ import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
-import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
@@ -18,12 +18,14 @@ import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.DivisionChat;
+import net.dohaw.play.divisions.utils.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -31,7 +33,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.List;
 import java.util.UUID;
@@ -75,8 +76,9 @@ public class GeneralListener implements Listener {
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e){
-        if(playerDataManager.getPlayerByUUID(e.getPlayer().getUniqueId()) != null){
-            playerDataManager.removePlayerData(e.getPlayer().getUniqueId());
+        UUID playerUUID = e.getPlayer().getUniqueId();
+        if(playerDataManager.getPlayerByUUID(playerUUID) != null){
+            playerDataManager.removePlayerData(playerUUID);
         }
     }
 
@@ -138,53 +140,10 @@ public class GeneralListener implements Listener {
 
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerTakeDamage(EntityDamageByEntityEvent e){
-
-        Entity eDamager = e.getDamager();
-        Entity eDamageTaker = e.getEntity();
-
-        double dmg = e.getFinalDamage();
-
-        if(isEntityInvolvedAPlayer(eDamager)){
-
-            DamageType damageType;
-            Player damager;
-
-            if(eDamager instanceof Projectile){
-                damageType = DamageType.RANGED;
-                damager = (Player) getPotentialPlayerFromProjectile(eDamager);
-            }else{
-                damageType = DamageType.MELEE;
-                damager = (Player) eDamager;
-            }
-
-            PlayerData pd = playerDataManager.getPlayerByUUID(damager.getUniqueId());
-            if(damageType == DamageType.RANGED){
-                dmg = Calculator.factorInDamage(pd, dmg, true);
-            }else{
-                dmg = Calculator.factorInDamage(pd, dmg, false);
-            }
-
-        }
-
-        if(isEntityInvolvedAPlayer(eDamageTaker)){
-
-            Player damageTaker;
-
-            if(eDamageTaker instanceof Projectile){
-                damageTaker = (Player) getPotentialPlayerFromProjectile(eDamageTaker);
-            }else{
-                damageTaker = (Player) eDamageTaker;
-            }
-            PlayerData pd = playerDataManager.getPlayerByUUID(damageTaker.getUniqueId());
-
-            dmg = Calculator.factorInToughness(pd, dmg);
-
-        }
-
-        e.setDamage(dmg);
-
+        double newDmg = Calculator.getNewDamage(e, playerDataManager);
+        e.setDamage(newDmg);
     }
 
     /*
@@ -204,7 +163,7 @@ public class GeneralListener implements Listener {
 
                     if(customItemKey != null){
                         if(!customItemKey.isEmpty()){
-                            SpellWrapper spell = Spell.getSpellByItemKey(customItemKey);
+                            ActiveSpell spell = Spell.getSpellByItemKey(customItemKey);
                             String spellKey = spell.getKEY().toString();
                             if(archetype.getKEY() == spell.getArchetype()){
                                 if(spell != null){
@@ -250,27 +209,6 @@ public class GeneralListener implements Listener {
         }
     }
 
-    private Entity getPotentialPlayerFromProjectile(Entity entity){
-        ProjectileSource source = ((Projectile) entity).getShooter();
-        return source instanceof Entity ? (Entity) source : null;
-    }
 
-    /*
-        If the entity is a projectile, it gets the shooter.
-        If the entity isn't a projectile, it checks to see if it's a player.
-     */
-    private boolean isEntityInvolvedAPlayer(Entity entityInvolved){
-        if(entityInvolved instanceof Player){
-            return true;
-        }else{
-            if(entityInvolved instanceof Projectile){
-                if(getPotentialPlayerFromProjectile(entityInvolved) != null){
-                    Entity potentialPlayer = getPotentialPlayerFromProjectile(entityInvolved);
-                    return potentialPlayer instanceof Player;
-                }
-            }
-        }
-        return false;
-    }
 
 }

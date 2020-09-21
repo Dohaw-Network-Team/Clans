@@ -2,7 +2,6 @@ package net.dohaw.play.divisions.prompts.itemcreation;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
-import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.menus.itemcreation.CreateItemMenu;
 import net.dohaw.play.divisions.utils.MenuHelper;

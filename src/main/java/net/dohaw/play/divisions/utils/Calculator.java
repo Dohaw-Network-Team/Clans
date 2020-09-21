@@ -1,12 +1,17 @@
 package net.dohaw.play.divisions.utils;
 
+import net.dohaw.play.divisions.DamageType;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
-import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.files.DefaultConfig;
+import net.dohaw.play.divisions.managers.PlayerDataManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -107,7 +112,7 @@ public class Calculator {
         return percentageOfRegen;
     }
 
-    public static double getSpellRegenCost(PlayerData pd, SpellWrapper spell){
+    public static double getSpellRegenCost(PlayerData pd, ActiveSpell spell){
         double maxRegen = Calculator.calculateMaxRegen(pd);
         double percentageRegenCost = getSpellPercentageRegenCost(pd, spell.getPercentageRegenAffected());
         double regenCost = maxRegen * percentageRegenCost;
@@ -120,6 +125,54 @@ public class Calculator {
 
     public static void setDefaultConfig(DefaultConfig defaultConfig){
         config = defaultConfig;
+    }
+
+    public static double getNewDamage(EntityDamageByEntityEvent e, PlayerDataManager playerDataManager){
+
+        Entity eDamager = e.getDamager();
+        Entity eDamageTaker = e.getEntity();
+
+        double dmg = e.getFinalDamage();
+
+        if(EntityUtils.isEntityInvolvedAPlayer(eDamager)){
+
+            DamageType damageType;
+            Player damager;
+
+            if(eDamager instanceof Projectile){
+                damageType = DamageType.RANGED;
+                damager = (Player) EntityUtils.getPotentialPlayerFromProjectile(eDamager);
+            }else{
+                damageType = DamageType.MELEE;
+                damager = (Player) eDamager;
+            }
+
+            PlayerData pd = playerDataManager.getPlayerByUUID(damager.getUniqueId());
+            if(damageType == DamageType.RANGED){
+                dmg = Calculator.factorInDamage(pd, dmg, true);
+                Bukkit.broadcastMessage("Calculator Ranged Damage: " + dmg);
+            }else{
+                dmg = Calculator.factorInDamage(pd, dmg, false);
+            }
+
+        }
+
+        if(EntityUtils.isEntityInvolvedAPlayer(eDamageTaker)){
+
+            Player damageTaker;
+
+            if(eDamageTaker instanceof Projectile){
+                damageTaker = (Player) EntityUtils.getPotentialPlayerFromProjectile(eDamageTaker);
+            }else{
+                damageTaker = (Player) eDamageTaker;
+            }
+            PlayerData pd = playerDataManager.getPlayerByUUID(damageTaker.getUniqueId());
+
+            dmg = Calculator.factorInToughness(pd, dmg);
+
+        }
+
+        return dmg;
     }
 
 

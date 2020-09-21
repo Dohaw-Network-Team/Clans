@@ -1,13 +1,13 @@
-package net.dohaw.play.divisions.archetypes.spells;
+package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.RegenType;
-import org.bukkit.Bukkit;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
-public class InvisibleStrike extends SpellWrapper{
+public class FrostStrike extends ActiveSpell {
 
-    public InvisibleStrike(String customItemBindedToKey, ArchetypeKey archetype, Enum KEY, int levelUnlocked) {
+    public FrostStrike(String customItemBindedToKey, ArchetypeKey archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 
@@ -18,7 +18,7 @@ public class InvisibleStrike extends SpellWrapper{
 
     @Override
     public void execute(Player player, boolean outOrIn) {
-        Bukkit.broadcastMessage("Yo yo");
+
     }
 
     @Override
@@ -27,8 +27,23 @@ public class InvisibleStrike extends SpellWrapper{
     }
 
     @Override
-    public double alterDamage() {
+    public double alterDamage(double dmg) {
         return 0;
+    }
+
+    @Override
+    public double getRange() {
+        return 0;
+    }
+
+    @Override
+    public Particle getSpellOwnerParticle() {
+        return null;
+    }
+
+    @Override
+    public Particle getSpellAffecterParticle() {
+        return null;
     }
 
     @Override
@@ -40,6 +55,4 @@ public class InvisibleStrike extends SpellWrapper{
     public double getPercentageRegenAffected() {
         return 0.10;
     }
-
-
 }

@@ -38,6 +38,7 @@ import java.util.UUID;
 
 public final class DivisionsPlugin extends BetterJavaPlugin {
 
+    @Getter private static DivisionsPlugin instance;
     @Getter private static Economy economy = null;
     @Getter private String pluginPrefix;
 
@@ -55,6 +56,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
     public void onEnable() {
 
         hookAPI(this);
+        instance = this;
 
         if (!setupEconomy()) {
             getLogger().severe("Disabled due to no Vault dependency found!");
@@ -69,6 +71,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         this.statsConfig = new StatsConfig(this);
         this.defaultConfig = new DefaultConfig(this);
         Calculator.setDefaultConfig(defaultConfig);
+        Spell.setPlugin(this);
 
         loadDefaultRankPermissions();
 
@@ -132,6 +135,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         Spell.registerWrapper(Spell.FROST_STRIKE);
         Spell.registerWrapper(Spell.INVISIBLE_STRIKE);
         Spell.registerWrapper(Spell.SMITE);
+        Spell.registerWrapper(Spell.HEATING_UP);
     }
 
     private boolean setupEconomy() {
@@ -229,6 +233,10 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
 
     public boolean hasBeenInvitedRecently(UUID u){
         return invitedPlayers.containsKey(u);
+    }
+
+    public static DivisionsPlugin getInstance(){
+        return instance;
     }
 
 }

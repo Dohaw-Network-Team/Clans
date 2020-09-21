@@ -1,11 +1,11 @@
-package net.dohaw.play.divisions.archetypes.spells;
+package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.RegenType;
-import org.bukkit.Bukkit;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
-public class Smite extends SpellWrapper{
+public class Smite extends ActiveSpell{
 
     public Smite(String customItemBindedToKey, ArchetypeKey archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
@@ -32,8 +32,23 @@ public class Smite extends SpellWrapper{
     }
 
     @Override
-    public double alterDamage() {
+    public double alterDamage(double dmg) {
         return 0;
+    }
+
+    @Override
+    public double getRange() {
+        return 0;
+    }
+
+    @Override
+    public Particle getSpellOwnerParticle() {
+        return null;
+    }
+
+    @Override
+    public Particle getSpellAffecterParticle() {
+        return null;
     }
 
     @Override

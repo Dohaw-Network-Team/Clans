@@ -1,12 +1,13 @@
-package net.dohaw.play.divisions.archetypes.spells;
+package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.RegenType;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
-public class FrostStrike extends SpellWrapper{
+public class InvisibleStrike extends ActiveSpell{
 
-    public FrostStrike(String customItemBindedToKey, ArchetypeKey archetype, Enum KEY, int levelUnlocked) {
+    public InvisibleStrike(String customItemBindedToKey, ArchetypeKey archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 
@@ -26,8 +27,23 @@ public class FrostStrike extends SpellWrapper{
     }
 
     @Override
-    public double alterDamage() {
+    public double alterDamage(double dmg) {
         return 0;
+    }
+
+    @Override
+    public double getRange() {
+        return 0;
+    }
+
+    @Override
+    public Particle getSpellOwnerParticle() {
+        return null;
+    }
+
+    @Override
+    public Particle getSpellAffecterParticle() {
+        return null;
     }
 
     @Override
@@ -39,4 +55,6 @@ public class FrostStrike extends SpellWrapper{
     public double getPercentageRegenAffected() {
         return 0.10;
     }
+
+
 }

@@ -1,5 +1,7 @@
 package net.dohaw.play.divisions.archetypes.types;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
@@ -7,13 +9,15 @@ import net.dohaw.play.divisions.archetypes.RegenType;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
-import net.dohaw.play.divisions.archetypes.spells.SpellKey;
-import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import org.bukkit.Material;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
 
 public class Archer extends ArchetypeWrapper {
+
+    @Getter @Setter private int heatingUpCount;
 
     public Archer(ArchetypeKey ARCHETYPE) {
         super(ARCHETYPE);

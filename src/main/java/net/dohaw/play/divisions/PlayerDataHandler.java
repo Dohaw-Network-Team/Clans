@@ -11,7 +11,6 @@ import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.utils.Calculator;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

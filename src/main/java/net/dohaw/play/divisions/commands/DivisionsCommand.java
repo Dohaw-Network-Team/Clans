@@ -15,7 +15,7 @@ import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.utils.DivisionChat;
-import net.dohaw.play.divisions.utils.PlayerHelper;
+import net.dohaw.play.divisions.utils.EntityUtils;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -317,7 +317,7 @@ public class DivisionsCommand implements CommandExecutor {
                             return false;
                         }
 
-                        if(PlayerHelper.isValidOnlinePlayer(playerName)){
+                        if(EntityUtils.isValidOnlinePlayer(playerName)){
                             Player playerAffected = Bukkit.getPlayer(playerName);
                             if(playerDataManager.isInDivision(playerAffected)){
                                 if(playerDataManager.isInSameDivision(player, playerAffected)){

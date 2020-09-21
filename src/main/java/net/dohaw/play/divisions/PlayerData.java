@@ -2,6 +2,9 @@ package net.dohaw.play.divisions;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.dohaw.play.divisions.DivisionChannel;
+import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;

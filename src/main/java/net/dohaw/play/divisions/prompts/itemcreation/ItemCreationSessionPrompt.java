@@ -1,6 +1,5 @@
 package net.dohaw.play.divisions.prompts.itemcreation;
 
-import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import net.dohaw.play.divisions.managers.CustomItemManager;

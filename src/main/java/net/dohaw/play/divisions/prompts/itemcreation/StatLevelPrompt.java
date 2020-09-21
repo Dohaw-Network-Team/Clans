@@ -4,13 +4,11 @@ import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.menus.itemcreation.CreateItemMenu;
 import net.dohaw.play.divisions.menus.itemcreation.DisplayStatsMenu;
 import net.dohaw.play.divisions.utils.MenuHelper;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.NumericPrompt;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 import java.util.Map;

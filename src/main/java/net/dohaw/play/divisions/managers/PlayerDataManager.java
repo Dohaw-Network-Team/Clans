@@ -80,10 +80,6 @@ public class PlayerDataManager implements Manager{
         playerDataHandler.saveData(playerDataList);
     }
 
-    public void savePlayerData(PlayerData data){
-        playerDataHandler.saveData(data);
-    }
-
     @Override
     public void loadContents() {
         this.playerDataList = playerDataHandler.loadData();
