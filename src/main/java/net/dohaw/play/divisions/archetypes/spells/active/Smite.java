@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.RegenType;
 import org.bukkit.Particle;
@@ -32,11 +33,6 @@ public class Smite extends ActiveSpell{
     }
 
     @Override
-    public double alterDamage(double dmg) {
-        return 0;
-    }
-
-    @Override
     public double getRange() {
         return 0;
     }
@@ -54,5 +50,10 @@ public class Smite extends ActiveSpell{
     @Override
     public boolean displayCooldownMessage() {
         return false;
+    }
+
+    @Override
+    public double alterDamage(double dmg, PlayerData pd) {
+        return 0;
     }
 }

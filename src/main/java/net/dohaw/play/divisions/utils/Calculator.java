@@ -150,7 +150,6 @@ public class Calculator {
             PlayerData pd = playerDataManager.getPlayerByUUID(damager.getUniqueId());
             if(damageType == DamageType.RANGED){
                 dmg = Calculator.factorInDamage(pd, dmg, true);
-                Bukkit.broadcastMessage("Calculator Ranged Damage: " + dmg);
             }else{
                 dmg = Calculator.factorInDamage(pd, dmg, false);
             }
@@ -174,6 +173,5 @@ public class Calculator {
 
         return dmg;
     }
-
 
 }

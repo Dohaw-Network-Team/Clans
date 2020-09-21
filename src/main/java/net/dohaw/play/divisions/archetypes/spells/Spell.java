@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Spell extends WrapperHolder {
-    private static DivisionsPlugin plugin;
 
     public static final ActiveSpell INVISIBLE_STRIKE = new InvisibleStrike("invisible_strike_spell", ArchetypeKey.EVOKER, SpellKey.INVISIBLE_STRIKE, 1);
     public static final ActiveSpell SMITE = new Smite("smite_spell", ArchetypeKey.CLERIC, SpellKey.SMITE, 1);
@@ -122,10 +121,6 @@ public abstract class Spell extends WrapperHolder {
 
         return target;
 
-    }
-
-    public static void setPlugin(DivisionsPlugin plugin1){
-        plugin = plugin1;
     }
 
 }

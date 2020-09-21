@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.RegenType;
 import org.bukkit.Particle;
@@ -27,7 +28,7 @@ public class FrostStrike extends ActiveSpell {
     }
 
     @Override
-    public double alterDamage(double dmg) {
+    public double alterDamage(double dmg, PlayerData pd) {
         return 0;
     }
 

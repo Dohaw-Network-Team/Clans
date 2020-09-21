@@ -1,6 +1,5 @@
 package net.dohaw.play.divisions.archetypes.spells.passive;
 
-import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 

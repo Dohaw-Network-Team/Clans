@@ -1,5 +1,6 @@
 Plugin Prefix: "&l[&aDivisions&r&l]&r"
 
+Debug Mode: true
 Default Division Gold Amount: 100
 Invite Cooldown: 5
 
@@ -9,7 +10,7 @@ Base Regeneration Max: 100
 Percentage Reduction Per Restoration Point: 0.03
 Mininmum Regeneration Percentage: 0.05
 
-Damage Calculations:
+Calculations:
 
   Scale:
     Melee Damage Scale: 1.35
@@ -21,3 +22,6 @@ Damage Calculations:
     Ranged Damage Division Scale: 1.35
     Raw Stat Division Scale: 60
     Raw Stat Division Totality Scale: 1.665
+
+  Spells:
+    Total Luck Multiple: 2

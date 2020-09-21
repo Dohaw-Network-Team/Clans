@@ -460,6 +460,9 @@ public class DivisionsCommand implements CommandExecutor {
                     }else{
                         msg = messagesConfig.getMessage(Message.NOT_IN_DIVISION);
                     }
+                }else if(args[0].equalsIgnoreCase("reload")){
+                    plugin.reload();
+                    msg = "The plugin has been reloaded!";
                 }
 
                 if(msg != null){

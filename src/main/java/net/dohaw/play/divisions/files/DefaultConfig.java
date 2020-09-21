@@ -5,6 +5,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class DefaultConfig extends Config {
 
+    public final String CALCULATIONS_PATH = "Calculations";
+
     public DefaultConfig(JavaPlugin plugin) {
         super(plugin, "config.yml");
     }
@@ -14,31 +16,31 @@ public class DefaultConfig extends Config {
     }
 
     public double getMeleeDamageScale(){
-        return config.getDouble("Damage Calculations.Scale.Melee Damage Scale");
+        return config.getDouble(CALCULATIONS_PATH + ".Scale.Melee Damage Scale");
     }
 
     public double getToughnessScale(){
-        return config.getDouble("Damage Calculations.Scale.Toughness Scale");
+        return config.getDouble(CALCULATIONS_PATH + ".Scale.Toughness Scale");
     }
 
     public double getBowDamageScale(){
-        return config.getDouble("Damage Calculations.Scale.Bow Damage Scale");
+        return config.getDouble(CALCULATIONS_PATH + ".Scale.Bow Damage Scale");
     }
 
     public double getMeleeDamageDivisionScale(){
-        return config.getDouble("Damage Calculations.Division Scale.Melee Damage Division Scale");
+        return config.getDouble(CALCULATIONS_PATH + ".Division Scale.Melee Damage Division Scale");
     }
 
     public double getRangedDamageDivisionScale(){
-        return config.getDouble("Damage Calculations.Division Scale.Ranged Damage Division Scale");
+        return config.getDouble(CALCULATIONS_PATH + ".Division Scale.Ranged Damage Division Scale");
     }
 
     public double getRawStatDivisionScale(){
-        return config.getDouble("Raw Stat Division Scale");
+        return config.getDouble(CALCULATIONS_PATH + ".Division Scale.Raw Stat Division Scale");
     }
 
     public double getRawStatDivisionTotalityScale(){
-        return config.getDouble("Raw Stat Division Totality Scale");
+        return config.getDouble(CALCULATIONS_PATH + ".Division Scale.Raw Stat Division Totality Scale");
     }
 
     public double getBaseRegenerationAmount(){
@@ -65,6 +67,14 @@ public class DefaultConfig extends Config {
      */
     public double getMinimumPercentageSpellCost(){
         return config.getDouble("Mininmum Regeneration Percentage");
+    }
+
+    public double getHeatUpLuckMultiple(){
+        return config.getDouble(CALCULATIONS_PATH + ".Spells.Total Luck Multiple");
+    }
+
+    public boolean isInDebugMode(){
+        return config.getBoolean("Debug Mode");
     }
 
 }

@@ -5,6 +5,7 @@ import me.c10coding.coreapi.BetterJavaPlugin;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
+import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.commands.ArchetypesCommand;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
 import net.dohaw.play.divisions.commands.CustomItemsCommand;
@@ -71,7 +72,6 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         this.statsConfig = new StatsConfig(this);
         this.defaultConfig = new DefaultConfig(this);
         Calculator.setDefaultConfig(defaultConfig);
-        Spell.setPlugin(this);
 
         loadDefaultRankPermissions();
 
@@ -233,6 +233,13 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
 
     public boolean hasBeenInvitedRecently(UUID u){
         return invitedPlayers.containsKey(u);
+    }
+
+    public void reload(){
+        defaultConfig.reloadConfig();
+        statsConfig.reloadConfig();
+        defaultPermConfig.reloadConfig();
+        messagesConfig.reloadConfig();
     }
 
     public static DivisionsPlugin getInstance(){
