@@ -12,10 +12,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class CustomItem {
@@ -132,6 +135,20 @@ public class CustomItem {
             return nmsComp.getDouble(stat.name());
         }
         return 0;
+    }
+
+    public static TreeMap<Integer, ItemStack> getPlayerItemWithKey(Player player, String customItemKey){
+        PlayerInventory inv = player.getInventory();
+        for(int x = 0; x < inv.getContents().length; x++){
+            ItemStack is = inv.getContents()[x];
+            if(getCustomItemKey(is).equalsIgnoreCase(customItemKey)){
+                int finalX = x;
+                return new TreeMap<Integer, ItemStack>(){{
+                    put(finalX, is);
+                }};
+            }
+        }
+        return null;
     }
 
     @Override

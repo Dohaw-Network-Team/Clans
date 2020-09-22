@@ -22,6 +22,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class HeatingUp extends PassiveSpell implements Listener {
@@ -39,6 +41,11 @@ public class HeatingUp extends PassiveSpell implements Listener {
     @Override
     public Particle getSpellAffecterParticle() {
         return Particle.EXPLOSION_NORMAL;
+    }
+
+    @Override
+    public List<String> getDescription() {
+        return Arrays.asList("For every 3 arrows you hit someone, you do extra damage on the third hit", "The extra amount of damage is based on your total luck and player level");
     }
 
     @EventHandler

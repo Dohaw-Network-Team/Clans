@@ -3,9 +3,7 @@ package net.dohaw.play.divisions.managers;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.Wrapper;
-import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
-import net.dohaw.play.divisions.archetypes.spells.Spell;
-import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.spells.*;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.DivisionsPlugin;
@@ -13,11 +11,13 @@ import net.dohaw.play.divisions.customitems.ItemType;
 import net.dohaw.play.divisions.customitems.Rarity;
 import net.dohaw.play.divisions.customitems.types.Armor;
 import net.dohaw.play.divisions.files.CustomItemsConfig;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.w3c.dom.ranges.Range;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CustomItemManager implements Manager{
 
@@ -97,24 +97,56 @@ public class CustomItemManager implements Manager{
             if(spell instanceof ActiveSpell){
 
                 ActiveSpell aSpell = (ActiveSpell) spell;
-                String customItemBindedTo = spell.getCustomItemBindedToKey();
-                CustomItem customItem = getByKey(customItemBindedTo);
+                String customItemBindedToKey = spell.getCustomItemBindedToKey();
 
-                if(customItem != null){
+                Player player = pd.getPlayer().getPlayer();
+                TreeMap<Integer, ItemStack> bindedItemMap = CustomItem.getPlayerItemWithKey(player, customItemBindedToKey);
+                int slot = bindedItemMap.firstKey();
+                ItemStack bindedItem = bindedItemMap.firstEntry().getValue();
 
-                    String spellDesc = aSpell.getDescription();
+                if(bindedItem != null){
+
+                    ItemMeta meta = bindedItem.getItemMeta();
+
+                    final String LORE_HEADER_COLOR = "&8&l&n";
+                    final String LORE_COLOR = aSpell.getLORE_COLOR();
+
                     List<String> spellLore = new ArrayList<>();
-                    spellLore.add(spellDesc);
+                    spellLore = combineLore(LORE_COLOR, spellLore, aSpell.getDescription());
 
                     spellLore.add(" ");
-                    List<String> cooldownPart = aSpell.getCooldownLorePart();
-                    spellLore.addAll(cooldownPart);
+                    spellLore.add(LORE_HEADER_COLOR + "COOLDOWN");
+                    spellLore = combineLore(LORE_COLOR, spellLore, aSpell.getCooldownLorePart());
 
-                    customItem.setLore(spellLore);
+                    if(aSpell instanceof Damageable){
+                        Damageable damageable = (Damageable) aSpell;
+                        spellLore.add(" ");
+                        spellLore.add(LORE_HEADER_COLOR + "DAMAGE");
+                        spellLore = combineLore(LORE_COLOR, spellLore, damageable.getDamageLorePart());
+                    }
+
+                    if(aSpell instanceof Rangeable){
+                        Rangeable rangeable = (Rangeable) aSpell;
+                        spellLore.add(" ");
+                        spellLore.add(LORE_HEADER_COLOR + "RANGE");
+                        spellLore = combineLore(LORE_COLOR, spellLore, rangeable.getRangeLorePart());
+                    }
+
+                    spellLore = plugin.getAPI().getChatFactory().colorLore(spellLore);
+                    meta.setLore(spellLore);
+                    bindedItem.setItemMeta(meta);
+                    player.getInventory().setItem(slot, bindedItem);
                 }
             }
 
         }
+    }
+
+    private List<String> combineLore(final String LORE_COLOR, List<String> spellLore, List<String> propertyLore){
+        for(String s : propertyLore){
+            spellLore.add(LORE_COLOR + s);
+        }
+        return spellLore;
     }
 
     @Override

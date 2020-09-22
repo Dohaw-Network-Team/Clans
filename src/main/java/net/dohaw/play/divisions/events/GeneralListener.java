@@ -13,6 +13,7 @@ import net.dohaw.play.divisions.events.custom.NewMemberEvent;
 import net.dohaw.play.divisions.events.custom.SpellCooldownDoneEvent;
 import net.dohaw.play.divisions.events.custom.TemporaryPlayerDataCreationEvent;
 import net.dohaw.play.divisions.files.DefaultConfig;
+import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.PlayerData;
@@ -70,6 +71,11 @@ public class GeneralListener implements Listener {
         if(pd.getDivision() != null){
             Division division = divisionsManager.getDivision(pd.getDivision());
             DivisionChat.sendMOTD(chatFactory, division, player);
+        }
+
+        if(pd.getArchetype() != null){
+            CustomItemManager customItemManager = plugin.getCustomItemManager();
+            customItemManager.setSpellItemLores(pd);
         }
 
     }

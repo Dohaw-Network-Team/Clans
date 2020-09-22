@@ -59,6 +59,7 @@ public class ArchetypesCommand implements CommandExecutor {
 
                         pd.setStatLevels(archetype.getDefaultStats());
                         giveDefaultItems(playerGettingArch, archetype);
+                        customItemManager.setSpellItemLores(pd);
 
                         playerDataManager.updatePlayerData(playerUUID, pd);
                         chatFactory.sendPlayerMessage("You have given this player the archetype " + archetype.getName() + "!", true, sender, plugin.getPluginPrefix());

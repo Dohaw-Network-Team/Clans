@@ -46,6 +46,6 @@ public abstract class SpellWrapper extends Wrapper {
 
     public abstract Particle getSpellAffecterParticle();
 
-    public abstract String getDescription();
+    public abstract List<String> getDescription();
 
 }

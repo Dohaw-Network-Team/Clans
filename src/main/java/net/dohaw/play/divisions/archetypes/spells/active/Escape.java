@@ -7,9 +7,12 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Escape extends ActiveSpell {
+
+    public final int ABSORPTION_DURATION = 4;
 
     public Escape(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
@@ -38,8 +41,13 @@ public class Escape extends ActiveSpell {
     }
 
     @Override
-    public double getDescription() {
-        return 0;
+    public List<String> getDescription() {
+        int regenAmount = (int) (getPercentageRegenAffected() * 100);
+        return Arrays.asList(
+            "You get sent backwards in an attempt to escape",
+            "You are given absorption (the level of it is dependant on your level) for " + ABSORPTION_DURATION + " seconds",
+            "Uses " + regenAmount + " regen"
+        );
     }
 
     @Override
@@ -54,7 +62,7 @@ public class Escape extends ActiveSpell {
 
     @Override
     public List<String> getCooldownLorePart() {
-        return null;
+        return Arrays.asList(getCooldown() + " seconds");
     }
 
     @Override

@@ -4,10 +4,15 @@ import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.RegenType;
+import net.dohaw.play.divisions.archetypes.spells.Damageable;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
-public class InvisibleStrike extends ActiveSpell{
+import java.util.Arrays;
+import java.util.List;
+
+public class InvisibleStrike extends ActiveSpell implements Damageable, ActiveLaunchableSpell {
 
     public InvisibleStrike(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
@@ -24,8 +29,18 @@ public class InvisibleStrike extends ActiveSpell{
     }
 
     @Override
+    public List<String> getCooldownLorePart() {
+        return Arrays.asList("");
+    }
+
+    @Override
     public double alterDamage(double dmg, PlayerData pd) {
         return 0;
+    }
+
+    @Override
+    public List<String> getDamageLorePart() {
+        return Arrays.asList("");
     }
 
     @Override
@@ -44,6 +59,11 @@ public class InvisibleStrike extends ActiveSpell{
     }
 
     @Override
+    public List<String> getDescription() {
+        return Arrays.asList("");
+    }
+
+    @Override
     public double getCooldown() {
         return 0.5;
     }
@@ -54,4 +74,8 @@ public class InvisibleStrike extends ActiveSpell{
     }
 
 
+    @Override
+    public Material getProjectileMaterial() {
+        return null;
+    }
 }

@@ -1,10 +1,9 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.PlayerData;
-import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
-import net.dohaw.play.divisions.archetypes.RegenType;
-import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
+import net.dohaw.play.divisions.archetypes.spells.Damageable;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftLivingEntity;
@@ -15,7 +14,10 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
-public class FrostStrike extends ActiveSpell implements ActiveLaunchableSpell {
+import java.util.Arrays;
+import java.util.List;
+
+public class FrostStrike extends ActiveSpell implements ActiveLaunchableSpell, Damageable {
 
     public FrostStrike(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
@@ -24,6 +26,16 @@ public class FrostStrike extends ActiveSpell implements ActiveLaunchableSpell {
     @Override
     public Material getProjectileMaterial() {
         return Material.PACKED_ICE;
+    }
+
+    @Override
+    public List<String> getCooldownLorePart() {
+        return Arrays.asList(getCooldown() + " seconds");
+    }
+
+    @Override
+    public List<String> getDescription() {
+        return Arrays.asList("Shoots a frost strike");
     }
 
     @Override
@@ -42,6 +54,11 @@ public class FrostStrike extends ActiveSpell implements ActiveLaunchableSpell {
     @Override
     public double alterDamage(double dmg, PlayerData pd) {
         return 0;
+    }
+
+    @Override
+    public List<String> getDamageLorePart() {
+        return Arrays.asList("Damage is based on spell power");
     }
 
     @Override
