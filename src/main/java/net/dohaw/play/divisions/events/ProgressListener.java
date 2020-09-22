@@ -66,7 +66,7 @@ public class ProgressListener implements Listener {
                     inv.addItem(spellItem);
 
                     TreeMap<Integer, ItemStack> alteredSpellItem = CustomItem.getPlayerItemWithKey(player, customItemBindedToKey);
-                    spellItem = customItemManager.alterLore(aSpell, alteredSpellItem);
+                    spellItem = customItemManager.alterMeta(aSpell, alteredSpellItem);
 
                     int slot = alteredSpellItem.firstKey();
                     inv.setItem(slot, spellItem);

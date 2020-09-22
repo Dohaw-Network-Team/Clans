@@ -2,20 +2,16 @@ package net.dohaw.play.divisions.managers;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
-import net.dohaw.play.divisions.archetypes.Wrapper;
 import net.dohaw.play.divisions.archetypes.spells.*;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.customitems.ItemType;
 import net.dohaw.play.divisions.customitems.Rarity;
-import net.dohaw.play.divisions.customitems.types.Armor;
 import net.dohaw.play.divisions.files.CustomItemsConfig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.w3c.dom.ranges.Range;
 
 import java.util.*;
 
@@ -101,7 +97,7 @@ public class CustomItemManager implements Manager{
 
                 Player player = pd.getPlayer().getPlayer();
                 TreeMap<Integer, ItemStack> bindedItemMap = CustomItem.getPlayerItemWithKey(player, customItemBindedToKey);
-                ItemStack bindedItem = alterLore(aSpell, bindedItemMap);
+                ItemStack bindedItem = alterMeta(aSpell, bindedItemMap);
 
                 int slot = bindedItemMap.firstKey();
                 player.getInventory().setItem(slot, bindedItem);
@@ -110,10 +106,9 @@ public class CustomItemManager implements Manager{
         }
     }
 
-    public ItemStack alterLore(ActiveSpell aSpell, TreeMap<Integer, ItemStack> bindedItemMap){
+    public ItemStack alterMeta(ActiveSpell aSpell, TreeMap<Integer, ItemStack> bindedItemMap){
 
         ItemStack bindedItem = bindedItemMap.firstEntry().getValue();
-
         if(bindedItem != null) {
 
             ItemMeta meta = bindedItem.getItemMeta();

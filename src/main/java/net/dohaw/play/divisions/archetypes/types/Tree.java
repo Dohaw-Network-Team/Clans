@@ -6,6 +6,7 @@ import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.RegenType;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.Arrays;
@@ -18,6 +19,11 @@ public class Tree extends ArchetypeWrapper {
      */
     public Tree(ArchetypeKey KEY) {
         super(KEY);
+    }
+
+    @Override
+    public ChatColor getColor() {
+        return ChatColor.DARK_GREEN;
     }
 
     @Override

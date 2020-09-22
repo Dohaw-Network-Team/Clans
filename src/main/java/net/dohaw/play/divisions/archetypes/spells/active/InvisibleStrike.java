@@ -1,26 +1,33 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.PlayerData;
-import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
-import net.dohaw.play.divisions.archetypes.RegenType;
 import net.dohaw.play.divisions.archetypes.spells.Damageable;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftSnowball;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class InvisibleStrike extends ActiveSpell implements Damageable, ActiveLaunchableSpell {
+public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable{
 
     public InvisibleStrike(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 
     @Override
-    public void execute(Player player, boolean outOrIn) {
-
+    protected void launchProjectile(Player player){
+        CraftLivingEntity craftPlayer = (CraftLivingEntity) player;
+        Snowball proj = craftPlayer.launchProjectile(Snowball.class);
+        proj.setMetadata("spell_key", new FixedMetadataValue(plugin, getKEY().name()));
+        ((CraftSnowball) proj).getHandle().setItem(CraftItemStack.asNMSCopy(new ItemStack(getProjectileMaterial())));
     }
 
     @Override
@@ -72,7 +79,6 @@ public class InvisibleStrike extends ActiveSpell implements Damageable, ActiveLa
     public double getPercentageRegenAffected() {
         return 0.10;
     }
-
 
     @Override
     public Material getProjectileMaterial() {

@@ -1,7 +1,6 @@
 package net.dohaw.play.divisions.events;
 
 import me.c10coding.coreapi.chat.ChatFactory;
-import net.dohaw.play.divisions.DamageType;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
@@ -19,12 +18,9 @@ import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.DivisionChat;
-import net.dohaw.play.divisions.utils.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -193,7 +189,7 @@ public class GeneralListener implements Listener {
                                                 pd.setRegen(playerRegen - regenCost);
                                                 playerDataManager.updatePlayerData(playerUUID, pd);
 
-                                                spell.execute(player, true);
+                                                spell.execute(player);
 
                                                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                                                     pd.removeCoolDown(spellKey);

@@ -9,6 +9,7 @@ import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.*;
@@ -27,6 +28,11 @@ public class Crusader extends ArchetypeWrapper {
     @Override
     public RegenType getRegenType() {
         return null;
+    }
+
+    @Override
+    public ChatColor getColor() {
+        return ChatColor.GOLD;
     }
 
     @Override

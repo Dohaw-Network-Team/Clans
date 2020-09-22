@@ -9,6 +9,7 @@ import net.dohaw.play.divisions.archetypes.RegenType;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.Arrays;
@@ -26,6 +27,11 @@ public class Archer extends ArchetypeWrapper {
     @Override
     public List<String> getAliases() {
         return Arrays.asList("archer", "arch", "ar");
+    }
+
+    @Override
+    public ChatColor getColor() {
+        return ChatColor.DARK_GREEN;
     }
 
     @Override

@@ -2,7 +2,6 @@ package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
-import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.Damageable;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -17,7 +16,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.util.Arrays;
 import java.util.List;
 
-public class FrostStrike extends ActiveSpell implements ActiveLaunchableSpell, Damageable {
+public class FrostStrike extends ActiveLaunchableSpell implements Damageable {
 
     public FrostStrike(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
@@ -36,14 +35,6 @@ public class FrostStrike extends ActiveSpell implements ActiveLaunchableSpell, D
     @Override
     public List<String> getDescription() {
         return Arrays.asList("Shoots a frost strike");
-    }
-
-    @Override
-    public void execute(Player player, boolean outOrIn) {
-        CraftLivingEntity craftPlayer = (CraftLivingEntity) player;
-        Snowball proj = craftPlayer.launchProjectile(Snowball.class);
-        proj.setMetadata("spell_key", new FixedMetadataValue(plugin, getKEY().name()));
-        ((CraftSnowball) proj).getHandle().setItem(CraftItemStack.asNMSCopy(new ItemStack(getProjectileMaterial())));
     }
 
     @Override
@@ -85,4 +76,5 @@ public class FrostStrike extends ActiveSpell implements ActiveLaunchableSpell, D
     public double getPercentageRegenAffected() {
         return 0.10;
     }
+
 }

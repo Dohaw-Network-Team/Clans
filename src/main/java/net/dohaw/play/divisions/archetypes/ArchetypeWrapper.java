@@ -5,6 +5,7 @@ import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.EnumMap;
@@ -28,5 +29,7 @@ public abstract class ArchetypeWrapper extends Wrapper{
     public abstract List<Material> getProficientItems();
 
     public abstract RegenType getRegenType();
+
+    public abstract ChatColor getColor();
 
 }

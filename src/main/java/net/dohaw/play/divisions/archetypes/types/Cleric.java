@@ -10,6 +10,7 @@ import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.*;
@@ -28,6 +29,11 @@ public class Cleric extends ArchetypeWrapper {
     @Override
     public RegenType getRegenType() {
         return null;
+    }
+
+    @Override
+    public ChatColor getColor() {
+        return ChatColor.YELLOW;
     }
 
     @Override

@@ -7,6 +7,7 @@ import net.dohaw.play.divisions.archetypes.RegenType;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
@@ -18,6 +19,11 @@ public class Wizard extends ArchetypeWrapper {
 
     public Wizard(ArchetypeKey ARCHETYPE) {
         super(ARCHETYPE);
+    }
+
+    @Override
+    public ChatColor getColor() {
+        return ChatColor.AQUA;
     }
 
     @Override

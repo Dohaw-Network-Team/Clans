@@ -3,16 +3,22 @@ package net.dohaw.play.divisions.archetypes.spells.active;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Damageable;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Smite extends ActiveSpell implements Damageable {
+public class Smite extends ActiveLaunchableSpell implements Damageable {
 
     public Smite(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
+    }
+
+    @Override
+    public Material getProjectileMaterial() {
+        return null;
     }
 
     @Override
@@ -26,7 +32,7 @@ public class Smite extends ActiveSpell implements Damageable {
     }
 
     @Override
-    public void execute(Player player, boolean outOrIn) {
+    public void execute(Player player) {
 
     }
 

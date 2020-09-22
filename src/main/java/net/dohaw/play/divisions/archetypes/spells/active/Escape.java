@@ -19,7 +19,7 @@ public class Escape extends ActiveSpell {
     }
 
     @Override
-    public void execute(Player player, boolean isOut) {
+    public void execute(Player player) {
 
         Vector playerDirection = player.getLocation().getDirection();
         double scale = defaultConfig.getEscapeScale();
