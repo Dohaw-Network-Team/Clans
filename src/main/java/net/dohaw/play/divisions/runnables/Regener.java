@@ -14,6 +14,9 @@ public class Regener extends BukkitRunnable {
     @Getter private final UUID UUID;
     @Getter private DivisionsPlugin plugin;
 
+    /*
+        Regener error happens when i close game but not when i disconnect
+     */
     public Regener(DivisionsPlugin plugin, final UUID UUID){
         this.UUID = UUID;
         this.plugin = plugin;

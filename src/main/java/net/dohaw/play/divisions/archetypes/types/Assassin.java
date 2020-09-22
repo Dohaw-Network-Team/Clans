@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import java.util.*;
 
 public class Assassin extends ArchetypeWrapper {
+
     @Override
     public EnumMap<Stat, Double> getDefaultStats() {
         return new EnumMap<Stat, Double>(Stat.class){{

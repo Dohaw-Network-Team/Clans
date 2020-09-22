@@ -7,25 +7,37 @@ import net.dohaw.play.divisions.archetypes.RegenType;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
-public class Smite extends ActiveSpell{
+public class Escape extends ActiveSpell{
 
-    public Smite(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
+    public Escape(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 
     @Override
+    public void execute(Player player, boolean isOut) {
+
+
+
+    }
+
+    @Override
     public double getPercentageRegenAffected() {
-        return 0.10;
+        return 0.15;
     }
 
     @Override
     public double getCooldown() {
-        return 0.5;
+        return 0;
     }
 
     @Override
-    public void execute(Player player, boolean outOrIn) {
+    public boolean displayCooldownMessage() {
+        return false;
+    }
 
+    @Override
+    public double alterDamage(double dmg, PlayerData pd) {
+        return 0;
     }
 
     @Override
@@ -41,15 +53,5 @@ public class Smite extends ActiveSpell{
     @Override
     public Particle getSpellAffecterParticle() {
         return null;
-    }
-
-    @Override
-    public boolean displayCooldownMessage() {
-        return false;
-    }
-
-    @Override
-    public double alterDamage(double dmg, PlayerData pd) {
-        return 0;
     }
 }

@@ -4,6 +4,7 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
+import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import net.dohaw.play.divisions.archetypes.types.Archer;
 import net.dohaw.play.divisions.events.custom.HeatingUpCriticalStrikeEvent;
@@ -25,7 +26,7 @@ import java.util.UUID;
 
 public class HeatingUp extends PassiveSpell implements Listener {
 
-    public HeatingUp(String customItemBindedToKey, ArchetypeKey archetype, Enum KEY, int levelUnlocked) {
+    public HeatingUp(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

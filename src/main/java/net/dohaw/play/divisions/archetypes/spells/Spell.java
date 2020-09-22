@@ -3,10 +3,7 @@ package net.dohaw.play.divisions.archetypes.spells;
 import lombok.Setter;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
-import net.dohaw.play.divisions.archetypes.ArchetypeKey;
-import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
-import net.dohaw.play.divisions.archetypes.Wrapper;
-import net.dohaw.play.divisions.archetypes.WrapperHolder;
+import net.dohaw.play.divisions.archetypes.*;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.archetypes.spells.active.FrostStrike;
 import net.dohaw.play.divisions.archetypes.spells.active.InvisibleStrike;
@@ -28,11 +25,11 @@ import java.util.Map;
 
 public abstract class Spell extends WrapperHolder {
 
-    public static final ActiveSpell INVISIBLE_STRIKE = new InvisibleStrike("invisible_strike_spell", ArchetypeKey.EVOKER, SpellKey.INVISIBLE_STRIKE, 1);
-    public static final ActiveSpell SMITE = new Smite("smite_spell", ArchetypeKey.CLERIC, SpellKey.SMITE, 1);
-    public static final ActiveSpell FROST_STRIKE = new FrostStrike("frost_strike", ArchetypeKey.WIZARD, SpellKey.FROST_STRIKE, 1);
+    public static final ActiveSpell INVISIBLE_STRIKE = new InvisibleStrike("invisible_strike_spell", Archetype.EVOKER, SpellKey.INVISIBLE_STRIKE, 1);
+    public static final ActiveSpell SMITE = new Smite("smite_spell", Archetype.CLERIC, SpellKey.SMITE, 1);
+    public static final ActiveSpell FROST_STRIKE = new FrostStrike("frost_strike", Archetype.WIZARD, SpellKey.FROST_STRIKE, 1);
 
-    public static final PassiveSpell HEATING_UP = new HeatingUp("heating_up_spell", ArchetypeKey.ARCHER, SpellKey.HEATING_UP, 1);
+    public static final PassiveSpell HEATING_UP = new HeatingUp("heating_up_spell", Archetype.ARCHER, SpellKey.HEATING_UP, 1);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
@@ -51,7 +48,7 @@ public abstract class Spell extends WrapperHolder {
         List<SpellWrapper> spells = new ArrayList<>();
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
             SpellWrapper spell = (SpellWrapper) entry.getValue();
-            if (spell.getArchetype() == archetypeWrapper.getKEY()) {
+            if (spell.getArchetype().getKEY() == archetypeWrapper.getKEY()) {
                 spells.add(spell);
             }
         }

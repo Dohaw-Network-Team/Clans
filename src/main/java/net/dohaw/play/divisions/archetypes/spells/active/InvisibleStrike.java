@@ -2,19 +2,15 @@ package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
+import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.RegenType;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class InvisibleStrike extends ActiveSpell{
 
-    public InvisibleStrike(String customItemBindedToKey, ArchetypeKey archetype, Enum KEY, int levelUnlocked) {
+    public InvisibleStrike(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
-    }
-
-    @Override
-    public RegenType getRegenTypeAffected() {
-        return RegenType.MANA;
     }
 
     @Override
