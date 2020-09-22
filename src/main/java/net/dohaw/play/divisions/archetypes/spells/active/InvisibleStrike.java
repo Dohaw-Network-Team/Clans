@@ -60,7 +60,7 @@ public class InvisibleStrike extends ActiveSpell implements Damageable, ActiveLa
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("");
+        return Arrays.asList("Hits your enemies with an attack that is obscure and undetectable");
     }
 
     @Override

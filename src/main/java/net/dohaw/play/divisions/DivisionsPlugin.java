@@ -12,6 +12,7 @@ import net.dohaw.play.divisions.commands.CustomItemsCommand;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.events.GeneralListener;
+import net.dohaw.play.divisions.events.ProgressListener;
 import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.files.MessagesConfig;
@@ -84,7 +85,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
 
         loadManagerData();
 
-        registerEvents(new GeneralListener(this));
+        registerEvents(new GeneralListener(this), new ProgressListener(this));
         registerCommand("divisions", new DivisionsCommand(this));
         registerCommand("divisionsconfirm", new ConfirmableCommands(this));
         registerCommand("archetypes", new ArchetypesCommand(this));

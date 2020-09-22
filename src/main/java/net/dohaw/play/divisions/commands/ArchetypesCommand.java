@@ -1,14 +1,17 @@
 package net.dohaw.play.divisions.commands;
 
 import me.c10coding.coreapi.chat.ChatFactory;
+import me.c10coding.coreapi.helpers.PlayerHelper;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.customitems.CustomItem;
+import net.dohaw.play.divisions.events.custom.LevelUpEvent;
 import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
+import net.dohaw.play.divisions.utils.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -39,38 +42,68 @@ public class ArchetypesCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if(args[0].equalsIgnoreCase("set") && args.length == 3){
+        if(args[0].equalsIgnoreCase("set") && args.length >= 3){
 
-            String playerName = args[1];
-            String archetypeAlias = args[2];
+            if(args[1].equals("level") && args.length == 4){
 
-            if(Bukkit.getPlayer(playerName) != null){
-                if(Archetype.getArchetypeByAlias(archetypeAlias) != null){
+                String playerName = args[2];
 
-                    Player playerGettingArch = Bukkit.getPlayer(playerName);
-                    ArchetypeWrapper archetype = (ArchetypeWrapper) Archetype.getArchetypeByAlias(archetypeAlias);
+                if(plugin.getAPI().getMathHelper().isInt(args[3])){
+                    int level = Integer.parseInt(args[3]);
+                    if(EntityUtils.isValidOnlinePlayer(playerName)){
 
-                    UUID playerUUID = playerGettingArch.getUniqueId();
-                    PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);
+                        Player player = Bukkit.getPlayer(playerName);
+                        UUID playerUUID = player.getUniqueId();
+                        PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);
 
-                    if(pd.getArchetype() == null){
-
-                        pd.setArchetype(archetype);
-
-                        pd.setStatLevels(archetype.getDefaultStats());
-                        giveDefaultItems(playerGettingArch, archetype);
-                        customItemManager.setSpellItemLores(pd);
-
+                        pd.setLevel(level);
                         playerDataManager.updatePlayerData(playerUUID, pd);
-                        chatFactory.sendPlayerMessage("You have given this player the archetype " + archetype.getName() + "!", true, sender, plugin.getPluginPrefix());
+                        Bukkit.getPluginManager().callEvent(new LevelUpEvent(pd));
+
+                        chatFactory.sendPlayerMessage("You have set this player's level to " + level, false, sender, null);
+                        chatFactory.sendPlayerMessage("Your level has been set to " + level, false, sender, null);
 
                     }else{
-                        chatFactory.sendPlayerMessage("This player already has an archetype!", true, sender, plugin.getPluginPrefix());
+                        chatFactory.sendPlayerMessage("This is not a valid player!", false, sender, null);
                     }
-
+                }else{
+                    chatFactory.sendPlayerMessage("This is not a valid integer!", false, sender, null);
                 }
+
             }else{
-                chatFactory.sendPlayerMessage("This player either isn't online or isn't valid!", true, sender, plugin.getPluginPrefix());
+
+                String playerName = args[1];
+                String archetypeAlias = args[2];
+
+                if(EntityUtils.isValidOnlinePlayer(playerName)){
+                    if(Archetype.getArchetypeByAlias(archetypeAlias) != null){
+
+                        Player playerGettingArch = Bukkit.getPlayer(playerName);
+                        ArchetypeWrapper archetype = (ArchetypeWrapper) Archetype.getArchetypeByAlias(archetypeAlias);
+
+                        UUID playerUUID = playerGettingArch.getUniqueId();
+                        PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);
+
+                        if(pd.getArchetype() == null){
+
+                            pd.setArchetype(archetype);
+
+                            pd.setStatLevels(archetype.getDefaultStats());
+                            giveDefaultItems(playerGettingArch, archetype);
+                            customItemManager.setSpellItemLores(pd);
+
+                            playerDataManager.updatePlayerData(playerUUID, pd);
+                            chatFactory.sendPlayerMessage("You have given this player the archetype " + archetype.getName() + "!", true, sender, plugin.getPluginPrefix());
+
+                        }else{
+                            chatFactory.sendPlayerMessage("This player already has an archetype!", true, sender, plugin.getPluginPrefix());
+                        }
+
+                    }
+                }else{
+                    chatFactory.sendPlayerMessage("This player either isn't online or isn't valid!", true, sender, plugin.getPluginPrefix());
+                }
+
             }
 
         }else if(args[0].equalsIgnoreCase("reset") && args.length <= 2){

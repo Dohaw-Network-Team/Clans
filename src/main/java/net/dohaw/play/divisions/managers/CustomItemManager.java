@@ -101,45 +101,52 @@ public class CustomItemManager implements Manager{
 
                 Player player = pd.getPlayer().getPlayer();
                 TreeMap<Integer, ItemStack> bindedItemMap = CustomItem.getPlayerItemWithKey(player, customItemBindedToKey);
+                ItemStack bindedItem = alterLore(aSpell, bindedItemMap);
+
                 int slot = bindedItemMap.firstKey();
-                ItemStack bindedItem = bindedItemMap.firstEntry().getValue();
-
-                if(bindedItem != null){
-
-                    ItemMeta meta = bindedItem.getItemMeta();
-
-                    final String LORE_HEADER_COLOR = "&8&l&n";
-                    final String LORE_COLOR = aSpell.getLORE_COLOR();
-
-                    List<String> spellLore = new ArrayList<>();
-                    spellLore = combineLore(LORE_COLOR, spellLore, aSpell.getDescription());
-
-                    spellLore.add(" ");
-                    spellLore.add(LORE_HEADER_COLOR + "COOLDOWN");
-                    spellLore = combineLore(LORE_COLOR, spellLore, aSpell.getCooldownLorePart());
-
-                    if(aSpell instanceof Damageable){
-                        Damageable damageable = (Damageable) aSpell;
-                        spellLore.add(" ");
-                        spellLore.add(LORE_HEADER_COLOR + "DAMAGE");
-                        spellLore = combineLore(LORE_COLOR, spellLore, damageable.getDamageLorePart());
-                    }
-
-                    if(aSpell instanceof Rangeable){
-                        Rangeable rangeable = (Rangeable) aSpell;
-                        spellLore.add(" ");
-                        spellLore.add(LORE_HEADER_COLOR + "RANGE");
-                        spellLore = combineLore(LORE_COLOR, spellLore, rangeable.getRangeLorePart());
-                    }
-
-                    spellLore = plugin.getAPI().getChatFactory().colorLore(spellLore);
-                    meta.setLore(spellLore);
-                    bindedItem.setItemMeta(meta);
-                    player.getInventory().setItem(slot, bindedItem);
-                }
+                player.getInventory().setItem(slot, bindedItem);
             }
 
         }
+    }
+
+    public ItemStack alterLore(ActiveSpell aSpell, TreeMap<Integer, ItemStack> bindedItemMap){
+
+        ItemStack bindedItem = bindedItemMap.firstEntry().getValue();
+
+        if(bindedItem != null) {
+
+            ItemMeta meta = bindedItem.getItemMeta();
+
+            final String LORE_HEADER_COLOR = "&8&l&n";
+            final String LORE_COLOR = aSpell.getLORE_COLOR();
+
+            List<String> spellLore = new ArrayList<>();
+            spellLore = combineLore(LORE_COLOR, spellLore, aSpell.getDescription());
+
+            spellLore.add(" ");
+            spellLore.add(LORE_HEADER_COLOR + "COOLDOWN");
+            spellLore = combineLore(LORE_COLOR, spellLore, aSpell.getCooldownLorePart());
+
+            if (aSpell instanceof Damageable) {
+                Damageable damageable = (Damageable) aSpell;
+                spellLore.add(" ");
+                spellLore.add(LORE_HEADER_COLOR + "DAMAGE");
+                spellLore = combineLore(LORE_COLOR, spellLore, damageable.getDamageLorePart());
+            }
+
+            if (aSpell instanceof Rangeable) {
+                Rangeable rangeable = (Rangeable) aSpell;
+                spellLore.add(" ");
+                spellLore.add(LORE_HEADER_COLOR + "RANGE");
+                spellLore = combineLore(LORE_COLOR, spellLore, rangeable.getRangeLorePart());
+            }
+
+            spellLore = plugin.getAPI().getChatFactory().colorLore(spellLore);
+            meta.setLore(spellLore);
+            bindedItem.setItemMeta(meta);
+        }
+        return bindedItem;
     }
 
     private List<String> combineLore(final String LORE_COLOR, List<String> spellLore, List<String> propertyLore){
