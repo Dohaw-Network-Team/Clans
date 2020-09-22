@@ -1,8 +1,12 @@
 package net.dohaw.play.divisions.managers;
 
+import net.dohaw.play.divisions.PlayerData;
+import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.Wrapper;
+import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.customitems.ItemType;
@@ -83,17 +87,35 @@ public class CustomItemManager implements Manager{
         customItemsConfig.deleteItem(key, itemType);
     }
 
-    /*
-    public void setSpellItemLores(){
-        List<SpellWrapper> spells = Spell.getSpells();
+    public void setSpellItemLores(PlayerData pd){
+
+        ArchetypeWrapper archetype = pd.getArchetype();
+        int playerLevel = pd.getLevel();
+
+        List<SpellWrapper> spells = Spell.getArchetypeSpellsUnlocked(archetype, playerLevel);
         for(SpellWrapper spell : spells){
-            String customItemBindedTo = spell.getCustomItemBindedToKey();
-            CustomItem customItem = getByKey(customItemBindedTo);
-            if(customItem != null){
-                customItem.setl
+            if(spell instanceof ActiveSpell){
+
+                ActiveSpell aSpell = (ActiveSpell) spell;
+                String customItemBindedTo = spell.getCustomItemBindedToKey();
+                CustomItem customItem = getByKey(customItemBindedTo);
+
+                if(customItem != null){
+
+                    String spellDesc = aSpell.getDescription();
+                    List<String> spellLore = new ArrayList<>();
+                    spellLore.add(spellDesc);
+
+                    spellLore.add(" ");
+                    List<String> cooldownPart = aSpell.getCooldownLorePart();
+                    spellLore.addAll(cooldownPart);
+
+                    customItem.setLore(spellLore);
+                }
             }
+
         }
-    }*/
+    }
 
     @Override
     public boolean hasContent(Object obj) {
