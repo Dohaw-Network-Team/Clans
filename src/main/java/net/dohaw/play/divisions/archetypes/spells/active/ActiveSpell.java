@@ -2,10 +2,11 @@ package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.RegenType;
+import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import org.bukkit.entity.Player;
 
-public abstract class ActiveSpell extends SpellWrapper {
+public abstract class ActiveSpell extends SpellWrapper implements Cooldownable {
 
     public ActiveSpell(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);

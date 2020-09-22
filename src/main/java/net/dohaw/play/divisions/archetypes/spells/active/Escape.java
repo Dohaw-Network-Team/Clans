@@ -1,13 +1,15 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.PlayerData;
-import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
-import net.dohaw.play.divisions.archetypes.RegenType;
+import net.dohaw.play.divisions.archetypes.spells.Damageable;
+import net.dohaw.play.divisions.archetypes.spells.Rangeable;
 import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
-public class Escape extends ActiveSpell{
+public class Escape extends ActiveSpell implements Rangeable, Damageable {
 
     public Escape(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
@@ -16,7 +18,17 @@ public class Escape extends ActiveSpell{
     @Override
     public void execute(Player player, boolean isOut) {
 
+        Vector playerDirection = player.getLocation().getDirection();
+        double scale = defaultConfig.getEscapeScale();
 
+        playerDirection.multiply(scale);
+        playerDirection.setY(playerDirection.getY() + 0.6);
+        player.setVelocity(playerDirection);
+
+        player.setVelocity(playerDirection);
+
+        World world = player.getWorld();
+        world.spawnParticle(getSpellOwnerParticle(), player.getLocation(), 40);
 
     }
 
@@ -27,7 +39,7 @@ public class Escape extends ActiveSpell{
 
     @Override
     public double getCooldown() {
-        return 0;
+        return 20;
     }
 
     @Override
@@ -47,7 +59,7 @@ public class Escape extends ActiveSpell{
 
     @Override
     public Particle getSpellOwnerParticle() {
-        return null;
+        return Particle.END_ROD;
     }
 
     @Override

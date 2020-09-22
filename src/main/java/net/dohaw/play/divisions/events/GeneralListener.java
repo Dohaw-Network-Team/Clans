@@ -165,7 +165,7 @@ public class GeneralListener implements Listener {
                         if(!customItemKey.isEmpty()){
                             ActiveSpell spell = Spell.getSpellByItemKey(customItemKey);
                             String spellKey = spell.getKEY().toString();
-                            if(archetype.getKEY() == spell.getArchetype()){
+                            if(archetype.getKEY() == spell.getArchetype().getKEY()){
                                 if(spell != null){
                                     int playerLevel = pd.getLevel();
                                     if(spell.getLevelUnlocked() <= playerLevel){
@@ -185,9 +185,9 @@ public class GeneralListener implements Listener {
                                                 double regenCost = Calculator.getSpellRegenCost(pd, spell);
                                                 double playerRegen = pd.getRegen();
                                                 pd.setRegen(playerRegen - regenCost);
-                                                spell.execute(player, true);
-
                                                 playerDataManager.updatePlayerData(playerUUID, pd);
+
+                                                spell.execute(player, true);
 
                                                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                                                     pd.removeCoolDown(spellKey);

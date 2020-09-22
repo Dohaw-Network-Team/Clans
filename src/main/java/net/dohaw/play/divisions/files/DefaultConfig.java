@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class DefaultConfig extends Config {
 
     public final String CALCULATIONS_PATH = "Calculations";
+    public final String SPELL_CALCULATIONS_PATH = "Calculations.Spells";
 
     public DefaultConfig(JavaPlugin plugin) {
         super(plugin, "config.yml");
@@ -70,7 +71,11 @@ public class DefaultConfig extends Config {
     }
 
     public double getHeatUpLuckMultiple(){
-        return config.getDouble(CALCULATIONS_PATH + ".Spells.Total Luck Multiple");
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Heating Up.Total Luck Multiple");
+    }
+
+    public double getEscapeScale(){
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Escape.Velocity Scale");
     }
 
     public boolean isInDebugMode(){

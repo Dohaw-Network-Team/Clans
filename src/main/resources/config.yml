@@ -24,4 +24,7 @@ Calculations:
     Raw Stat Division Totality Scale: 1.665
 
   Spells:
-    Total Luck Multiple: 2
+    Heating Up:
+      Total Luck Multiple: 2
+    Escapee:
+      Velocity Scale: 2

@@ -3,6 +3,7 @@ package net.dohaw.play.divisions.customitems;
 import lombok.Getter;
 import lombok.Setter;
 import net.dohaw.play.divisions.Stat;
+import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.utils.Calculator;
 import net.minecraft.server.v1_16_R2.NBTTagCompound;
 import net.minecraft.server.v1_16_R2.NBTTagList;
@@ -28,6 +29,8 @@ public class CustomItem {
     @Getter @Setter private Rarity rarity;
     @Getter @Setter private Map<Enchantment, Integer> enchants = new HashMap<>();
     @Getter @Setter private Map<Stat, Double> addedStats = new HashMap<>();
+
+    @Getter @Setter private SpellWrapper linkedSpell;
 
     public CustomItem(final String KEY, ItemType itemType, Material material, String displayName){
         this.material = material;

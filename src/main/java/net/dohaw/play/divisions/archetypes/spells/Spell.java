@@ -4,10 +4,7 @@ import lombok.Setter;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.*;
-import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
-import net.dohaw.play.divisions.archetypes.spells.active.FrostStrike;
-import net.dohaw.play.divisions.archetypes.spells.active.InvisibleStrike;
-import net.dohaw.play.divisions.archetypes.spells.active.Smite;
+import net.dohaw.play.divisions.archetypes.spells.active.*;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import net.dohaw.play.divisions.archetypes.spells.passive.archer.HeatingUp;
 import net.dohaw.play.divisions.utils.Calculator;
@@ -27,7 +24,8 @@ public abstract class Spell extends WrapperHolder {
 
     public static final ActiveSpell INVISIBLE_STRIKE = new InvisibleStrike("invisible_strike_spell", Archetype.EVOKER, SpellKey.INVISIBLE_STRIKE, 1);
     public static final ActiveSpell SMITE = new Smite("smite_spell", Archetype.CLERIC, SpellKey.SMITE, 1);
-    public static final ActiveSpell FROST_STRIKE = new FrostStrike("frost_strike", Archetype.WIZARD, SpellKey.FROST_STRIKE, 1);
+    public static final ActiveSpell FROST_STRIKE = new FrostStrike("frost_strike_spell", Archetype.WIZARD, SpellKey.FROST_STRIKE, 1);
+    public static final ActiveSpell ESCAPE = new Escape("escape_spell", Archetype.ARCHER, SpellKey.ESCAPE, 2);
 
     public static final PassiveSpell HEATING_UP = new HeatingUp("heating_up_spell", Archetype.ARCHER, SpellKey.HEATING_UP, 1);
 
@@ -35,7 +33,7 @@ public abstract class Spell extends WrapperHolder {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
             Wrapper wrapper = entry.getValue();
             if (wrapper instanceof ActiveSpell) {
-                ActiveSpell spell = (ActiveSpell) entry.getValue();
+                ActiveSpell spell = (ActiveSpell) wrapper;
                 if (spell.getCustomItemBindedToKey().equalsIgnoreCase(customItemKey)) {
                     return spell;
                 }
@@ -47,9 +45,23 @@ public abstract class Spell extends WrapperHolder {
     public static List<SpellWrapper> getArchetypeSpells(ArchetypeWrapper archetypeWrapper) {
         List<SpellWrapper> spells = new ArrayList<>();
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
-            SpellWrapper spell = (SpellWrapper) entry.getValue();
-            if (spell.getArchetype().getKEY() == archetypeWrapper.getKEY()) {
-                spells.add(spell);
+            Wrapper wrapper = entry.getValue();
+            if(wrapper instanceof SpellWrapper){
+                SpellWrapper spell = (SpellWrapper) wrapper;
+                if (spell.getArchetype().getKEY() == archetypeWrapper.getKEY()) {
+                    spells.add(spell);
+                }
+            }
+        }
+        return spells;
+    }
+
+    public static List<SpellWrapper> getSpells(){
+        List<SpellWrapper> spells = new ArrayList<>();
+        for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
+            Wrapper wrapper = entry.getValue();
+            if(wrapper instanceof SpellWrapper){
+                spells.add((SpellWrapper) wrapper);
             }
         }
         return spells;

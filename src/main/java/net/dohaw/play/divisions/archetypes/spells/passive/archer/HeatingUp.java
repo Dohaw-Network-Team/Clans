@@ -98,16 +98,6 @@ public class HeatingUp extends PassiveSpell implements Listener {
     }
 
     @Override
-    public double getCooldown() {
-        return 0;
-    }
-
-    @Override
-    public boolean displayCooldownMessage() {
-        return false;
-    }
-
-    @Override
     public double alterDamage(double dmg, PlayerData pd) {
         double totalLuck = Calculator.getTotalStat(pd, Stat.LUCK);
         double totalLuckMultiplier = defaultConfig.getHeatUpLuckMultiple();
