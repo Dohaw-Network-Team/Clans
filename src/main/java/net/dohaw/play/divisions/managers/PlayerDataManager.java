@@ -111,10 +111,15 @@ public class PlayerDataManager implements Manager{
     }
 
     public void removePlayerData(UUID u){
+
         PlayerData pd = getPlayerByUUID(u);
-        pd.stopRegener();
-        playerDataHandler.saveData(pd);
         playerDataList.remove(pd);
+        playerDataHandler.saveData(pd);
+
+        if(pd.getRegener() != null){
+            pd.stopRegener();
+        }
+
     }
 
     @Override

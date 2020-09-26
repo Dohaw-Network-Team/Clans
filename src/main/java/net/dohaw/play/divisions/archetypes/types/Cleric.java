@@ -60,6 +60,7 @@ public class Cleric extends ArchetypeWrapper {
             put(Stat.LUCK, 1.0);
             put(Stat.PIERCING, 1.0);
             put(Stat.MAX_HEALTH, 1.0);
+            put(Stat.RESTORATION, 2.0);
         }};
     }
 

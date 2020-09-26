@@ -9,6 +9,9 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.customitems.ItemType;
 import net.dohaw.play.divisions.customitems.Rarity;
 import net.dohaw.play.divisions.files.CustomItemsConfig;
+import net.dohaw.play.divisions.utils.Calculator;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -97,7 +100,7 @@ public class CustomItemManager implements Manager{
 
                 Player player = pd.getPlayer().getPlayer();
                 TreeMap<Integer, ItemStack> bindedItemMap = CustomItem.getPlayerItemWithKey(player, customItemBindedToKey);
-                ItemStack bindedItem = alterMeta(aSpell, bindedItemMap);
+                ItemStack bindedItem = alterMeta(pd, aSpell, bindedItemMap.firstEntry().getValue());
 
                 int slot = bindedItemMap.firstKey();
                 player.getInventory().setItem(slot, bindedItem);
@@ -106,18 +109,25 @@ public class CustomItemManager implements Manager{
         }
     }
 
-    public ItemStack alterMeta(ActiveSpell aSpell, TreeMap<Integer, ItemStack> bindedItemMap){
+    public ItemStack alterMeta(PlayerData pd, ActiveSpell aSpell, ItemStack bindedItem){
 
-        ItemStack bindedItem = bindedItemMap.firstEntry().getValue();
         if(bindedItem != null) {
 
             ItemMeta meta = bindedItem.getItemMeta();
+
+            ArchetypeWrapper archetype = aSpell.getArchetype();
+            ChatColor archColor = archetype.getColor();
+            String displayName = archColor + aSpell.getName();
+            meta.setDisplayName(displayName);
 
             final String LORE_HEADER_COLOR = "&8&l&n";
             final String LORE_COLOR = aSpell.getLORE_COLOR();
 
             List<String> spellLore = new ArrayList<>();
             spellLore = combineLore(LORE_COLOR, spellLore, aSpell.getDescription());
+
+            double regenPercentageAffected = Calculator.getSpellPercentageRegenCost(pd, aSpell.getPercentageRegenAffected()) * 100;
+            spellLore.add(LORE_COLOR + "Uses &c" + regenPercentageAffected + "%" + LORE_COLOR + " regen");
 
             spellLore.add(" ");
             spellLore.add(LORE_HEADER_COLOR + "COOLDOWN");
@@ -139,6 +149,7 @@ public class CustomItemManager implements Manager{
 
             spellLore = plugin.getAPI().getChatFactory().colorLore(spellLore);
             meta.setLore(spellLore);
+
             bindedItem.setItemMeta(meta);
         }
         return bindedItem;

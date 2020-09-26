@@ -9,8 +9,10 @@ import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.events.custom.LevelUpEvent;
+import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
+import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -57,11 +59,11 @@ public class ArchetypesCommand implements CommandExecutor {
                         PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);
 
                         pd.setLevel(level);
-                        playerDataManager.updatePlayerData(playerUUID, pd);
                         Bukkit.getPluginManager().callEvent(new LevelUpEvent(pd));
+                        playerDataManager.updatePlayerData(playerUUID, pd);
 
                         chatFactory.sendPlayerMessage("You have set this player's level to " + level, false, sender, null);
-                        chatFactory.sendPlayerMessage("Your level has been set to " + level, false, sender, null);
+                        chatFactory.sendPlayerMessage("Your level has been set to " + level, false, player, null);
 
                     }else{
                         chatFactory.sendPlayerMessage("This is not a valid player!", false, sender, null);
@@ -92,6 +94,7 @@ public class ArchetypesCommand implements CommandExecutor {
                             giveDefaultItems(playerGettingArch, archetype);
                             customItemManager.setSpellItemLores(pd);
 
+                            pd.startRegener(plugin, Calculator.calculateRegenInterval(pd));
                             playerDataManager.updatePlayerData(playerUUID, pd);
                             chatFactory.sendPlayerMessage("You have given this player the archetype " + archetype.getName() + "!", true, sender, plugin.getPluginPrefix());
 

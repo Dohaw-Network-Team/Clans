@@ -6,10 +6,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.UUID;
+
 public class EntityUtils {
 
     public static boolean isValidOnlinePlayer(String playerName){
         return Bukkit.getPlayer(playerName) != null;
+    }
+
+    public static boolean isValidOnlinePlayer(UUID uuid){
+        return Bukkit.getPlayer(uuid) != null;
     }
 
     public static Entity getPotentialPlayerFromProjectile(Entity entity){

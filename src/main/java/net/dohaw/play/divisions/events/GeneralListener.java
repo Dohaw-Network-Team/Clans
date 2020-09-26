@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.events;
 
 import me.c10coding.coreapi.chat.ChatFactory;
+import me.c10coding.coreapi.helpers.PlayerHelper;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
@@ -18,6 +19,7 @@ import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.DivisionChat;
+import net.dohaw.play.divisions.utils.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -40,27 +42,24 @@ public class GeneralListener implements Listener {
     private PlayerDataManager playerDataManager;
     private ChatFactory chatFactory;
     private DivisionsManager divisionsManager;
-    private DefaultConfig defaultConfig;
 
     public GeneralListener(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.playerDataManager = plugin.getPlayerDataManager();
         this.chatFactory = plugin.getAPI().getChatFactory();
         this.divisionsManager = plugin.getDivisionsManager();
-        this.defaultConfig = plugin.getDefaultConfig();
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
 
         Player player = e.getPlayer();
-        if(playerDataManager.getByPlayerObj(player) == null){
+        if(playerDataManager.getPlayerByUUID(player.getUniqueId()) == null){
             playerDataManager.addPlayerData(player.getUniqueId());
             playerDataManager.setPlayerDivision(playerDataManager.getPlayerByUUID(player.getUniqueId()));
         }
 
         PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
-
         /*
             Possibly add a delay to this
          */
@@ -88,10 +87,9 @@ public class GeneralListener implements Listener {
     public void onAdditionOfMember(NewMemberEvent e){
 
         UUID uuid = e.getUuid();
-        OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
 
-        if(op.isOnline()){
-            Player player = op.getPlayer();
+        if(EntityUtils.isValidOnlinePlayer(uuid)){
+            Player player = Bukkit.getPlayer(uuid);
             Division division = e.getDivision();
             DivisionChat.sendMOTD(chatFactory, division, player);
         }
@@ -153,6 +151,7 @@ public class GeneralListener implements Listener {
      */
     @EventHandler
     public void onSpellUse(PlayerInteractEvent e){
+
         Player player = e.getPlayer();
         if(playerDataManager.getPlayerByUUID(player.getUniqueId()) != null){
             PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
@@ -179,6 +178,7 @@ public class GeneralListener implements Listener {
                                                     Adds the cooldown to a map within the PlayerData object. Delays a task to remove the spell from the map to signal that it's not on cooldown
                                                  */
                                                 double spellCooldown = spell.getCooldown();
+
                                                 long schedulerDelay = (long) (spellCooldown * 20);
                                                 UUID playerUUID = player.getUniqueId();
 
@@ -186,7 +186,8 @@ public class GeneralListener implements Listener {
 
                                                 double regenCost = Calculator.getSpellRegenCost(pd, spell);
                                                 double playerRegen = pd.getRegen();
-                                                pd.setRegen(playerRegen - regenCost);
+                                                double newPlayerRegen = playerRegen - regenCost;
+                                                pd.setRegen(newPlayerRegen);
                                                 playerDataManager.updatePlayerData(playerUUID, pd);
 
                                                 spell.execute(player);
@@ -209,8 +210,7 @@ public class GeneralListener implements Listener {
                 }
             }
         }
+
     }
-
-
 
 }
