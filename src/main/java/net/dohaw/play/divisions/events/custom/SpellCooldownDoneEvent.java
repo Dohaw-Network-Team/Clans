@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.events.custom;
 
 import lombok.Getter;
+import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -9,13 +10,13 @@ import java.util.UUID;
 
 public class SpellCooldownDoneEvent extends Event implements Cancellable {
 
-    @Getter private String spellKey;
+    @Getter private SpellWrapper spell;
     @Getter private UUID playerUUID;
     private boolean isCancelled = false;
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-    public SpellCooldownDoneEvent(String spellKey, UUID playerUUID){
-        this.spellKey = spellKey;
+    public SpellCooldownDoneEvent(SpellWrapper spell, UUID playerUUID){
+        this.spell = spell;
         this.playerUUID = playerUUID;
     }
 

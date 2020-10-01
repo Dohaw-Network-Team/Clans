@@ -10,8 +10,10 @@ import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -22,7 +24,7 @@ public class Archer extends ArchetypeWrapper {
     @Getter @Setter private int heatingUpCount;
 
     // no bow spell currently
-    @Getter @Setter private SpellWrapper bowSpell = null;
+    @Getter @Setter private BowSpell bowSpell = null;
 
     public Archer(ArchetypeKey ARCHETYPE) {
         super(ARCHETYPE);
@@ -86,6 +88,5 @@ public class Archer extends ArchetypeWrapper {
     public RegenType getRegenType() {
         return null;
     }
-
 
 }

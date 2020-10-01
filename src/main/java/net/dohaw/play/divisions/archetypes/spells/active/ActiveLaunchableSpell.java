@@ -1,6 +1,5 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
-import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftLivingEntity;
@@ -15,11 +14,6 @@ public abstract class ActiveLaunchableSpell extends ActiveSpell{
 
     public ActiveLaunchableSpell(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
-    }
-
-    @Override
-    public boolean isBowSpell() {
-        return false;
     }
 
     public abstract Material getProjectileMaterial();

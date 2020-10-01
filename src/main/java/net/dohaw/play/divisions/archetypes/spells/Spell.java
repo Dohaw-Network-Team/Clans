@@ -5,6 +5,7 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.*;
 import net.dohaw.play.divisions.archetypes.spells.active.*;
+import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import net.dohaw.play.divisions.archetypes.spells.passive.archer.HeatingUp;
 import net.dohaw.play.divisions.utils.Calculator;
@@ -33,7 +34,7 @@ public abstract class Spell extends WrapperHolder {
      */
     public static final PassiveSpell HEATING_UP = new HeatingUp("heating_up_spell", Archetype.ARCHER, SpellKey.HEATING_UP, 1);
     public static final ActiveSpell ESCAPE = new Escape("escape_spell", Archetype.ARCHER, SpellKey.ESCAPE, 2);
-    public static final PassiveSpell CRIPPLING_SHOT = new CripplingShot("", Archetype.ARCHER, SpellKey.CRIPPLING_SHOT, 4);
+    public static final BowSpell CRIPPLING_SHOT = new CripplingShot("", Archetype.ARCHER, SpellKey.CRIPPLING_SHOT, 4);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
@@ -84,14 +85,14 @@ public abstract class Spell extends WrapperHolder {
         return spellsUnlocked;
     }
 
-    public static List<SpellWrapper> getUnlockedBowSpells(ArchetypeWrapper archetype, int level){
+    public static List<BowSpell> getUnlockedBowSpells(ArchetypeWrapper archetype, int level){
 
         List<SpellWrapper> archetypeSpells = getArchetypeSpells(archetype);
-        List<SpellWrapper> bowSpellsUnlocked = new ArrayList<>();
+        List<BowSpell> bowSpellsUnlocked = new ArrayList<>();
 
         for(SpellWrapper wrapper : archetypeSpells){
-            if (wrapper.isBowSpell() && wrapper.getLevelUnlocked() == level) {
-                bowSpellsUnlocked.add(wrapper);
+            if (wrapper instanceof BowSpell && wrapper.getLevelUnlocked() == level) {
+                bowSpellsUnlocked.add((BowSpell) wrapper);
             }
         }
 
@@ -101,10 +102,6 @@ public abstract class Spell extends WrapperHolder {
 
     public static boolean isSpellEntity(Entity entity) {
         return entity.hasMetadata("spell_key");
-    }
-
-    public static boolean hasEnoughRegen(PlayerData pd, ActiveSpell spell) {
-        return pd.getRegen() >= Calculator.getSpellRegenCost(pd, spell);
     }
 
     public static Entity getEntityInSights(Player player, double range) {
@@ -151,6 +148,10 @@ public abstract class Spell extends WrapperHolder {
 
         return target;
 
+    }
+
+    public static long getSchedulerInterval(Cooldownable cooldownable){
+        return (long) (cooldownable.getCooldown() * 20);
     }
 
 }

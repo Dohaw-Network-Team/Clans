@@ -51,6 +51,4 @@ public abstract class SpellWrapper extends Wrapper {
 
     public abstract List<String> getDescription();
 
-    public abstract boolean isBowSpell();
-
 }

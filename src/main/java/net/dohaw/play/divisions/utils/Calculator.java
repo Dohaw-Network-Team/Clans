@@ -3,6 +3,7 @@ package net.dohaw.play.divisions.utils;
 import net.dohaw.play.divisions.DamageType;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
+import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.files.DefaultConfig;
@@ -112,7 +113,7 @@ public class Calculator {
         return percentageOfRegen;
     }
 
-    public static double getSpellRegenCost(PlayerData pd, ActiveSpell spell){
+    public static double getSpellRegenCost(PlayerData pd, RegenAffectable spell){
         double maxRegen = Calculator.calculateMaxRegen(pd);
         double percentageRegenCost = getSpellPercentageRegenCost(pd, spell.getPercentageRegenAffected());
         double regenCost = maxRegen * percentageRegenCost;

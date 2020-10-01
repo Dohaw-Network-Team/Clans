@@ -15,11 +15,10 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class CripplingShot extends BowSpell implements Damageable, RegenAffectable, Cooldownable, Listener {
+public class CripplingShot extends BowSpell implements Damageable, RegenAffectable, Cooldownable {
 
     public CripplingShot(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -65,11 +64,6 @@ public class CripplingShot extends BowSpell implements Damageable, RegenAffectab
     @Override
     public List<String> getDescription() {
         return null;
-    }
-
-    @Override
-    public boolean isBowSpell() {
-        return true;
     }
 
     @EventHandler

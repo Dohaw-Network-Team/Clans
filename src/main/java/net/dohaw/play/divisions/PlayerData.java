@@ -7,11 +7,17 @@ import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
+import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
+import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
+import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
+import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import net.dohaw.play.divisions.events.custom.LevelUpEvent;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.runnables.Regener;
+import net.dohaw.play.divisions.utils.Calculator;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -75,18 +81,35 @@ public class PlayerData {
         startRegener(plugin, interval);
     }
 
-    public void addCoolDown(String spellKey, double coolDownTime){
-        long millis = (long) (coolDownTime * 1000);
+    public void addCoolDown(ActiveSpell spell){
+        long millis = (long) (spell.getCooldown() * 1000);
         long millisCooldownEnd = millis + System.currentTimeMillis();
-        spellCoolDowns.put(spellKey, millisCooldownEnd);
+        spellCoolDowns.put(spell.getKEY().toString(), millisCooldownEnd);
     }
 
-    public void removeCoolDown(String spellKey){
-        spellCoolDowns.remove(spellKey);
+    public void addCoolDown(BowSpell bowSpell){
+        long millis = (long) (bowSpell.getCooldown() * 1000);
+        long millisCooldownEnd = millis + System.currentTimeMillis();
+        spellCoolDowns.put(bowSpell.getKEY().toString(), millisCooldownEnd);
     }
 
-    public boolean isOnCooldown(String spellKey){
-        return spellCoolDowns.containsKey(spellKey);
+    public void removeCoolDown(SpellWrapper spellWrapper){
+        spellCoolDowns.remove(spellWrapper.getKEY().toString());
+    }
+
+    public boolean isOnCooldown(SpellWrapper spell){
+        return spellCoolDowns.containsKey(spell.getKEY().toString());
+    }
+
+    public void subtractRegen(RegenAffectable spell){
+        double regenCost = Calculator.getSpellRegenCost(this, spell);
+        double playerRegen = getRegen();
+        double newPlayerRegen = playerRegen - regenCost;
+        this.regen = newPlayerRegen;
+    }
+
+    public boolean hasEnoughRegen(RegenAffectable spell){
+        return regen >= Calculator.getSpellRegenCost(this, spell);
     }
 
     public long getCooldownEnd(String spellKey){

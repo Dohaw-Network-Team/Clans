@@ -49,11 +49,6 @@ public class Escape extends ActiveSpell {
     }
 
     @Override
-    public boolean isBowSpell() {
-        return false;
-    }
-
-    @Override
     public double getCooldown() {
         return 20;
     }

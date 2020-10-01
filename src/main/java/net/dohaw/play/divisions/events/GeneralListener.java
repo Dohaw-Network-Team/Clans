@@ -6,9 +6,11 @@ import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
+import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.archetypes.types.Archer;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.division.Division;
@@ -26,17 +28,22 @@ import net.dohaw.play.divisions.utils.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.List;
 import java.util.UUID;
@@ -175,38 +182,30 @@ public class GeneralListener implements Listener {
                     if(customItemKey != null){
                         if(!customItemKey.isEmpty()){
                             ActiveSpell spell = Spell.getSpellByItemKey(customItemKey);
-                            String spellKey = spell.getKEY().toString();
                             if(archetype.getKEY() == spell.getArchetype().getKEY()){
                                 if(spell != null){
                                     int playerLevel = pd.getLevel();
                                     if(spell.getLevelUnlocked() <= playerLevel){
-                                        if(!pd.isOnCooldown(spellKey)) {
+                                        if(!pd.isOnCooldown(spell)) {
 
-                                            if (Spell.hasEnoughRegen(pd, spell)) {
+                                            if (pd.hasEnoughRegen(spell)) {
 
                                                 /*
                                                     Adds the cooldown to a map within the PlayerData object. Delays a task to remove the spell from the map to signal that it's not on cooldown
                                                  */
-                                                double spellCooldown = spell.getCooldown();
-
-                                                long schedulerDelay = (long) (spellCooldown * 20);
                                                 UUID playerUUID = player.getUniqueId();
+                                                pd.addCoolDown(spell);
+                                                pd.subtractRegen(spell);
 
-                                                pd.addCoolDown(spellKey, spellCooldown);
-
-                                                double regenCost = Calculator.getSpellRegenCost(pd, spell);
-                                                double playerRegen = pd.getRegen();
-                                                double newPlayerRegen = playerRegen - regenCost;
-                                                pd.setRegen(newPlayerRegen);
                                                 playerDataManager.updatePlayerData(playerUUID, pd);
 
                                                 spell.execute(player);
 
                                                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                                                    pd.removeCoolDown(spellKey);
-                                                    Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(spellKey, playerUUID));
+                                                    pd.removeCoolDown(spell);
+                                                    Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(spell, playerUUID));
                                                     playerDataManager.updatePlayerData(playerUUID, pd);
-                                                }, schedulerDelay);
+                                                }, Spell.getSchedulerInterval(spell));
 
                                             }
 
@@ -244,14 +243,14 @@ public class GeneralListener implements Listener {
                 if(archetype instanceof Archer){
 
                     Archer archer = (Archer) archetype;
-                    SpellWrapper currentBowSpell = archer.getBowSpell();
+                    BowSpell currentBowSpell = archer.getBowSpell();
 
                     /*
                         If they shift left click then they can un-select any bow spell
                      */
                     if(!player.isSneaking()){
 
-                        List<SpellWrapper> unlockedBowSpells = Spell.getUnlockedBowSpells(archetype, pd.getLevel());
+                        List<BowSpell> unlockedBowSpells = Spell.getUnlockedBowSpells(archetype, pd.getLevel());
                         if(!unlockedBowSpells.isEmpty()){
 
                             if(currentBowSpell != null){
@@ -278,9 +277,54 @@ public class GeneralListener implements Listener {
 
     }
 
-    private SpellWrapper getNextBowSpell(List<SpellWrapper> unlockedBowSpells, SpellWrapper currentBowSpell){
+    @EventHandler
+    public void onArrowShoot(EntityShootBowEvent e){
 
-        for(SpellWrapper sw : unlockedBowSpells){
+        Entity en = e.getEntity();
+        if(en instanceof Player){
+
+            UUID playerUUID = en.getUniqueId();
+            boolean isArcher = playerDataManager.isClass(playerUUID, ArchetypeKey.ARCHER);
+
+            if(isArcher){
+
+                PlayerData pd = playerDataManager.getPlayerByUUID(playerUUID);
+                Archer archer = (Archer) pd.getArchetype();
+                BowSpell bowSpell = archer.getBowSpell();
+
+                if(bowSpell != null){
+                    Entity proj = e.getProjectile();
+                    if(proj instanceof Arrow){
+
+                        String bowSpellKey = bowSpell.getKEY().toString();
+                        proj.setMetadata("bow_spell", new FixedMetadataValue(plugin, bowSpellKey));
+                        e.setProjectile(proj);
+
+                        /*
+                            Not all bow spells implement cooldownable. This is done just in case I
+                         */
+                        pd.addCoolDown(bowSpell);
+                        pd.subtractRegen(bowSpell);
+
+                        playerDataManager.updatePlayerData(playerUUID, pd);
+
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                            pd.removeCoolDown(bowSpell);
+                            Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(bowSpell, playerUUID));
+                            playerDataManager.updatePlayerData(playerUUID, pd);
+                        }, Spell.getSchedulerInterval(bowSpell));
+
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    private BowSpell getNextBowSpell(List<BowSpell> unlockedBowSpells, BowSpell currentBowSpell){
+
+        for(BowSpell sw : unlockedBowSpells){
             if(sw.getKEY() == currentBowSpell.getKEY()){
 
                 int index = unlockedBowSpells.indexOf(sw);

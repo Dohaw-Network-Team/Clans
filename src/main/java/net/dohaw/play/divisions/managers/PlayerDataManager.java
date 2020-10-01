@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.managers;
 
+import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.events.custom.TemporaryPlayerDataCreationEvent;
@@ -179,4 +180,14 @@ public class PlayerDataManager implements Manager{
     public boolean isInSameDivision(Player p1, Player p2){
         return getByPlayerObj(p1).getDivision().equalsIgnoreCase(getByPlayerObj(p2).getDivision());
     }
+
+    public boolean isClass(UUID uuid, ArchetypeKey key){
+        PlayerData pd = getPlayerByUUID(uuid);
+        if(pd != null){
+            ArchetypeKey archKey = (ArchetypeKey) pd.getArchetype().getKEY();
+            return archKey == key;
+        }
+        return false;
+    }
+
 }
