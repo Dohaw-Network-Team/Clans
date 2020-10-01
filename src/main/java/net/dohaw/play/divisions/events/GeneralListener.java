@@ -237,29 +237,44 @@ public class GeneralListener implements Listener {
         if(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK){
             if(itemInHand.getType() == Material.BOW || itemInHand.getType() == Material.CROSSBOW){
 
+
                 PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
                 ArchetypeWrapper archetype = pd.getArchetype();
 
                 if(archetype instanceof Archer){
 
                     Archer archer = (Archer) archetype;
+                    SpellWrapper currentBowSpell = archer.getBowSpell();
 
-                    List<SpellWrapper> unlockedBowSpells = Spell.getUnlockedBowSpells(archetype, pd.getLevel());
-                    if(!unlockedBowSpells.isEmpty()){
+                    /*
+                        If they shift left click then they can un-select any bow spell
+                     */
+                    if(!player.isSneaking()){
 
-                        SpellWrapper currentBowSpell = archer.getBowSpell();
-                        if(currentBowSpell != null){
+                        List<SpellWrapper> unlockedBowSpells = Spell.getUnlockedBowSpells(archetype, pd.getLevel());
+                        if(!unlockedBowSpells.isEmpty()){
 
+                            if(currentBowSpell != null){
+                                currentBowSpell = getNextBowSpell(unlockedBowSpells, currentBowSpell);
+                            }else{
+                                currentBowSpell = unlockedBowSpells.get(0);
+                            }
+
+                            player.sendMessage("Bow spell: " + currentBowSpell);
                         }
 
+                    }else{
+                        currentBowSpell = null;
                     }
+
+                    archer.setBowSpell(currentBowSpell);
+                    pd.setArchetype(archer);
+                    playerDataManager.updatePlayerData(player.getUniqueId(), pd);
 
                 }
 
             }
         }
-
-
 
     }
 

@@ -33,9 +33,15 @@ public class HeatingUp extends PassiveSpell implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+
     @Override
     public Particle getSpellOwnerParticle() {
         return Particle.DRIP_LAVA;
+    }
+
+    @Override
+    public boolean isBowSpell() {
+        return false;
     }
 
     @Override

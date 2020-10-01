@@ -5,5 +5,6 @@ public enum SpellKey {
     FROST_STRIKE,
     INVISIBLE_STRIKE,
     HEATING_UP,
-    ESCAPE
+    ESCAPE,
+    CRIPPLING_SHOT
 }

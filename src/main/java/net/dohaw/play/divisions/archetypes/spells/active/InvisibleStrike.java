@@ -51,11 +51,6 @@ public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable
     }
 
     @Override
-    public double getRange() {
-        return 0;
-    }
-
-    @Override
     public Particle getSpellOwnerParticle() {
         return null;
     }

@@ -15,6 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
@@ -26,9 +27,13 @@ public abstract class Spell extends WrapperHolder {
     public static final ActiveSpell INVISIBLE_STRIKE = new InvisibleStrike("invisible_strike_spell", Archetype.EVOKER, SpellKey.INVISIBLE_STRIKE, 1);
     public static final ActiveSpell SMITE = new Smite("smite_spell", Archetype.CLERIC, SpellKey.SMITE, 1);
     public static final ActiveSpell FROST_STRIKE = new FrostStrike("frost_strike_spell", Archetype.WIZARD, SpellKey.FROST_STRIKE, 1);
-    public static final ActiveSpell ESCAPE = new Escape("escape_spell", Archetype.ARCHER, SpellKey.ESCAPE, 2);
 
+    /*
+        Archer Spells
+     */
     public static final PassiveSpell HEATING_UP = new HeatingUp("heating_up_spell", Archetype.ARCHER, SpellKey.HEATING_UP, 1);
+    public static final ActiveSpell ESCAPE = new Escape("escape_spell", Archetype.ARCHER, SpellKey.ESCAPE, 2);
+    public static final PassiveSpell CRIPPLING_SHOT = new CripplingShot("", Archetype.ARCHER, SpellKey.CRIPPLING_SHOT, 4);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
