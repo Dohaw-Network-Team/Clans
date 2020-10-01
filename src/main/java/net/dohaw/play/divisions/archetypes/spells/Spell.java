@@ -79,6 +79,21 @@ public abstract class Spell extends WrapperHolder {
         return spellsUnlocked;
     }
 
+    public static List<SpellWrapper> getUnlockedBowSpells(ArchetypeWrapper archetype, int level){
+
+        List<SpellWrapper> archetypeSpells = getArchetypeSpells(archetype);
+        List<SpellWrapper> bowSpellsUnlocked = new ArrayList<>();
+
+        for(SpellWrapper wrapper : archetypeSpells){
+            if (wrapper.isBowSpell() && wrapper.getLevelUnlocked() == level) {
+                bowSpellsUnlocked.add(wrapper);
+            }
+        }
+
+        return bowSpellsUnlocked;
+
+    }
+
     public static boolean isSpellEntity(Entity entity) {
         return entity.hasMetadata("spell_key");
     }

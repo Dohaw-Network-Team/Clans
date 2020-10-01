@@ -40,12 +40,12 @@ public abstract class SpellWrapper extends Wrapper {
 
     public abstract double alterDamage(double dmg, PlayerData pd);
 
-    public abstract double getRange();
-
     public abstract Particle getSpellOwnerParticle();
 
     public abstract Particle getSpellAffecterParticle();
 
     public abstract List<String> getDescription();
+
+    public abstract boolean isBowSpell();
 
 }

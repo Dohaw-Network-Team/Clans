@@ -112,8 +112,4 @@ public class HeatingUp extends PassiveSpell implements Listener {
         return dmg + (totalLuckMultiplier * totalLuck) + (playerLevel - 1);
     }
 
-    @Override
-    public double getRange() {
-        return 0;
-    }
 }

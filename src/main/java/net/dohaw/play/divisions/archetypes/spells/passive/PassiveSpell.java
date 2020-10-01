@@ -9,4 +9,9 @@ public abstract class PassiveSpell extends SpellWrapper{
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 
+    @Override
+    public boolean isBowSpell() {
+        return false;
+    }
+
 }

@@ -17,6 +17,11 @@ public abstract class ActiveLaunchableSpell extends ActiveSpell{
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 
+    @Override
+    public boolean isBowSpell() {
+        return false;
+    }
+
     public abstract Material getProjectileMaterial();
 
     protected void launchProjectile(Player player){

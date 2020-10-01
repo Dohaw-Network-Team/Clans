@@ -7,6 +7,9 @@ import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
+import net.dohaw.play.divisions.archetypes.spells.Spell;
+import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.types.Archer;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
@@ -246,6 +249,7 @@ public class PlayerDataHandler {
         data = loadPlayerPermissions(playerDataConfig, data);
         data = loadPlayerStats(playerDataConfig, data);
         data = loadArchetypeData(playerDataConfig, data);
+        //data = loadArchetypeSpecificData(data);
 
         if(data.getPlayer().isOnline() && data.getArchetype() != null){
             data.startRegener(plugin, Calculator.calculateRegenInterval(data));
@@ -296,5 +300,26 @@ public class PlayerDataHandler {
         }
         return YamlConfiguration.loadConfiguration(playerFile);
     }
+
+    /*
+    private PlayerData loadArchetypeSpecificData(PlayerData pd){
+
+        ArchetypeWrapper archetype = pd.getArchetype();
+        ArchetypeKey archKey = (ArchetypeKey) archetype.getKEY();
+
+        if(archKey == ArchetypeKey.ARCHER){
+
+            Archer archer = (Archer) archetype;
+            int playerLevel = pd.getLevel();
+
+            List<SpellWrapper> unlockedBowSpells = Spell.getUnlockedBowSpells(archetype, playerLevel);
+
+            archer.setBowSpell();
+            pd.setArchetype(archer);
+
+        }
+
+        return pd;
+    }*/
 
 }

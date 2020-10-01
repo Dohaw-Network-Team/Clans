@@ -9,6 +9,7 @@ import net.dohaw.play.divisions.archetypes.RegenType;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
+import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -19,6 +20,9 @@ import java.util.List;
 public class Archer extends ArchetypeWrapper {
 
     @Getter @Setter private int heatingUpCount;
+
+    // no bow spell currently
+    @Getter @Setter private SpellWrapper bowSpell = null;
 
     public Archer(ArchetypeKey ARCHETYPE) {
         super(ARCHETYPE);

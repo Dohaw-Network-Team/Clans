@@ -15,8 +15,8 @@ public abstract class ActiveSpell extends SpellWrapper implements Cooldownable {
     }
 
     /*
-    isOut == whether we are executing on the player that is doing the spell or the player that is being affected by the spell
- */
+        isOut == whether we are executing on the player that is doing the spell or the player that is being affected by the spell
+    */
     public abstract void execute(Player player);
 
     public abstract double getPercentageRegenAffected();

@@ -4,9 +4,12 @@ import me.c10coding.coreapi.chat.ChatFactory;
 import me.c10coding.coreapi.helpers.PlayerHelper;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
+import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
+import net.dohaw.play.divisions.archetypes.types.Archer;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
@@ -21,11 +24,13 @@ import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.DivisionChat;
 import net.dohaw.play.divisions.utils.EntityUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -140,6 +145,11 @@ public class GeneralListener implements Listener {
 
     }
 
+    /*
+        This runs first. Calculates base damage upon the initial hit
+
+        DAMAGE IS PASSED BETWEEN EVENTS.
+     */
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerTakeDamage(EntityDamageByEntityEvent e){
         double newDmg = Calculator.getNewDamage(e, playerDataManager);
@@ -159,8 +169,8 @@ public class GeneralListener implements Listener {
             if(archetype != null){
                 if(e.getItem() != null){
 
-                    ItemStack stack = e.getItem();
-                    String customItemKey = CustomItem.getCustomItemKey(stack);
+                    ItemStack stackInHand = e.getItem();
+                    String customItemKey = CustomItem.getCustomItemKey(stackInHand);
 
                     if(customItemKey != null){
                         if(!customItemKey.isEmpty()){
@@ -210,6 +220,67 @@ public class GeneralListener implements Listener {
                 }
             }
         }
+
+    }
+
+    /*
+        Allows Archers to cycle through bow spells.
+     */
+    @EventHandler
+    public void onArcherBowLeftClick(PlayerInteractEvent e){
+
+        Player player = e.getPlayer();
+
+        Action action = e.getAction();
+        ItemStack itemInHand = e.getItem();
+
+        if(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK){
+            if(itemInHand.getType() == Material.BOW || itemInHand.getType() == Material.CROSSBOW){
+
+                PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
+                ArchetypeWrapper archetype = pd.getArchetype();
+
+                if(archetype instanceof Archer){
+
+                    Archer archer = (Archer) archetype;
+
+                    List<SpellWrapper> unlockedBowSpells = Spell.getUnlockedBowSpells(archetype, pd.getLevel());
+                    if(!unlockedBowSpells.isEmpty()){
+
+                        SpellWrapper currentBowSpell = archer.getBowSpell();
+                        if(currentBowSpell != null){
+
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
+
+
+    }
+
+    private SpellWrapper getNextBowSpell(List<SpellWrapper> unlockedBowSpells, SpellWrapper currentBowSpell){
+
+        for(SpellWrapper sw : unlockedBowSpells){
+            if(sw.getKEY() == currentBowSpell.getKEY()){
+
+                int index = unlockedBowSpells.indexOf(sw);
+
+                if(index == (unlockedBowSpells.size() - 1) ){
+                    return unlockedBowSpells.get(0);
+                }else{
+                    return unlockedBowSpells.get(index + 1);
+                }
+
+            }
+        }
+
+        // Only runs if unlocked bow spells is empty
+        return currentBowSpell;
 
     }
 

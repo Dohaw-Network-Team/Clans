@@ -49,13 +49,18 @@ public class Escape extends ActiveSpell {
     }
 
     @Override
+    public boolean isBowSpell() {
+        return false;
+    }
+
+    @Override
     public double getCooldown() {
         return 20;
     }
 
     @Override
     public boolean displayCooldownMessage() {
-        return false;
+        return true;
     }
 
     @Override
@@ -65,11 +70,6 @@ public class Escape extends ActiveSpell {
 
     @Override
     public double alterDamage(double dmg, PlayerData pd) {
-        return 0;
-    }
-
-    @Override
-    public double getRange() {
         return 0;
     }
 
