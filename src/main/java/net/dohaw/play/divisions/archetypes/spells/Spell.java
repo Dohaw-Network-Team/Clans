@@ -1,22 +1,17 @@
 package net.dohaw.play.divisions.archetypes.spells;
 
-import lombok.Setter;
-import net.dohaw.play.divisions.DivisionsPlugin;
-import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.*;
 import net.dohaw.play.divisions.archetypes.spells.active.*;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
+import net.dohaw.play.divisions.archetypes.spells.bowspell.CripplingShot;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import net.dohaw.play.divisions.archetypes.spells.passive.archer.HeatingUp;
-import net.dohaw.play.divisions.utils.Calculator;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;

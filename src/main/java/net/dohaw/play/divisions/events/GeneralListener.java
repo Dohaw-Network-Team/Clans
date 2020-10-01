@@ -322,6 +322,18 @@ public class GeneralListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPlayerTakeArrowDamage(EntityDamageByEntityEvent e){
+
+        Entity en = e.getEntity();
+        if(en instanceof Arrow){
+            if(en.hasMetadata("bow_spell")){
+                String bowSpellKey = en.getMetadata("bow_spell").get(0).asString();
+            }
+        }
+
+    }
+
     private BowSpell getNextBowSpell(List<BowSpell> unlockedBowSpells, BowSpell currentBowSpell){
 
         for(BowSpell sw : unlockedBowSpells){

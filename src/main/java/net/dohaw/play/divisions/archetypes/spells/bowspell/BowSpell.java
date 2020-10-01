@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.archetypes.spells.bowspell;
 
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
@@ -13,5 +14,7 @@ public abstract class BowSpell extends PassiveSpell implements Listener, Cooldow
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
+
+    public abstract void affectHitPlayer(PlayerData damageTaker, PlayerData damagerDealer);
 
 }
