@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
+import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,7 @@ public abstract class ActiveSpell extends SpellWrapper implements Cooldownable, 
     /*
         An active spell is defined as a spell that is activated via custom item
      */
-    public ActiveSpell(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
+    public ActiveSpell(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 

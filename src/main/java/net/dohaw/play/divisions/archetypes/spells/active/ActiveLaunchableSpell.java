@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftSnowball;
@@ -12,7 +13,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public abstract class ActiveLaunchableSpell extends ActiveSpell{
 
-    public ActiveLaunchableSpell(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
+    public ActiveLaunchableSpell(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 

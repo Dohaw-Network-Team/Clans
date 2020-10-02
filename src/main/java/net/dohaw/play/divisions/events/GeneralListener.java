@@ -325,10 +325,24 @@ public class GeneralListener implements Listener {
     @EventHandler
     public void onPlayerTakeArrowDamage(EntityDamageByEntityEvent e){
 
-        Entity en = e.getEntity();
-        if(en instanceof Arrow){
-            if(en.hasMetadata("bow_spell")){
-                String bowSpellKey = en.getMetadata("bow_spell").get(0).asString();
+        Entity enDamager = e.getDamager();
+        Entity enDamageTaker = e.getEntity();
+
+        if(enDamager instanceof Arrow && enDamageTaker instanceof Player){
+            Arrow arrow = (Arrow) enDamager;
+            if(enDamager.hasMetadata("bow_spell")){
+
+                Player damager = (Player) arrow.getShooter();
+                Player damageTaker = (Player) enDamageTaker;
+
+                String bowSpellKey = enDamager.getMetadata("bow_spell").get(0).asString();
+                BowSpell bowSpell = Spell.getBowSpellByKey(bowSpellKey);
+
+                PlayerData shootersData = playerDataManager.getPlayerByUUID(damager.getUniqueId());
+                PlayerData damageTakerData = playerDataManager.getPlayerByUUID(damageTaker.getUniqueId());
+
+                bowSpell.affectHitPlayer(damageTakerData, shootersData);
+
             }
         }
 

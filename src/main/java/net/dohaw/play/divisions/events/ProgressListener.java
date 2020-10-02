@@ -7,6 +7,7 @@ import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
+import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.events.custom.LevelUpEvent;
 import net.dohaw.play.divisions.exceptions.InvalidCustomItemKeyException;
@@ -48,7 +49,7 @@ public class ProgressListener implements Listener {
             /*
                 Bow spells are not bound to a custom item
              */
-            if(spell instanceof ActiveSpell && !spell.isBowSpell()){
+            if(spell instanceof BowSpell){
 
                 ActiveSpell aSpell = (ActiveSpell) spell;
                 String customItemBindedToKey = spell.getCustomItemBindedToKey();

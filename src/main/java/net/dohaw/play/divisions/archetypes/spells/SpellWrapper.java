@@ -21,8 +21,11 @@ public abstract class SpellWrapper extends Wrapper {
     @Getter @Setter protected String customItemBindedToKey;
     @Getter protected int levelUnlocked;
 
-    public SpellWrapper(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
+    @Getter protected final SpellKey KEY;
+
+    public SpellWrapper(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
         super(KEY);
+        this.KEY = KEY;
         this.customItemBindedToKey = customItemBindedToKey;
         this.archetype = archetype;
         this.levelUnlocked = levelUnlocked;

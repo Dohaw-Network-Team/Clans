@@ -2,10 +2,8 @@ package net.dohaw.play.divisions.archetypes.spells.bowspell;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
-import net.dohaw.play.divisions.archetypes.spells.Affectable;
-import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
-import net.dohaw.play.divisions.archetypes.spells.Damageable;
-import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
+import net.dohaw.play.divisions.archetypes.spells.*;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
@@ -19,7 +17,7 @@ import java.util.UUID;
 
 public class CripplingShot extends BowSpell implements Damageable, RegenAffectable, Cooldownable, Affectable {
 
-    public CripplingShot(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
+    public CripplingShot(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 
@@ -76,14 +74,15 @@ public class CripplingShot extends BowSpell implements Damageable, RegenAffectab
 
         double currentBaseValue = speedAttribute.getBaseValue();
         double subtractive = (currentBaseValue * .25) * -1;
+        double duration = getDuration();
 
-        speedAttribute.addModifier(getAttributeModifier(subtractive));
+        AttributeModifier modifier = getAttributeModifier(subtractive);
+        speedAttribute.addModifier(modifier);
 
-    }
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            speedAttribute.removeModifier(modifier);
+        }, (long) (duration * 20) );
 
-    @Override
-    public void removeAffect(PlayerData pd) {
-        OfflinePlayer op = pd.getPlayer();
     }
 
     @Override

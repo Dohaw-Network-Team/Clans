@@ -3,6 +3,7 @@ package net.dohaw.play.divisions.archetypes.spells.active;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Damageable;
+import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftLivingEntity;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable{
 
-    public InvisibleStrike(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
+    public InvisibleStrike(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 

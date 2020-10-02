@@ -2,6 +2,7 @@ package net.dohaw.play.divisions.archetypes.spells.active;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.utils.Calculator;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
@@ -16,7 +17,7 @@ public class Escape extends ActiveSpell {
 
     public final int ABSORPTION_DURATION = 4;
 
-    public Escape(String customItemBindedToKey, ArchetypeWrapper archetype, Enum KEY, int levelUnlocked) {
+    public Escape(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
         super(customItemBindedToKey, archetype, KEY, levelUnlocked);
     }
 

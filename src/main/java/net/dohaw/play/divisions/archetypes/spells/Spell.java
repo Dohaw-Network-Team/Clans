@@ -44,6 +44,23 @@ public abstract class Spell extends WrapperHolder {
         return null;
     }
 
+    public static BowSpell getBowSpellByKey(String bowSpellKeyStr){
+
+        SpellKey bowSpellKey = SpellKey.valueOf(bowSpellKeyStr);
+        for(Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()){
+            Wrapper wrapper = entry.getValue();
+            if(wrapper instanceof BowSpell){
+                BowSpell bowSpell = (BowSpell) wrapper;
+                if(bowSpell.getKEY() == bowSpellKey){
+                    return bowSpell;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
     public static List<SpellWrapper> getArchetypeSpells(ArchetypeWrapper archetypeWrapper) {
         List<SpellWrapper> spells = new ArrayList<>();
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
