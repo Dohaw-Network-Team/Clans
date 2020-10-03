@@ -2,18 +2,13 @@ package net.dohaw.play.divisions;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.dohaw.play.divisions.DivisionChannel;
-import net.dohaw.play.divisions.DivisionsPlugin;
-import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
-import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
-import net.dohaw.play.divisions.events.custom.LevelUpEvent;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
 import net.dohaw.play.divisions.runnables.Regener;
@@ -82,13 +77,13 @@ public class PlayerData {
     }
 
     public void addCoolDown(ActiveSpell spell){
-        long millis = (long) (spell.getCooldown() * 1000);
+        long millis = (long) (spell.getBaseCooldown() * 1000);
         long millisCooldownEnd = millis + System.currentTimeMillis();
         spellCoolDowns.put(spell.getKEY().toString(), millisCooldownEnd);
     }
 
     public void addCoolDown(BowSpell bowSpell){
-        long millis = (long) (bowSpell.getCooldown() * 1000);
+        long millis = (long) (bowSpell.getBaseCooldown() * 1000);
         long millisCooldownEnd = millis + System.currentTimeMillis();
         spellCoolDowns.put(bowSpell.getKEY().toString(), millisCooldownEnd);
     }
@@ -112,8 +107,8 @@ public class PlayerData {
         return regen >= Calculator.getSpellRegenCost(this, spell);
     }
 
-    public long getCooldownEnd(String spellKey){
-        return spellCoolDowns.get(spellKey);
+    public long getCooldownEnd(SpellWrapper spell){
+        return spellCoolDowns.get(spell.getKEY().toString());
     }
 
     public boolean hasPermission(Permission perm){

@@ -28,7 +28,7 @@ public class Smite extends ActiveLaunchableSpell implements Damageable {
     }
 
     @Override
-    public double getCooldown() {
+    public double getBaseCooldown() {
         return 0.5;
     }
 
@@ -58,7 +58,7 @@ public class Smite extends ActiveLaunchableSpell implements Damageable {
     }
 
     @Override
-    public List<String> getCooldownLorePart() {
+    public List<String> getCooldownLorePart(PlayerData pd) {
         return Arrays.asList("");
     }
 

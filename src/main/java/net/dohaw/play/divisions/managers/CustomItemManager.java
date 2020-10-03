@@ -10,7 +10,6 @@ import net.dohaw.play.divisions.customitems.ItemType;
 import net.dohaw.play.divisions.customitems.Rarity;
 import net.dohaw.play.divisions.files.CustomItemsConfig;
 import net.dohaw.play.divisions.utils.Calculator;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -131,7 +130,7 @@ public class CustomItemManager implements Manager{
 
             spellLore.add(" ");
             spellLore.add(LORE_HEADER_COLOR + "COOLDOWN");
-            spellLore = combineLore(LORE_COLOR, spellLore, aSpell.getCooldownLorePart());
+            spellLore = combineLore(LORE_COLOR, spellLore, aSpell.getCooldownLorePart(pd));
 
             if (aSpell instanceof Damageable) {
                 Damageable damageable = (Damageable) aSpell;

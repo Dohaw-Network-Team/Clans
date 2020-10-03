@@ -6,6 +6,7 @@ import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.spells.CooldownDecreasable;
 import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
@@ -196,16 +197,21 @@ public class GeneralListener implements Listener {
                                                 UUID playerUUID = player.getUniqueId();
                                                 pd.addCoolDown(spell);
                                                 pd.subtractRegen(spell);
-
+                                                spell.execute(player);
                                                 playerDataManager.updatePlayerData(playerUUID, pd);
 
-                                                spell.execute(player);
+                                                double cooldown;
+                                                if(spell instanceof CooldownDecreasable){
+                                                    cooldown = Spell.getSchedulerInterval(pd, (CooldownDecreasable)spell);
+                                                }else{
+                                                    cooldown = Spell.getSchedulerInterval(spell);
+                                                }
 
                                                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                                                     pd.removeCoolDown(spell);
                                                     Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(spell, playerUUID));
                                                     playerDataManager.updatePlayerData(playerUUID, pd);
-                                                }, Spell.getSchedulerInterval(spell));
+                                                }, (long) cooldown);
 
                                             }
 
@@ -234,45 +240,50 @@ public class GeneralListener implements Listener {
         ItemStack itemInHand = e.getItem();
 
         if(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK){
-            if(itemInHand.getType() == Material.BOW || itemInHand.getType() == Material.CROSSBOW){
 
+            if(itemInHand != null){
 
-                PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
-                ArchetypeWrapper archetype = pd.getArchetype();
+                if(itemInHand.getType() == Material.BOW || itemInHand.getType() == Material.CROSSBOW){
 
-                if(archetype instanceof Archer){
+                    PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
+                    ArchetypeWrapper archetype = pd.getArchetype();
 
-                    Archer archer = (Archer) archetype;
-                    BowSpell currentBowSpell = archer.getBowSpell();
+                    if(archetype instanceof Archer){
+
+                        Archer archer = (Archer) archetype;
+                        BowSpell currentBowSpell = archer.getBowSpell();
 
                     /*
                         If they shift left click then they can un-select any bow spell
                      */
-                    if(!player.isSneaking()){
+                        if(!player.isSneaking()){
 
-                        List<BowSpell> unlockedBowSpells = Spell.getUnlockedBowSpells(archetype, pd.getLevel());
-                        if(!unlockedBowSpells.isEmpty()){
+                            List<BowSpell> unlockedBowSpells = Spell.getUnlockedBowSpells(archetype, pd.getLevel());
+                            if(!unlockedBowSpells.isEmpty()){
 
-                            if(currentBowSpell != null){
-                                currentBowSpell = getNextBowSpell(unlockedBowSpells, currentBowSpell);
-                            }else{
-                                currentBowSpell = unlockedBowSpells.get(0);
+                                if(currentBowSpell != null){
+                                    currentBowSpell = getNextBowSpell(unlockedBowSpells, currentBowSpell);
+                                }else{
+                                    currentBowSpell = unlockedBowSpells.get(0);
+                                }
+
+                                player.sendMessage("Bow spell: " + currentBowSpell);
                             }
 
-                            player.sendMessage("Bow spell: " + currentBowSpell);
+                        }else{
+                            currentBowSpell = null;
                         }
 
-                    }else{
-                        currentBowSpell = null;
-                    }
+                        archer.setBowSpell(currentBowSpell);
+                        pd.setArchetype(archer);
+                        playerDataManager.updatePlayerData(player.getUniqueId(), pd);
 
-                    archer.setBowSpell(currentBowSpell);
-                    pd.setArchetype(archer);
-                    playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+                    }
 
                 }
 
             }
+
         }
 
     }
@@ -293,28 +304,37 @@ public class GeneralListener implements Listener {
                 BowSpell bowSpell = archer.getBowSpell();
 
                 if(bowSpell != null){
+
                     Entity proj = e.getProjectile();
-                    if(proj instanceof Arrow){
 
-                        String bowSpellKey = bowSpell.getKEY().toString();
-                        proj.setMetadata("bow_spell", new FixedMetadataValue(plugin, bowSpellKey));
-                        e.setProjectile(proj);
+                    if(!pd.isOnCooldown(bowSpell)){
 
-                        /*
-                            Not all bow spells implement cooldownable. This is done just in case I
-                         */
-                        pd.addCoolDown(bowSpell);
-                        pd.subtractRegen(bowSpell);
+                        if(proj instanceof Arrow){
 
-                        playerDataManager.updatePlayerData(playerUUID, pd);
+                            String bowSpellKey = bowSpell.getKEY().toString();
+                            proj.setMetadata("bow_spell", new FixedMetadataValue(plugin, bowSpellKey));
+                            e.setProjectile(proj);
 
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                            pd.removeCoolDown(bowSpell);
-                            Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(bowSpell, playerUUID));
+                            /*
+                                Not all bow spells implement cooldownable. This is done just in case I
+                             */
+                            pd.addCoolDown(bowSpell);
+                            pd.subtractRegen(bowSpell);
+
                             playerDataManager.updatePlayerData(playerUUID, pd);
-                        }, Spell.getSchedulerInterval(bowSpell));
 
+                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                pd.removeCoolDown(bowSpell);
+                                Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(bowSpell, playerUUID));
+                                playerDataManager.updatePlayerData(playerUUID, pd);
+                            }, Spell.getSchedulerInterval(bowSpell));
+
+                        }
+
+                    }else{
+                        Bukkit.broadcastMessage("Cooldown time: " + pd.getCooldownEnd(bowSpell));
                     }
+
                 }
 
             }
@@ -329,8 +349,9 @@ public class GeneralListener implements Listener {
         Entity enDamageTaker = e.getEntity();
 
         if(enDamager instanceof Arrow && enDamageTaker instanceof Player){
+
             Arrow arrow = (Arrow) enDamager;
-            if(enDamager.hasMetadata("bow_spell")){
+            if(arrow.hasMetadata("bow_spell")){
 
                 Player damager = (Player) arrow.getShooter();
                 Player damageTaker = (Player) enDamageTaker;

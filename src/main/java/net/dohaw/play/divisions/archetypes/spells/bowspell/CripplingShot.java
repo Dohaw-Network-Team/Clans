@@ -4,10 +4,7 @@ import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.*;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 
@@ -32,7 +29,7 @@ public class CripplingShot extends BowSpell implements Damageable, RegenAffectab
     }
 
     @Override
-    public double getCooldown() {
+    public double getBaseCooldown() {
         return 20;
     }
 
@@ -42,8 +39,8 @@ public class CripplingShot extends BowSpell implements Damageable, RegenAffectab
     }
 
     @Override
-    public List<String> getCooldownLorePart() {
-        return Arrays.asList(getCooldown() + " seconds");
+    public List<String> getCooldownLorePart(PlayerData pd) {
+        return Arrays.asList(getBaseCooldown() + " seconds");
     }
 
     @Override
@@ -69,25 +66,25 @@ public class CripplingShot extends BowSpell implements Damageable, RegenAffectab
     @Override
     public void affectHitPlayer(PlayerData damageTaker, PlayerData damagerDealer) {
 
-        Player damagedPlayer = damageTaker.getPlayer().getPlayer();
-        AttributeInstance speedAttribute = damagedPlayer.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+        Player damagedPlayer = Bukkit.getPlayer(damageTaker.getPLAYER_UUID());
+        final float INIT_WALKING_SPEED = damagedPlayer.getWalkSpeed();
+        final double PERCENTAGE_SPEED_DECREASE = .25;
 
-        double currentBaseValue = speedAttribute.getBaseValue();
-        double subtractive = (currentBaseValue * .25) * -1;
+        double subtractive = INIT_WALKING_SPEED * PERCENTAGE_SPEED_DECREASE;
+        float newSpeed = (float) (INIT_WALKING_SPEED - subtractive);
+
+        damagedPlayer.setWalkSpeed(newSpeed);
         double duration = getDuration();
 
-        AttributeModifier modifier = getAttributeModifier(subtractive);
-        speedAttribute.addModifier(modifier);
-
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            speedAttribute.removeModifier(modifier);
+            damagedPlayer.setWalkSpeed(INIT_WALKING_SPEED);
         }, (long) (duration * 20) );
 
     }
 
     @Override
     public double getDuration() {
-        return 0;
+        return 20;
     }
 
     private String getAttributeModifierName(){

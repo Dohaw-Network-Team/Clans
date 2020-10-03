@@ -37,7 +37,7 @@ public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable
     }
 
     @Override
-    public List<String> getCooldownLorePart() {
+    public List<String> getCooldownLorePart(PlayerData pd) {
         return Arrays.asList("");
     }
 
@@ -67,7 +67,7 @@ public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable
     }
 
     @Override
-    public double getCooldown() {
+    public double getBaseCooldown() {
         return 0.5;
     }
 

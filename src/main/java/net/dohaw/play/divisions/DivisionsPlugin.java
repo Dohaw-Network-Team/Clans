@@ -139,6 +139,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
         Spell.registerWrapper(Spell.HEATING_UP);
         Spell.registerWrapper(Spell.ESCAPE);
         Spell.registerWrapper(Spell.CRIPPLING_SHOT);
+        Spell.registerWrapper(Spell.SPORADIC);
     }
 
     private boolean setupEconomy() {

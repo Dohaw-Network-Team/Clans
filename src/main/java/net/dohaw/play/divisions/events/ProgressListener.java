@@ -49,7 +49,7 @@ public class ProgressListener implements Listener {
             /*
                 Bow spells are not bound to a custom item
              */
-            if(spell instanceof BowSpell){
+            if(spell instanceof ActiveSpell){
 
                 ActiveSpell aSpell = (ActiveSpell) spell;
                 String customItemBindedToKey = spell.getCustomItemBindedToKey();

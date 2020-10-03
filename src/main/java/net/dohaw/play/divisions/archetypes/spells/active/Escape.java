@@ -3,8 +3,6 @@ package net.dohaw.play.divisions.archetypes.spells.active;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
-import net.dohaw.play.divisions.utils.Calculator;
-import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -50,7 +48,7 @@ public class Escape extends ActiveSpell {
     }
 
     @Override
-    public double getCooldown() {
+    public double getBaseCooldown() {
         return 20;
     }
 
@@ -60,8 +58,8 @@ public class Escape extends ActiveSpell {
     }
 
     @Override
-    public List<String> getCooldownLorePart() {
-        return Arrays.asList(getCooldown() + " seconds");
+    public List<String> getCooldownLorePart(PlayerData pd) {
+        return Arrays.asList(getBaseCooldown() + " seconds");
     }
 
     @Override

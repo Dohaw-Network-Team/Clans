@@ -6,13 +6,6 @@ import net.dohaw.play.divisions.archetypes.spells.Damageable;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftSnowball;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,8 +22,8 @@ public class FrostStrike extends ActiveLaunchableSpell implements Damageable {
     }
 
     @Override
-    public List<String> getCooldownLorePart() {
-        return Arrays.asList(getCooldown() + " seconds");
+    public List<String> getCooldownLorePart(PlayerData pd) {
+        return Arrays.asList(getBaseCooldown() + " seconds");
     }
 
     @Override
@@ -64,7 +57,7 @@ public class FrostStrike extends ActiveLaunchableSpell implements Damageable {
     }
 
     @Override
-    public double getCooldown() {
+    public double getBaseCooldown() {
         return 0.5;
     }
 

@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.archetypes.spells;
 
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.*;
 import net.dohaw.play.divisions.archetypes.spells.active.*;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
@@ -30,6 +31,7 @@ public abstract class Spell extends WrapperHolder {
     public static final PassiveSpell HEATING_UP = new HeatingUp("heating_up_spell", Archetype.ARCHER, SpellKey.HEATING_UP, 1);
     public static final ActiveSpell ESCAPE = new Escape("escape_spell", Archetype.ARCHER, SpellKey.ESCAPE, 2);
     public static final BowSpell CRIPPLING_SHOT = new CripplingShot("", Archetype.ARCHER, SpellKey.CRIPPLING_SHOT, 4);
+    public static final ActiveSpell SPORADIC = new Sporadic("sporadic_spell", Archetype.ARCHER, SpellKey.SPORADIC, 7);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
@@ -163,7 +165,11 @@ public abstract class Spell extends WrapperHolder {
     }
 
     public static long getSchedulerInterval(Cooldownable cooldownable){
-        return (long) (cooldownable.getCooldown() * 20);
+        return (long) (cooldownable.getBaseCooldown() * 20);
+    }
+
+    public static long getSchedulerInterval(PlayerData pd, CooldownDecreasable cooldownable){
+        return (long) (cooldownable.getAdjustedCooldown(pd) * 20);
     }
 
 }

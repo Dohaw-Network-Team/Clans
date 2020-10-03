@@ -7,6 +7,7 @@ public class DefaultConfig extends Config {
 
     public final String CALCULATIONS_PATH = "Calculations";
     public final String SPELL_CALCULATIONS_PATH = "Calculations.Spells";
+    public final String SPELL_PROPERTIES_PATH = "Spells";
 
     public DefaultConfig(JavaPlugin plugin) {
         super(plugin, "config.yml");
