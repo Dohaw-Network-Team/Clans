@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.utils;
 
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.menus.Menu;
 import org.bukkit.entity.Player;
 
 public class MenuHelper {

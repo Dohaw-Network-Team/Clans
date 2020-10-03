@@ -1,9 +1,8 @@
 package net.dohaw.play.divisions.menus.permissions;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.chat.ChatFactory;
-import me.c10coding.coreapi.helpers.EnumHelper;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.StringUtils;
+import net.dohaw.play.corelib.helpers.EnumHelper;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Bukkit;
@@ -22,17 +21,12 @@ import java.util.List;
 
 public class PermissionsMenu extends Menu implements Listener {
 
-    private EnumHelper enumHelper;
-    private ChatFactory chatFactory;
-
     /*
         Making previous menu null because it works right now without the previousMenu object
      */
 
     public PermissionsMenu(JavaPlugin plugin) {
-        super((APIHook) plugin, null,"Permissions", 45);
-        this.enumHelper = ((DivisionsPlugin)plugin).getAPI().getEnumHelper();
-        this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
+        super(plugin, null,"Permissions", 45);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -41,16 +35,16 @@ public class PermissionsMenu extends Menu implements Listener {
 
         List<String> lore = new ArrayList<>();
         for(Rank rank : Rank.values()){
-            lore.add(chatFactory.colorString("&f- &e" + enumHelper.enumToName(rank)));
+            lore.add(StringUtils.colorString("&f- &e" + EnumHelper.enumToName(rank)));
         }
 
         ItemStack head = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
         skullMeta.setOwner(p.getName());
-        skullMeta.setDisplayName(chatFactory.colorString("&cPlayers"));
+        skullMeta.setDisplayName(StringUtils.colorString("&cPlayers"));
         head.setItemMeta(skullMeta);
 
-        inv.setItem(20, createGuiItem(Material.BOOKSHELF, chatFactory.colorString("&cRanks"), lore));
+        inv.setItem(20, createGuiItem(Material.BOOKSHELF, StringUtils.colorString("&cRanks"), lore));
         inv.setItem(24, head);
         setVariant((byte)15);
 

@@ -1,16 +1,15 @@
 package net.dohaw.play.divisions;
 
 import lombok.Getter;
-import me.c10coding.coreapi.BetterJavaPlugin;
+import net.dohaw.play.corelib.CoreLib;
+import net.dohaw.play.corelib.JPUtils;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
-import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.commands.ArchetypesCommand;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
 import net.dohaw.play.divisions.commands.CustomItemsCommand;
 import net.dohaw.play.divisions.commands.DivisionsCommand;
-import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.events.GeneralListener;
 import net.dohaw.play.divisions.events.ProgressListener;
 import net.dohaw.play.divisions.files.DefaultConfig;
@@ -24,6 +23,7 @@ import net.dohaw.play.divisions.runnables.InviteTimer;
 import net.dohaw.play.divisions.utils.Calculator;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
@@ -38,7 +38,7 @@ import java.util.UUID;
     Description: A better version of Factions specifically made for Dohaw Network
  */
 
-public final class DivisionsPlugin extends BetterJavaPlugin {
+public final class DivisionsPlugin extends JavaPlugin {
 
     @Getter private static DivisionsPlugin instance;
     @Getter private static Economy economy = null;
@@ -57,7 +57,7 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
     @Override
     public void onEnable() {
 
-        hookAPI(this);
+        CoreLib.setInstance(this);
         instance = this;
 
         if (!setupEconomy()) {
@@ -85,11 +85,11 @@ public final class DivisionsPlugin extends BetterJavaPlugin {
 
         loadManagerData();
 
-        registerEvents(new GeneralListener(this), new ProgressListener(this));
-        registerCommand("divisions", new DivisionsCommand(this));
-        registerCommand("divisionsconfirm", new ConfirmableCommands(this));
-        registerCommand("archetypes", new ArchetypesCommand(this));
-        registerCommand("customitems", new CustomItemsCommand(this));
+        JPUtils.registerEvents(new GeneralListener(this), new ProgressListener(this));
+        JPUtils.registerCommand("divisions", new DivisionsCommand(this));
+        JPUtils.registerCommand("divisionsconfirm", new ConfirmableCommands(this));
+        JPUtils.registerCommand("archetypes", new ArchetypesCommand(this));
+        JPUtils.registerCommand("customitems", new CustomItemsCommand(this));
 
     }
 

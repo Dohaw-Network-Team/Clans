@@ -83,10 +83,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>CoreAPI</groupId>
-            <artifactId>CoreAPI</artifactId>
-            <version>2.3.8-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>net.dohaw.play</groupId>
+            <artifactId>CoreLib</artifactId>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

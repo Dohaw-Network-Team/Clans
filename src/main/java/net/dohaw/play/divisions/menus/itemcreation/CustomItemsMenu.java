@@ -1,7 +1,6 @@
 package net.dohaw.play.divisions.menus.itemcreation;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
@@ -12,12 +11,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 
 public class CustomItemsMenu extends Menu implements Listener {
 
-    public CustomItemsMenu(APIHook plugin) {
+    public CustomItemsMenu(JavaPlugin plugin) {
         super(plugin, null,"Item Creation", 45);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

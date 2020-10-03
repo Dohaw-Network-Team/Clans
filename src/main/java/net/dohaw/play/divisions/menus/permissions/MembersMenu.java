@@ -1,9 +1,8 @@
 package net.dohaw.play.divisions.menus.permissions;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.chat.ChatFactory;
-import me.c10coding.coreapi.helpers.ItemStackHelper;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.StringUtils;
+import net.dohaw.play.corelib.helpers.ItemStackHelper;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.managers.DivisionsManager;
@@ -26,16 +25,14 @@ import java.util.UUID;
 public class MembersMenu extends Menu implements Listener {
 
     private Player player;
-    private ChatFactory chatFactory;
 
     /*
         Making previous menu null because it works right now without the previousMenu object
      */
 
     public MembersMenu(JavaPlugin plugin, Player player) {
-        super((APIHook) plugin, null, "Member Permissions", 45);
+        super(plugin, null, "Member Permissions", 45);
         this.player = player;
-        this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -44,7 +41,6 @@ public class MembersMenu extends Menu implements Listener {
 
         DivisionsManager divisionsManager = ((DivisionsPlugin)plugin).getDivisionsManager();
         PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
-        ItemStackHelper itemStackHelper = plugin.getAPI().getItemStackHelper();
 
         Division division = divisionsManager.getDivision(playerDataManager.getByPlayerObj(player).getDivision());
 
@@ -57,7 +53,7 @@ public class MembersMenu extends Menu implements Listener {
             ItemStack playerHead = getHead(data);
             //Their own head
             if(uuid.equals(player.getUniqueId())){
-                playerHead = itemStackHelper.addGlowToItem(playerHead);
+                playerHead = ItemStackHelper.addGlowToItem(playerHead);
             }
             inv.setItem(index, playerHead);
             index++;
@@ -86,7 +82,7 @@ public class MembersMenu extends Menu implements Listener {
 
             PlayerDataManager playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
             SkullMeta meta = (SkullMeta) clickedItem.getItemMeta();
-            UUID memberUUID = Bukkit.getOfflinePlayer(chatFactory.removeChatColor(meta.getDisplayName())).getUniqueId();
+            UUID memberUUID = Bukkit.getOfflinePlayer(StringUtils.removeChatColor(meta.getDisplayName())).getUniqueId();
 
             PlayerData playerData = playerDataManager.getPlayerByUUID(memberUUID);
             if(playerData == null){
@@ -111,14 +107,14 @@ public class MembersMenu extends Menu implements Listener {
         ItemStack item = new ItemStack(Material.LEGACY_SKULL_ITEM, 1 , (short) SkullType.PLAYER.ordinal());
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwner(data.getPLAYER_NAME());
-        meta.setDisplayName(chatFactory.colorString("&e" + data.getPLAYER_NAME()));
+        meta.setDisplayName(StringUtils.colorString("&e" + data.getPLAYER_NAME()));
 
         List<String> lore = new ArrayList<>();
 
         if(data.getRank() != null){
-            lore.add(chatFactory.colorString("&cRank: &e" + data.getRank()));
+            lore.add(StringUtils.colorString("&cRank: &e" + data.getRank()));
         }else{
-            lore.add(chatFactory.colorString("&cRank: &b&lLeader"));
+            lore.add(StringUtils.colorString("&cRank: &b&lLeader"));
         }
 
         meta.setLore(lore);

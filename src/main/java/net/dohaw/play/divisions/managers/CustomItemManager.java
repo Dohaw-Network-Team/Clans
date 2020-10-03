@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.managers;
 
+import net.dohaw.play.corelib.StringUtils;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.*;
@@ -153,7 +154,7 @@ public class CustomItemManager implements Manager{
                 spellLore = combineLore(LORE_COLOR, spellLore, affectable.getDurationLorePart());
             }
 
-            spellLore = plugin.getAPI().getChatFactory().colorLore(spellLore);
+            spellLore = StringUtils.colorLore(spellLore);
             meta.setLore(spellLore);
 
             bindedItem.setItemMeta(meta);

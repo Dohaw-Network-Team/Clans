@@ -1,8 +1,7 @@
 package net.dohaw.play.divisions.menus.itemcreation.lore;
 
 import lombok.Setter;
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import net.dohaw.play.divisions.menus.itemcreation.CreateItemMenu;
@@ -17,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class DisplayLoreMenu extends Menu implements Listener {
     private ItemCreationSession session;
     private final Material ITEM_MAT = Material.PAPER;
 
-    public DisplayLoreMenu(APIHook plugin, Menu previousMenu, ItemCreationSession session) {
+    public DisplayLoreMenu(JavaPlugin plugin, Menu previousMenu, ItemCreationSession session) {
         super(plugin, previousMenu, "Change Lore", 45);
         this.session = session;
         Bukkit.getPluginManager().registerEvents(this, plugin);

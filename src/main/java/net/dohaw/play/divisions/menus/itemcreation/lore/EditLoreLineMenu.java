@@ -1,7 +1,7 @@
 package net.dohaw.play.divisions.menus.itemcreation.lore;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.ChatSender;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import net.dohaw.play.divisions.menus.itemcreation.CreateItemMenu;
@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class EditLoreLineMenu extends Menu implements Listener {
     private ItemCreationSession session;
     private int indexLoreLine;
 
-    public EditLoreLineMenu(APIHook plugin, DisplayLoreMenu previousMenu, ItemCreationSession session, int indexLoreLine) {
+    public EditLoreLineMenu(JavaPlugin plugin, DisplayLoreMenu previousMenu, ItemCreationSession session, int indexLoreLine) {
         super(plugin, previousMenu, "Edit Lore Line", 27);
         this.session = session;
         this.indexLoreLine = indexLoreLine;
@@ -76,7 +77,7 @@ public class EditLoreLineMenu extends Menu implements Listener {
             player.closeInventory();
             dilm.openInventory(player);
 
-            chatFactory.sendPlayerMessage("You have deleted this line from the lore!", false, player, null);
+            ChatSender.sendPlayerMessage("You have deleted this line from the lore!", false, player, null);
         }else if(clickedItem.getType() == backMat){
             goToPreviousMenu(player);
         }

@@ -1,9 +1,8 @@
 package net.dohaw.play.divisions.menus.permissions;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.chat.ChatFactory;
-import me.c10coding.coreapi.helpers.EnumHelper;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.StringUtils;
+import net.dohaw.play.corelib.helpers.EnumHelper;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.managers.DivisionsManager;
@@ -33,20 +32,16 @@ public class RankPermissionsMenu extends Menu implements Listener {
     final private String rankName;
     private DivisionsManager divisionsManager;
     private PlayerDataManager playerDataManager;
-    private EnumHelper enumHelper;
-    private ChatFactory chatFactory;
 
     /*
         Making previous menu null because it works right now without the previousMenu object
      */
 
     public RankPermissionsMenu(JavaPlugin plugin, final String rankName) {
-        super((APIHook) plugin, null,rankName + " Permissions", 45);
+        super(plugin, null,rankName + " Permissions", 45);
         this.rankName = rankName;
         this.divisionsManager = ((DivisionsPlugin)plugin).getDivisionsManager();
         this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
-        this.enumHelper = ((DivisionsPlugin)plugin).getAPI().getEnumHelper();
-        this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -60,7 +55,7 @@ public class RankPermissionsMenu extends Menu implements Listener {
             Short-term fix for the IllegalArgumentException that was given whenever going from Permissions Menu to here.
          */
         try{
-            rankPermissions = division.getRankPermissions().get(enumHelper.nameToEnum(Rank.class, rankName));
+            rankPermissions = division.getRankPermissions().get(EnumHelper.nameToEnum(Rank.class, rankName));
         }catch(IllegalArgumentException e){
             return;
         }
@@ -68,7 +63,7 @@ public class RankPermissionsMenu extends Menu implements Listener {
         int index = 0;
         for(Map.Entry<Permission, Object> permission : rankPermissions.entrySet()){
 
-            String permissionName = chatFactory.firstUpperRestLower(enumHelper.enumToName(permission.getKey()));
+            String permissionName = StringUtils.firstUpperRestLower(EnumHelper.enumToName(permission.getKey()));
             String permissionsDescription = permission.getKey().getDescription();
             List<String> lore = new ArrayList<>();
 
@@ -95,7 +90,7 @@ public class RankPermissionsMenu extends Menu implements Listener {
             lore.add(" ");
             lore.add("&b" + permissionsDescription);
 
-            inv.setItem(index, createGuiItem(Material.BLACK_STAINED_GLASS_PANE, chatFactory.colorString(permissionName), chatFactory.colorLore(lore)));
+            inv.setItem(index, createGuiItem(Material.BLACK_STAINED_GLASS_PANE, StringUtils.colorString(permissionName), StringUtils.colorLore(lore)));
             index++;
         }
         setVariant((byte)15);
@@ -123,20 +118,23 @@ public class RankPermissionsMenu extends Menu implements Listener {
 
                 ItemMeta clickedItemMeta = clickedItem.getItemMeta();
                 List<String> lore = clickedItemMeta.getLore();
+
                 Division division = divisionsManager.getDivision(playerDataManager.getPlayerByUUID(player.getUniqueId()).getDivision());
-                Rank rank = (Rank) enumHelper.nameToEnum(Rank.class, rankName);
-                String displayName = chatFactory.removeChatColor(clickedItem.getItemMeta().getDisplayName());
+                Rank rank = (Rank) EnumHelper.nameToEnum(Rank.class, rankName);
+
+                String displayName = StringUtils.removeChatColor(clickedItem.getItemMeta().getDisplayName());
                 displayName = displayName.replace(" ", "_");
                 displayName = displayName.toUpperCase();
+
                 Permission permission = Permission.valueOf(displayName);
 
                 if(data == (byte)5){
                     clickedItem.setDurability((short)14);
-                    lore.set(0, chatFactory.colorString("&cFalse"));
+                    lore.set(0, StringUtils.colorString("&cFalse"));
                     setPermission(division, rank, permission, false);
                 }else if(data == (byte)14){
                     clickedItem.setDurability((byte)5);
-                    lore.set(0, chatFactory.colorString("&aTrue"));
+                    lore.set(0, StringUtils.colorString("&aTrue"));
                     setPermission(division, rank, permission, true);
                 }else{
                     player.closeInventory();

@@ -1,9 +1,8 @@
 package net.dohaw.play.divisions.menus.permissions;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.chat.ChatFactory;
-import me.c10coding.coreapi.helpers.EnumHelper;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.StringUtils;
+import net.dohaw.play.corelib.helpers.EnumHelper;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.PlayerData;
@@ -27,8 +26,6 @@ import java.util.List;
 
 public class MemberPermissionsMenu extends Menu implements Listener {
 
-    private ChatFactory chatFactory;
-    private EnumHelper enumHelper;
     private PlayerDataManager playerDataManager;
     private PlayerData playerData;
 
@@ -37,9 +34,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
      */
 
     public MemberPermissionsMenu(JavaPlugin plugin, PlayerData playerData) {
-        super((APIHook) plugin, null,playerData.getPLAYER_NAME() + " Permissions", 45);
-        this.chatFactory = ((DivisionsPlugin)plugin).getAPI().getChatFactory();
-        this.enumHelper = ((DivisionsPlugin)plugin).getAPI().getEnumHelper();
+        super(plugin, null,playerData.getPLAYER_NAME() + " Permissions", 45);
         this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
         this.playerData = playerData;
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -55,7 +50,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
 
             List<String> lore = new ArrayList<>();
             String permissionDescription = perm.getDescription();
-            String permissionName = chatFactory.firstUpperRestLower(enumHelper.enumToName(perm));
+            String permissionName = StringUtils.firstUpperRestLower(EnumHelper.enumToName(perm));
 
             if(playerPermissions.get(perm) != null){
 
@@ -87,7 +82,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
 
             lore.add(" ");
             lore.add("&b" + permissionDescription);
-            inv.setItem(index, createGuiItem(Material.BLACK_STAINED_GLASS_PANE, permissionName, chatFactory.colorLore(lore)));
+            inv.setItem(index, createGuiItem(Material.BLACK_STAINED_GLASS_PANE, permissionName, StringUtils.colorLore(lore)));
             index++;
         }
 
@@ -127,7 +122,7 @@ public class MemberPermissionsMenu extends Menu implements Listener {
             if(data == (byte)5 || data == (byte)14 || data == (byte)9 || data == (byte)2){
 
                 ItemMeta clickedItemMeta = clickedItem.getItemMeta();
-                String displayName = chatFactory.removeChatColor(clickedItem.getItemMeta().getDisplayName());
+                String displayName = StringUtils.removeChatColor(clickedItem.getItemMeta().getDisplayName());
                 displayName = displayName.replace(" ", "_");
                 displayName = displayName.toUpperCase();
                 Permission permission = Permission.valueOf(displayName);
@@ -135,11 +130,11 @@ public class MemberPermissionsMenu extends Menu implements Listener {
 
                 if(data == (byte)5){
                     clickedItem.setDurability((short)14);
-                    lore.set(0, chatFactory.colorString("&cFalse"));
+                    lore.set(0, StringUtils.colorString("&cFalse"));
                     setPlayerPermission(permission, false);
                 }else if(data == (byte)14){
                     clickedItem.setDurability((short)5);
-                    lore.set(0, chatFactory.colorString("&aTrue"));
+                    lore.set(0, StringUtils.colorString("&aTrue"));
                     setPlayerPermission(permission, true);
                 }else if(data == (byte)2){
 
@@ -149,12 +144,12 @@ public class MemberPermissionsMenu extends Menu implements Listener {
                     }
 
                     if(permission == Permission.GOLD_TAKE_AMOUNT){
-                        lore.set(0, chatFactory.colorString("&cAmount: &e" + 0 + " Gold"));
+                        lore.set(0, StringUtils.colorString("&cAmount: &e" + 0 + " Gold"));
                     }else if(permission == Permission.ITEM_TAKE_AMOUNT){
-                        lore.set(0, chatFactory.colorString("&cAmount: &e" + 0 + " Items"));
+                        lore.set(0, StringUtils.colorString("&cAmount: &e" + 0 + " Items"));
                     }else{
                         clickedItem.setDurability((short)14);
-                        lore.set(0, chatFactory.colorString("&cFalse"));
+                        lore.set(0, StringUtils.colorString("&cFalse"));
                         setPlayerPermission(permission, false);
                     }
 

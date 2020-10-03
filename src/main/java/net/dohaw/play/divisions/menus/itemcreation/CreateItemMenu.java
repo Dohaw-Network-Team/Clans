@@ -1,8 +1,8 @@
 package net.dohaw.play.divisions.menus.itemcreation;
 
 import lombok.Setter;
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.ChatSender;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.customitems.CustomItem;
@@ -23,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class CreateItemMenu extends Menu implements Listener {
     @Setter private ItemCreationSession session;
     private PlayerDataManager playerDataManager;
 
-    public CreateItemMenu(APIHook plugin, Menu previousMenu, ItemCreationSession session) {
+    public CreateItemMenu(JavaPlugin plugin, Menu previousMenu, ItemCreationSession session) {
         super(plugin, previousMenu,"Create Item", 54);
         this.session = session;
         this.playerDataManager = ((DivisionsPlugin)plugin).getPlayerDataManager();
@@ -234,28 +235,28 @@ public class CreateItemMenu extends Menu implements Listener {
 
         }else if(slotClicked == abortCreationSlot){
             clearPlayerDataSession(pd);
-            chatFactory.sendPlayerMessage("The item creation session has been aborted!", false, player, null);
+            ChatSender.sendPlayerMessage("The item creation session has been aborted!", false, player, null);
             player.closeInventory();
         }else if(slotClicked == createItemSlot){
 
             if(!session.getKey().equalsIgnoreCase("none")){
-                CustomItem cItem = session.toItem(chatFactory);
+                CustomItem cItem = session.toItem();
                 CustomItemManager cim = ((DivisionsPlugin)plugin).getCustomItemManager();
                 cim.addCustomItem(cItem);
             }else{
-                chatFactory.sendPlayerMessage("Please change the key to something other than &e\"none\"!", false, player, null);
+                ChatSender.sendPlayerMessage("Please change the key to something other than &e\"none\"!", false, player, null);
                 return;
             }
 
             clearPlayerDataSession(pd);
-            chatFactory.sendPlayerMessage("The item creation session has been created!", false, player, null);
+            ChatSender.sendPlayerMessage("The item creation session has been created!", false, player, null);
             player.closeInventory();
+
         }else if(slotClicked == (inv.getSize() - 1)){
             goToPreviousMenu(player);
         }
 
     }
-
 
     private void clearPlayerDataSession(PlayerData pd){
         pd.setItemCreationSession(new ItemCreationSession());

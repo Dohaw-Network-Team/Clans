@@ -1,7 +1,7 @@
 package net.dohaw.play.divisions.prompts;
 
-import me.c10coding.coreapi.chat.ChatFactory;
-import me.c10coding.coreapi.helpers.EnumHelper;
+import net.dohaw.play.corelib.StringUtils;
+import net.dohaw.play.corelib.helpers.EnumHelper;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.managers.DivisionsManager;
@@ -15,10 +15,7 @@ import org.bukkit.conversations.Prompt;
 
 public class NumericPermissionPrompt extends NumericPrompt {
 
-    private DivisionsPlugin plugin;
-    private ChatFactory chatFactory;
     private DivisionsManager divisionsManager;
-    private EnumHelper enumHelper;
     private Permission permission;
     private Division division;
     private Rank rank;
@@ -30,11 +27,8 @@ public class NumericPermissionPrompt extends NumericPrompt {
         For setting division permissions
      */
     public NumericPermissionPrompt(DivisionsPlugin plugin, Permission permission, Division division, Rank rank){
-        this.plugin = plugin;
-        this.chatFactory = plugin.getAPI().getChatFactory();
         this.permission = permission;
         this.divisionsManager = plugin.getDivisionsManager();
-        this.enumHelper = plugin.getAPI().getEnumHelper();
         this.division = division;
         this.rank = rank;
     }
@@ -43,22 +37,11 @@ public class NumericPermissionPrompt extends NumericPrompt {
         For setting player permissions
      */
     public NumericPermissionPrompt(DivisionsPlugin plugin, Permission permission, PlayerData playerData){
-        this.plugin = plugin;
         this.playerDataManager = plugin.getPlayerDataManager();
         this.permission = permission;
         this.playerData = playerData;
-        this.chatFactory = plugin.getAPI().getChatFactory();
-        this.enumHelper = plugin.getAPI().getEnumHelper();
     }
 
-    /**
-     * Override this method to perform some action with the user's integer
-     * response.
-     *
-     * @param context Context information about the conversation.
-     * @param input   The user's response as a {@link Number}.
-     * @return The next {@link Prompt} in the prompt graph.
-     */
     @Override
     protected Prompt acceptValidatedInput(ConversationContext context, Number input) {
 
@@ -66,11 +49,11 @@ public class NumericPermissionPrompt extends NumericPrompt {
         if(division != null){
             division.setRankPermission(rank, permission, inputInt);
             divisionsManager.updateDivision(division.getName(), division);
-            context.getForWhom().sendRawMessage("Rank: " + enumHelper.enumToName(rank) + " | Permission: " + enumHelper.enumToName(permission) + " | New Value: " + inputInt);
+            context.getForWhom().sendRawMessage("Rank: " + EnumHelper.enumToName(rank) + " | Permission: " + EnumHelper.enumToName(permission) + " | New Value: " + inputInt);
         }else{
             playerData.replacePermission(permission, inputInt);
             playerDataManager.updatePlayerData(playerData);
-            context.getForWhom().sendRawMessage("Player: " + playerData.getPLAYER_NAME() + " | Permission: " + enumHelper.enumToName(permission) + " | New Value: " + inputInt);
+            context.getForWhom().sendRawMessage("Player: " + playerData.getPLAYER_NAME() + " | Permission: " + EnumHelper.enumToName(permission) + " | New Value: " + inputInt);
         }
 
         return END_OF_CONVERSATION;
@@ -85,6 +68,6 @@ public class NumericPermissionPrompt extends NumericPrompt {
      */
     @Override
     public String getPromptText(ConversationContext context) {
-        return chatFactory.colorString("Please provide a new numerical value for this permission...");
+        return StringUtils.colorString("Please provide a new numerical value for this permission...");
     }
 }

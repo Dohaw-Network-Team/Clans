@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.files;
 
-import me.c10coding.coreapi.helpers.EnumHelper;
+import net.dohaw.play.corelib.helpers.EnumHelper;
 import net.dohaw.play.divisions.PlayerDataHandler;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.division.DivisionStatus;
@@ -21,18 +21,14 @@ public class DivisionsConfigHandler{
 
     private DivisionsListConfig dlc;
     private DivisionsPlugin plugin;
-    private EnumHelper enumHelper;
     private PlayerDataHandler playerDataHandler;
     private DefaultPermConfig defaultPermConfig;
-    private Economy e;
     private PlayerDataManager playerDataManager;
 
     public DivisionsConfigHandler(DivisionsPlugin plugin) {
         this.dlc = new DivisionsListConfig(plugin);
         this.plugin = plugin;
-        this.enumHelper = plugin.getAPI().getEnumHelper();
         this.defaultPermConfig = plugin.getDefaultPermConfig();
-        this.e = DivisionsPlugin.getEconomy();
         this.playerDataHandler = new PlayerDataHandler(plugin);
         this.playerDataManager = plugin.getPlayerDataManager();
     }
@@ -98,10 +94,12 @@ public class DivisionsConfigHandler{
          */
         EnumMap<Rank, EnumMap<Permission, Object>> rankPermissions = new EnumMap<>(Rank.class);
         for(Rank rank : Rank.values()){
-            String rankString = enumHelper.enumToName(rank);
+
+            String rankString = EnumHelper.enumToName(rank);
             EnumMap<Permission, Object> permissionMap = new EnumMap<>(Permission.class);
             for(Permission permission : Permission.values()){
-                String permString = enumHelper.enumToName(permission);
+
+                String permString = EnumHelper.enumToName(permission);
                 if(divisionConfig.get("Rank Permissions." + rankString + "." + permString) != null){
                     permissionMap.put(permission, divisionConfig.get("Rank Permissions." + rankString + "." + permString));
                 }else{
@@ -112,8 +110,10 @@ public class DivisionsConfigHandler{
                     Object defaultPermValue = rankDefaultPerms.get(permission);
                     permissionMap.put(permission, defaultPermValue);
                 }
+
             }
             rankPermissions.put(rank, permissionMap);
+
         }
         division.setRankPermissions(rankPermissions);
         return division;
@@ -144,10 +144,10 @@ public class DivisionsConfigHandler{
 
         EnumMap<Rank, EnumMap<Permission, Object>> rankPermissions = div.getRankPermissions();
         for(Map.Entry<Rank, EnumMap<Permission, Object>> rank : rankPermissions.entrySet()){
-            String rankString = enumHelper.enumToName(rank.getKey());
+            String rankString = EnumHelper.enumToName(rank.getKey());
             EnumMap<Permission, Object> permissionMap = rank.getValue();
             for(Map.Entry<Permission, Object> perm : permissionMap.entrySet()){
-                String permString = enumHelper.enumToName(perm.getKey());
+                String permString = EnumHelper.enumToName(perm.getKey());
                 divConfig.set("Rank Permissions." + rankString + "." + permString, perm.getValue());
             }
         }
@@ -197,10 +197,10 @@ public class DivisionsConfigHandler{
         EnumMap<Rank, EnumMap<Permission, Object>> defaultPerms = plugin.getDefaultPermConfig().getDefaultPerms();
 
         for(Map.Entry<Rank, EnumMap<Permission, Object>> rank : defaultPerms.entrySet()){
-            String rankString = enumHelper.enumToName(rank.getKey());
+            String rankString = EnumHelper.enumToName(rank.getKey());
             EnumMap<Permission, Object> permissionMap = rank.getValue();
             for(Map.Entry<Permission, Object> perm : permissionMap.entrySet()){
-                String permString = enumHelper.enumToName(perm.getKey());
+                String permString = EnumHelper.enumToName(perm.getKey());
                 config.set("Rank Permissions." + rankString + "." + permString, perm.getValue());
             }
         }

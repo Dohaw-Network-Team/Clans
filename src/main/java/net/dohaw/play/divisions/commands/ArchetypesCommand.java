@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.commands;
 
-import me.c10coding.coreapi.chat.ChatFactory;
+import net.dohaw.play.corelib.ChatSender;
+import net.dohaw.play.corelib.helpers.MathHelper;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
@@ -29,12 +30,10 @@ public class ArchetypesCommand implements CommandExecutor {
 
     private DivisionsPlugin plugin;
     private PlayerDataManager playerDataManager;
-    private ChatFactory chatFactory;
     private CustomItemManager customItemManager;
 
     public ArchetypesCommand(DivisionsPlugin plugin){
         this.plugin = plugin;
-        this.chatFactory = plugin.getAPI().getChatFactory();
         this.playerDataManager = plugin.getPlayerDataManager();
         this.customItemManager = plugin.getCustomItemManager();
     }
@@ -48,7 +47,7 @@ public class ArchetypesCommand implements CommandExecutor {
 
                 String playerName = args[2];
 
-                if(plugin.getAPI().getMathHelper().isInt(args[3])){
+                if(MathHelper.isInt(args[3])){
                     int level = Integer.parseInt(args[3]);
                     if(EntityUtils.isValidOnlinePlayer(playerName)){
 
@@ -60,14 +59,14 @@ public class ArchetypesCommand implements CommandExecutor {
                         Bukkit.getPluginManager().callEvent(new LevelUpEvent(pd));
                         playerDataManager.updatePlayerData(pd);
 
-                        chatFactory.sendPlayerMessage("You have set this player's level to " + level, false, sender, null);
-                        chatFactory.sendPlayerMessage("Your level has been set to " + level, false, player, null);
+                        ChatSender.sendPlayerMessage("You have set this player's level to " + level, false, sender, null);
+                        ChatSender.sendPlayerMessage("Your level has been set to " + level, false, player, null);
 
                     }else{
-                        chatFactory.sendPlayerMessage("This is not a valid player!", false, sender, null);
+                        ChatSender.sendPlayerMessage("This is not a valid player!", false, sender, null);
                     }
                 }else{
-                    chatFactory.sendPlayerMessage("This is not a valid integer!", false, sender, null);
+                    ChatSender.sendPlayerMessage("This is not a valid integer!", false, sender, null);
                 }
 
             }else{
@@ -94,15 +93,15 @@ public class ArchetypesCommand implements CommandExecutor {
 
                             pd.startRegener(plugin, Calculator.calculateRegenInterval(pd));
                             playerDataManager.updatePlayerData(pd);
-                            chatFactory.sendPlayerMessage("You have given this player the archetype " + archetype.getName() + "!", true, sender, plugin.getPluginPrefix());
+                            ChatSender.sendPlayerMessage("You have given this player the archetype " + archetype.getName() + "!", true, sender, plugin.getPluginPrefix());
 
                         }else{
-                            chatFactory.sendPlayerMessage("This player already has an archetype!", true, sender, plugin.getPluginPrefix());
+                            ChatSender.sendPlayerMessage("This player already has an archetype!", true, sender, plugin.getPluginPrefix());
                         }
 
                     }
                 }else{
-                    chatFactory.sendPlayerMessage("This player either isn't online or isn't valid!", true, sender, plugin.getPluginPrefix());
+                    ChatSender.sendPlayerMessage("This player either isn't online or isn't valid!", true, sender, plugin.getPluginPrefix());
                 }
 
             }
@@ -118,7 +117,7 @@ public class ArchetypesCommand implements CommandExecutor {
                     resetArchetype(pd);
 
                 }else{
-                    chatFactory.sendPlayerMessage("This player either isn't online or isn't valid!", true, sender, plugin.getPluginPrefix());
+                    ChatSender.sendPlayerMessage("This player either isn't online or isn't valid!", true, sender, plugin.getPluginPrefix());
                 }
             }else{
                 if(sender instanceof Player){
@@ -126,7 +125,7 @@ public class ArchetypesCommand implements CommandExecutor {
                     PlayerData pd = playerDataManager.getPlayerByUUID(pSender.getUniqueId());
                     resetArchetype(pd);
                 }else{
-                    chatFactory.sendPlayerMessage("Only players can do this to themselves!", true, sender, plugin.getPluginPrefix());
+                    ChatSender.sendPlayerMessage("Only players can do this to themselves!", true, sender, plugin.getPluginPrefix());
                 }
             }
         }
@@ -143,9 +142,9 @@ public class ArchetypesCommand implements CommandExecutor {
             pd.setStatLevels(Stat.getDefaultStats());
             pd.stopRegener();
             playerDataManager.updatePlayerData(pd);
-            chatFactory.sendPlayerMessage("You have reset your archetype as well as your archetype stats!", true, pd.getPlayer().getPlayer(), plugin.getPluginPrefix());
+            ChatSender.sendPlayerMessage("You have reset your archetype as well as your archetype stats!", true, pd.getPlayer().getPlayer(), plugin.getPluginPrefix());
         }else{
-            chatFactory.sendPlayerMessage("You don't have an archetype right now!", true, pd.getPlayer().getPlayer(), plugin.getPluginPrefix());
+            ChatSender.sendPlayerMessage("You don't have an archetype right now!", true, pd.getPlayer().getPlayer(), plugin.getPluginPrefix());
         }
 
         UUID playerUUID = pd.getPLAYER_UUID();

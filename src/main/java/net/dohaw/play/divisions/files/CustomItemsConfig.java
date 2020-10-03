@@ -1,7 +1,7 @@
 package net.dohaw.play.divisions.files;
 
-import me.c10coding.coreapi.chat.ChatFactory;
-import me.c10coding.coreapi.files.Config;
+import net.dohaw.play.corelib.Config;
+import net.dohaw.play.corelib.StringUtils;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.customitems.CustomItem;
@@ -24,11 +24,8 @@ import java.util.Map;
 
 public class CustomItemsConfig extends Config {
 
-    private ChatFactory chatFactory;
-
     public CustomItemsConfig(JavaPlugin plugin) {
         super(plugin, "customItems.yml");
-        this.chatFactory = ((DivisionsPlugin) plugin).getAPI().getChatFactory();
     }
 
     public Map<String, CustomItem> loadCustomItems() {
@@ -46,7 +43,7 @@ public class CustomItemsConfig extends Config {
 
                     String startPath = "Custom Items." + itemTypeStr + "." + key;
                     Material material = Material.valueOf(config.getString(startPath + ".Material"));
-                    String displayName = chatFactory.colorString(config.getString(startPath + ".Display Name"));
+                    String displayName = StringUtils.colorString(config.getString(startPath + ".Display Name"));
 
                     CustomItem cItem;
                     switch (itemType) {
@@ -63,7 +60,7 @@ public class CustomItemsConfig extends Config {
                             throw new IllegalStateException("Unexpected value: " + itemType);
                     }
 
-                    List<String> lore = chatFactory.colorLore(config.getStringList(startPath + ".Lore"));
+                    List<String> lore = StringUtils.colorLore(config.getStringList(startPath + ".Lore"));
                     cItem.setLore(lore);
 
                     List<String> enchLines = config.getStringList(startPath + ".Enchantments");

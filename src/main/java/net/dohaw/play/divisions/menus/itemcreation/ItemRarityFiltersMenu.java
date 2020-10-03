@@ -1,8 +1,7 @@
 package net.dohaw.play.divisions.menus.itemcreation;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.helpers.EnumHelper;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.helpers.EnumHelper;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.customitems.Rarity;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,16 +10,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 
 public class ItemRarityFiltersMenu extends Menu implements Listener {
 
-    private EnumHelper enumHelper;
-
-    public ItemRarityFiltersMenu(APIHook plugin, Menu previousMenu) {
+    public ItemRarityFiltersMenu(JavaPlugin plugin, Menu previousMenu) {
         super(plugin, previousMenu, "Rarity Filters", 54);
-        this.enumHelper = plugin.getAPI().getEnumHelper();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -71,7 +68,7 @@ public class ItemRarityFiltersMenu extends Menu implements Listener {
         }
 
         if(rarity != null){
-            ItemDisplayMenu newMenu = new ItemDisplayMenu(plugin, this, enumHelper.enumToName(rarity), ItemFilter.RARITY, rarity, 0);
+            ItemDisplayMenu newMenu = new ItemDisplayMenu(plugin, this, EnumHelper.enumToName(rarity), ItemFilter.RARITY, rarity, 0);
             newMenu.initializeItems(player);
             player.closeInventory();
             newMenu.openInventory(player);

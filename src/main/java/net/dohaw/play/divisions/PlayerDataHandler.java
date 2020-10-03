@@ -1,15 +1,12 @@
 package net.dohaw.play.divisions;
 
-import me.c10coding.coreapi.helpers.EnumHelper;
+import net.dohaw.play.corelib.helpers.EnumHelper;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
-import net.dohaw.play.divisions.archetypes.spells.Spell;
-import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
-import net.dohaw.play.divisions.archetypes.types.Archer;
 import net.dohaw.play.divisions.files.DefaultPermConfig;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
@@ -26,7 +23,6 @@ import java.util.*;
 public class PlayerDataHandler {
 
     private DivisionsPlugin plugin;
-    private EnumHelper enumHelper;
     private DefaultPermConfig defaultPermConfig;
 
     /*
@@ -34,14 +30,13 @@ public class PlayerDataHandler {
      */
     public PlayerDataHandler(DivisionsPlugin plugin){
         this.plugin = plugin;
-        this.enumHelper = plugin.getAPI().getEnumHelper();
         this.defaultPermConfig = plugin.getDefaultPermConfig();
     }
 
     public PlayerData loadPlayerPermissions(FileConfiguration playerConfig, PlayerData data){
 
         for(Permission perm : Permission.values()){
-            String key = enumHelper.enumToName(perm);
+            String key = EnumHelper.enumToName(perm);
             if(playerConfig.get("Permissions." + key) != null){
                 Object value = playerConfig.get("Permissions." + key);
                 data.putPermission(perm, value);
@@ -60,7 +55,7 @@ public class PlayerDataHandler {
 
         EnumMap<Stat, Double> stats = new EnumMap<>(Stat.class);
         for(Stat stat : Stat.values()){
-            String statKey = enumHelper.enumToName(stat);
+            String statKey = EnumHelper.enumToName(stat);
             double statLevel;
             if(playerConfig.get("Stats.Attributes." + statKey) != null){
                 statLevel = playerConfig.getDouble("Stats.Attributes." + statKey);
@@ -165,7 +160,7 @@ public class PlayerDataHandler {
             String divisionName = playerData.getDivision();
             config.set("Division", divisionName);
             if(playerData.getRank() != null){
-                String divisionRank = enumHelper.enumToName(playerData.getRank());
+                String divisionRank = EnumHelper.enumToName(playerData.getRank());
                 config.set("DivisionRank", divisionRank);
             }
         }else{
@@ -180,7 +175,7 @@ public class PlayerDataHandler {
 
         EnumMap<Permission, Object> playerPermission = playerData.getPermissions();
         for(Map.Entry<Permission, Object> permEntry : playerPermission.entrySet()){
-            String key = enumHelper.enumToName(permEntry.getKey());
+            String key = EnumHelper.enumToName(permEntry.getKey());
             Object value = permEntry.getValue();
             config.set("Permissions." + key, value);
         }
@@ -190,7 +185,7 @@ public class PlayerDataHandler {
          */
         EnumMap<Stat, Double> stats = playerData.getStatLevels();
         for(Map.Entry<Stat, Double> statEntry : stats.entrySet()){
-            String key = enumHelper.enumToName(statEntry.getKey());
+            String key = EnumHelper.enumToName(statEntry.getKey());
             double value = statEntry.getValue();
             config.set("Stats.Attributes." + key, value);
         }
@@ -237,7 +232,7 @@ public class PlayerDataHandler {
         if(playerDataConfig.getString("DivisionRank").equalsIgnoreCase("none")){
             data = new PlayerData(Bukkit.getOfflinePlayer(uuid), getPlayerDataConfig(uuid), null);
         }else{
-            data = new PlayerData(Bukkit.getOfflinePlayer(uuid), getPlayerDataConfig(uuid), (Rank) enumHelper.nameToEnum(Rank.class, playerDataConfig.getString("DivisionRank")));
+            data = new PlayerData(Bukkit.getOfflinePlayer(uuid), getPlayerDataConfig(uuid), (Rank) EnumHelper.nameToEnum(Rank.class, playerDataConfig.getString("DivisionRank")));
         }
 
         /*

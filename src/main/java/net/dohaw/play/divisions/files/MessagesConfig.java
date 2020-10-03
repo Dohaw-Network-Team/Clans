@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.files;
 
-import me.c10coding.coreapi.files.Config;
+import net.dohaw.play.corelib.Config;
 import net.dohaw.play.divisions.Message;
 import net.dohaw.play.divisions.Placeholder;
 import org.bukkit.plugin.java.JavaPlugin;

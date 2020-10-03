@@ -3,7 +3,6 @@ version: ${project.version}
 main: net.dohaw.play.divisions.DivisionsPlugin
 api-version: 1.13
 depend:
-  - CoreAPI
   - Vault
 commands:
 

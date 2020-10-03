@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.events;
 
-import me.c10coding.coreapi.chat.ChatFactory;
+import net.dohaw.play.corelib.ChatSender;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
@@ -50,13 +50,11 @@ public class GeneralListener implements Listener {
 
     private DivisionsPlugin plugin;
     private PlayerDataManager playerDataManager;
-    private ChatFactory chatFactory;
     private DivisionsManager divisionsManager;
 
     public GeneralListener(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.playerDataManager = plugin.getPlayerDataManager();
-        this.chatFactory = plugin.getAPI().getChatFactory();
         this.divisionsManager = plugin.getDivisionsManager();
     }
 
@@ -75,7 +73,7 @@ public class GeneralListener implements Listener {
          */
         if(pd.getDivision() != null){
             Division division = divisionsManager.getDivision(pd.getDivision());
-            DivisionChat.sendMOTD(chatFactory, division, player);
+            DivisionChat.sendMOTD(division, player);
         }
 
         if(pd.getArchetype() != null){
@@ -101,7 +99,7 @@ public class GeneralListener implements Listener {
         if(EntityUtils.isValidOnlinePlayer(uuid)){
             Player player = Bukkit.getPlayer(uuid);
             Division division = e.getDivision();
-            DivisionChat.sendMOTD(chatFactory, division, player);
+            DivisionChat.sendMOTD(division, player);
         }
 
     }
@@ -139,7 +137,7 @@ public class GeneralListener implements Listener {
                         if(pChannel == channel){
                             String channelPrefix = channel.getPrefix();
                             Player recipient = op.getPlayer();
-                            chatFactory.sendPlayerMessage(msg, true, recipient, channelPrefix);
+                            ChatSender.sendPlayerMessage(msg, true, recipient, channelPrefix);
                         }
                     }
 

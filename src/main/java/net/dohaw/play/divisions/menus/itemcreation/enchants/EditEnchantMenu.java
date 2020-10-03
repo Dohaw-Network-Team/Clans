@@ -1,7 +1,7 @@
 package net.dohaw.play.divisions.menus.itemcreation.enchants;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.menus.Menu;
+
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class EditEnchantMenu extends Menu implements Listener {
     private Enchantment enchantmentEditing;
     private ItemCreationSession session;
 
-    public EditEnchantMenu(APIHook plugin, Menu previousMenu, ItemCreationSession session, Enchantment enchantmentEditing) {
+    public EditEnchantMenu(JavaPlugin plugin, Menu previousMenu, ItemCreationSession session, Enchantment enchantmentEditing) {
         super(plugin, previousMenu, "Edit Enchant", 27);
         Bukkit.getPluginManager().registerEvents(this, plugin);
         this.session = session;

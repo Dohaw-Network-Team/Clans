@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.commands;
 
-import me.c10coding.coreapi.chat.ChatFactory;
+import net.dohaw.play.corelib.ChatSender;
+import net.dohaw.play.corelib.StringUtils;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.Message;
 import net.dohaw.play.divisions.Placeholder;
@@ -32,14 +33,12 @@ public class DivisionsCommand implements CommandExecutor {
     private DivisionsManager divisionsManager;
     private PlayerDataManager playerDataManager;
     private MessagesConfig messagesConfig;
-    private ChatFactory chatFactory;
     private String prefix;
 
     public DivisionsCommand(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.divisionsManager = plugin.getDivisionsManager();
         this.playerDataManager = plugin.getPlayerDataManager();
-        this.chatFactory = plugin.getAPI().getChatFactory();
         this.messagesConfig = plugin.getMessagesConfig();
         this.prefix = plugin.getPluginPrefix();
     }
@@ -97,11 +96,11 @@ public class DivisionsCommand implements CommandExecutor {
                     if(playerDataManager.getPlayerByUUID(player.getUniqueId()).getDivision() != null){
                         if(division.getLeader().getPLAYER_UUID().equals(player.getUniqueId())) {
 
-                            TextComponent tcMsg = new TextComponent(chatFactory.colorString(prefix) + " Are you sure you wish to disband your division? By doing so, you will keep your Garrison, but lose all Division stats, power, and more! Press ");
-                            TextComponent yes = new TextComponent(chatFactory.colorString("&a&lYes"));
-                            TextComponent afterYes = new TextComponent(chatFactory.colorString("&f to continue with this actions or "));
-                            TextComponent no = new TextComponent(chatFactory.colorString("&4&lNo"));
-                            TextComponent afterNo = new TextComponent(chatFactory.colorString("&f to not disband your division"));
+                            TextComponent tcMsg = new TextComponent(StringUtils.colorString(prefix) + " Are you sure you wish to disband your division? By doing so, you will keep your Garrison, but lose all Division stats, power, and more! Press ");
+                            TextComponent yes = new TextComponent(StringUtils.colorString("&a&lYes"));
+                            TextComponent afterYes = new TextComponent(StringUtils.colorString("&f to continue with this actions or "));
+                            TextComponent no = new TextComponent(StringUtils.colorString("&4&lNo"));
+                            TextComponent afterNo = new TextComponent(StringUtils.colorString("&f to not disband your division"));
 
                             yes.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/divisionsconfirm disband " + divisionName));
                             yes.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Disband Division").create()));
@@ -144,9 +143,11 @@ public class DivisionsCommand implements CommandExecutor {
                     String playerName = args[1];
                     if(playerDataManager.getByPlayerObj(player).getDivision() != null){
                         if(Bukkit.getPlayer(playerName) != null){
+
                             Player invitedPlayer = Bukkit.getPlayer(playerName);
                             if(playerDataManager.can(player.getUniqueId(), Permission.CAN_INVITE_PLAYERS)){
                                 if(!playerName.equalsIgnoreCase(player.getName())){
+
                                     PlayerData invitedPlayerData = playerDataManager.getPlayerByUUID(invitedPlayer.getUniqueId());
                                     if(invitedPlayerData.getDivision() == null){
 
@@ -156,7 +157,7 @@ public class DivisionsCommand implements CommandExecutor {
                                             msg = messagesConfig.getMessage(Message.INVITER);
                                             msg = messagesConfig.replacePlaceholder(msg, Placeholder.PLAYER_NAME, playerName);
                                         }else{
-                                            chatFactory.sendPlayerMessage("This player has already been invited recently. Try inviting them again later!", true, player, prefix);
+                                            ChatSender.sendPlayerMessage("This player has already been invited recently. Try inviting them again later!", true, player, prefix);
                                         }
 
                                     }else{
@@ -178,7 +179,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                     String playerName = args[1];
                     if(player.getName().equalsIgnoreCase(playerName)){
-                        chatFactory.sendPlayerMessage("You can't kick yourself!", true, player, prefix);
+                        ChatSender.sendPlayerMessage("You can't kick yourself!", true, player, prefix);
                         return false;
                     }
 
@@ -196,7 +197,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                                     if(kickedPlayerRank == null){
                                         msg = messagesConfig.getMessage(Message.ACTION_LEADER_DENY);
-                                        chatFactory.sendPlayerMessage(msg, true, player, prefix);
+                                        ChatSender.sendPlayerMessage(msg, true, player, prefix);
                                         return false;
                                     }
 
@@ -218,9 +219,9 @@ public class DivisionsCommand implements CommandExecutor {
 
                                                 String kickedPlayerMsg = messagesConfig.getMessage(Message.KICKED_PLAYER_NOTIFIER);
                                                 kickedPlayerMsg = MessagesConfig.replacePlaceholder(kickedPlayerMsg, Placeholder.PLAYER_NAME, player.getName());
-                                                chatFactory.sendPlayerMessage(kickedPlayerMsg, true, kickedPlayer, prefix);
 
-                                                chatFactory.sendPlayerMessage("You have kicked &e" + kickedPlayer.getName() + "&f from the division!", true, player, prefix);
+                                                ChatSender.sendPlayerMessage(kickedPlayerMsg, true, kickedPlayer, prefix);
+                                                ChatSender.sendPlayerMessage("You have kicked &e" + kickedPlayer.getName() + "&f from the division!", true, player, prefix);
 
                                                 return false;
                                             }
@@ -300,20 +301,20 @@ public class DivisionsCommand implements CommandExecutor {
                         if(args[0].equalsIgnoreCase("promote")) {
                             if (!playerDataManager.can(player.getUniqueId(), Permission.CAN_PROMOTE_MEMBERS)) {
                                 msg = messagesConfig.getMessage(Message.NO_PERM_PROMOTING);
-                                chatFactory.sendPlayerMessage(msg, true, player, prefix);
+                                ChatSender.sendPlayerMessage(msg, true, player, prefix);
                                 return false;
                             }
                         }else{
                             if(!playerDataManager.can(player.getUniqueId(), Permission.CAN_DEMOTE_MEMBERS)){
                                 msg = messagesConfig.getMessage(Message.NO_PERM_DEMOTING);
-                                chatFactory.sendPlayerMessage(msg, true, player, prefix);
+                                ChatSender.sendPlayerMessage(msg, true, player, prefix);
                                 return false;
                             }
                         }
 
                         if(player.getName().equalsIgnoreCase(playerName)){
                             msg = messagesConfig.getMessage(Message.ACTION_YOURSELF_DENY);
-                            chatFactory.sendPlayerMessage(msg, true, player, prefix);
+                            ChatSender.sendPlayerMessage(msg, true, player, prefix);
                             return false;
                         }
 
@@ -340,7 +341,7 @@ public class DivisionsCommand implements CommandExecutor {
                                                 playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.RANK, newRank.name());
                                                 playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.PLAYER_NAME, playerName);
                                             }else{
-                                                chatFactory.sendPlayerMessage("This player is already the highest rank they can be!", true, player, prefix);
+                                                ChatSender.sendPlayerMessage("This player is already the highest rank they can be!", true, player, prefix);
                                                 return false;
                                             }
 
@@ -355,7 +356,7 @@ public class DivisionsCommand implements CommandExecutor {
                                                 playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.PLAYER_NAME, playerName);
                                                 playerMsg = MessagesConfig.replacePlaceholder(playerMsg, Placeholder.RANK, newRank.name());
                                             }else{
-                                                chatFactory.sendPlayerMessage("This player is already the lowest rank they can be!", true, player, prefix);
+                                                ChatSender.sendPlayerMessage("This player is already the lowest rank they can be!", true, player, prefix);
                                                 return false;
                                             }
 
@@ -363,8 +364,8 @@ public class DivisionsCommand implements CommandExecutor {
                                         playerAffectedData.setRank(newRank);
                                         playerDataManager.updatePlayerData(playerAffectedData);
 
-                                        chatFactory.sendPlayerMessage(playerAffectedMsg, true, playerAffected, prefix);
-                                        chatFactory.sendPlayerMessage(playerMsg, true, player, prefix);
+                                        ChatSender.sendPlayerMessage(playerAffectedMsg, true, playerAffected, prefix);
+                                        ChatSender.sendPlayerMessage(playerMsg, true, player, prefix);
                                         return false;
                                     }else{
                                         /*
@@ -424,7 +425,7 @@ public class DivisionsCommand implements CommandExecutor {
                         String announcementMsg = String.join(" ", msgPieces);
 
                         if(playerDataManager.can(player.getUniqueId(), Permission.CAN_SEND_DIVISION_ANNOUNCEMENTS)){
-                            DivisionChat.sendAnnouncement(chatFactory, division, announcementMsg);
+                            DivisionChat.sendAnnouncement(division, announcementMsg);
                         }else{
                             msg = messagesConfig.getMessage(Message.NO_PERM_ANNOUNCE);
                         }
@@ -447,7 +448,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                                 if(newChannel != DivisionChannel.NONE){
                                     msg = messagesConfig.getMessage(Message.SWITCH_CHANNEL);
-                                    msg = MessagesConfig.replacePlaceholder(msg, Placeholder.DIVISION_CHANNEL, chatFactory.firstUpperRestLower(newChannel.toString()));
+                                    msg = MessagesConfig.replacePlaceholder(msg, Placeholder.DIVISION_CHANNEL, StringUtils.firstUpperRestLower(newChannel.toString()));
                                 }else{
                                     msg = messagesConfig.getMessage(Message.NO_CHANNEL);
                                 }
@@ -466,7 +467,7 @@ public class DivisionsCommand implements CommandExecutor {
                 }
 
                 if(msg != null){
-                    chatFactory.sendPlayerMessage(msg, true, player, prefix);
+                    ChatSender.sendPlayerMessage(msg, true, player, prefix);
                 }
 
             }
@@ -475,27 +476,27 @@ public class DivisionsCommand implements CommandExecutor {
     }
 
     private void displayDivisionInfo(Division division, Player playerToSendTo){
-        chatFactory.sendPlayerMessage("", false, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&aDivision info:", true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eName: &c" + division.getName(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&ePower: &c" + division.getPower(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eGold: &c" + division.getGoldAmount(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eLeader: &c" + division.getLeader().getPlayer().getName(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eKills: &c" + division.getKills(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eCasualties: &c" + division.getCasualties(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eNumber members: &c" + division.getPlayers().size(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eHearts destroyed: &c" + division.getHeartsDestroyed(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("&eShrines conquered: &c" + division.getShrinesConquered(), true, playerToSendTo, prefix);
-        chatFactory.sendPlayerMessage("", false, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("", false, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&aDivision info:", true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&eName: &c" + division.getName(), true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&ePower: &c" + division.getPower(), true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&eGold: &c" + division.getGoldAmount(), true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&eLeader: &c" + division.getLeader().getPlayer().getName(), true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&eKills: &c" + division.getKills(), true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&eCasualties: &c" + division.getCasualties(), true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&eNumber members: &c" + division.getPlayers().size(), true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&eHearts destroyed: &c" + division.getHeartsDestroyed(), true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("&eShrines conquered: &c" + division.getShrinesConquered(), true, playerToSendTo, prefix);
+        ChatSender.sendPlayerMessage("", false, playerToSendTo, prefix);
     }
 
     private void invitePlayer(Player invited, Player inviter){
 
         String divisionName = playerDataManager.getByPlayerObj(inviter).getDivision();
-        TextComponent msg = new TextComponent(chatFactory.colorString("You have been invited to the division &e" + divisionName + "&f by " + "&e" + inviter.getName() + ".&f If you wish to accept this invite, press "));
-        TextComponent join = new TextComponent(chatFactory.colorString("&a&lJoin"));
-        TextComponent msg2 = new TextComponent(chatFactory.colorString(".&f If you wish to decline this invite, press "));
-        TextComponent decline = new TextComponent(chatFactory.colorString("&c&lDecline"));
+        TextComponent msg = new TextComponent(StringUtils.colorString("You have been invited to the division &e" + divisionName + "&f by " + "&e" + inviter.getName() + ".&f If you wish to accept this invite, press "));
+        TextComponent join = new TextComponent(StringUtils.colorString("&a&lJoin"));
+        TextComponent msg2 = new TextComponent(StringUtils.colorString(".&f If you wish to decline this invite, press "));
+        TextComponent decline = new TextComponent(StringUtils.colorString("&c&lDecline"));
 
         join.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Join Division").create()));
         decline.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Decline invite").create()));

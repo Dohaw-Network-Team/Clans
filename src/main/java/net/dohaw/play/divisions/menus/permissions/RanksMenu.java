@@ -1,9 +1,8 @@
 package net.dohaw.play.divisions.menus.permissions;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.chat.ChatFactory;
-import me.c10coding.coreapi.helpers.EnumHelper;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.StringUtils;
+import net.dohaw.play.corelib.helpers.EnumHelper;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,18 +22,16 @@ public class RanksMenu extends Menu implements Listener {
      */
 
     public RanksMenu(JavaPlugin plugin) {
-        super((APIHook) plugin, null, "Rank Permissions", 9);
+        super(plugin, null, "Rank Permissions", 9);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void initializeItems(Player p) {
 
-        EnumHelper enumHelper = plugin.getAPI().getEnumHelper();
-        ChatFactory chatFactory = plugin.getAPI().getChatFactory();
         int index = 0;
         for(Rank rank : Rank.values()){
-            String displayName = chatFactory.colorString("&e" + enumHelper.enumToName(rank));
+            String displayName = StringUtils.colorString("&e" + EnumHelper.enumToName(rank));
             inv.setItem(index, createGuiItem(Material.BOOKSHELF, displayName, new ArrayList<>()));
             index++;
         }
@@ -63,8 +60,7 @@ public class RanksMenu extends Menu implements Listener {
             player.closeInventory();
             permissionsMenu.openInventory(player);
         }else if(clickedItem.getType().equals(Material.BOOKSHELF)){
-            ChatFactory chatFactory = plugin.getAPI().getChatFactory();
-            RankPermissionsMenu rankPermissionsMenu = new RankPermissionsMenu(plugin, chatFactory.removeChatColor(clickedItem.getItemMeta().getDisplayName()));
+            RankPermissionsMenu rankPermissionsMenu = new RankPermissionsMenu(plugin, StringUtils.removeChatColor(clickedItem.getItemMeta().getDisplayName()));
             rankPermissionsMenu.initializeItems(player);
             player.closeInventory();
             rankPermissionsMenu.openInventory(player);

@@ -1,8 +1,7 @@
 package net.dohaw.play.divisions.menus.itemcreation;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.helpers.EnumHelper;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.helpers.EnumHelper;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.customitems.CustomItem;
@@ -16,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,6 @@ public class ItemDisplayMenu extends Menu implements Listener {
     private final ItemFilter FILTER_CATEGORY;
     private final Enum FILTER;
     private CustomItemManager customItemManager;
-    private EnumHelper enumHelper;
 
     private List<CustomItem> allCustomItems = new ArrayList<>();
     private List<CustomItem> thisPageCustomItems = new ArrayList<>();
@@ -38,12 +37,11 @@ public class ItemDisplayMenu extends Menu implements Listener {
 
     private int pageNum;
 
-    public ItemDisplayMenu(APIHook plugin, Menu previousMenu, String menuTitle, final ItemFilter FILTER_CATEGORY, final Enum FILTER, int pageNum) {
+    public ItemDisplayMenu(JavaPlugin plugin, Menu previousMenu, String menuTitle, final ItemFilter FILTER_CATEGORY, final Enum FILTER, int pageNum) {
         super(plugin, previousMenu, menuTitle, 54);
         this.FILTER_CATEGORY = FILTER_CATEGORY;
         this.FILTER = FILTER;
         this.customItemManager = ((DivisionsPlugin)plugin).getCustomItemManager();
-        this.enumHelper = plugin.getAPI().getEnumHelper();
         this.pageNum = pageNum;
         this.MENU_TITLE = menuTitle;
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -86,7 +84,7 @@ public class ItemDisplayMenu extends Menu implements Listener {
 
                 Map<Stat, Double> stats = ci.getAddedStats();
                 for(Map.Entry<Stat, Double> entry : stats.entrySet()){
-                    String statStr = enumHelper.enumToConfigKey(entry.getKey());
+                    String statStr = EnumHelper.enumToConfigKey(entry.getKey());
                     double statValue = entry.getValue();
                     lore.add("&c" + statStr + ": &e" + statValue);
                 }

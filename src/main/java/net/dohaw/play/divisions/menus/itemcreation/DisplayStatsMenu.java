@@ -1,12 +1,10 @@
 package net.dohaw.play.divisions.menus.itemcreation;
 
-import me.c10coding.coreapi.APIHook;
-import me.c10coding.coreapi.helpers.EnumHelper;
-import me.c10coding.coreapi.menus.Menu;
+import net.dohaw.play.corelib.helpers.EnumHelper;
+import net.dohaw.play.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
-import net.dohaw.play.divisions.prompts.itemcreation.ItemCreationSessionPrompt;
 import net.dohaw.play.divisions.prompts.itemcreation.StatLevelPrompt;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +24,11 @@ import java.util.Map;
 public class DisplayStatsMenu extends Menu implements Listener {
 
     private ItemCreationSession session;
-    private EnumHelper enumHelper;
 
-    public DisplayStatsMenu(APIHook plugin, Menu previousMenu, ItemCreationSession session) {
+    public DisplayStatsMenu(JavaPlugin plugin, Menu previousMenu, ItemCreationSession session) {
         super(plugin, previousMenu, "Edit Stats", 54);
         Bukkit.getPluginManager().registerEvents(this, plugin);
         this.session = session;
-        this.enumHelper = plugin.getAPI().getEnumHelper();
     }
 
     @Override
@@ -46,7 +43,7 @@ public class DisplayStatsMenu extends Menu implements Listener {
 
             int menuSlot = stat.getMenuSlot();
             Material menuMat = stat.getMenuMat();
-            String displayName = enumHelper.enumToConfigKey(stat);
+            String displayName = EnumHelper.enumToConfigKey(stat);
             List<String> lore = new ArrayList<String>(){{
                 add("&cValue: &e" + level);
             }};

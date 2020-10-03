@@ -1,18 +1,16 @@
 package net.dohaw.play.divisions.events;
 
-import me.c10coding.coreapi.chat.ChatFactory;
+import net.dohaw.play.corelib.ChatSender;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
-import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.events.custom.LevelUpEvent;
 import net.dohaw.play.divisions.exceptions.InvalidCustomItemKeyException;
 import net.dohaw.play.divisions.managers.CustomItemManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,11 +22,9 @@ import java.util.List;
 public class ProgressListener implements Listener {
 
     private CustomItemManager customItemManager;
-    private ChatFactory chatFactory;
 
     public ProgressListener(DivisionsPlugin plugin){
         this.customItemManager = plugin.getCustomItemManager();
-        this.chatFactory = plugin.getAPI().getChatFactory();
     }
 
     /*
@@ -77,9 +73,9 @@ public class ProgressListener implements Listener {
         }
 
         if(!unlockedSpells.isEmpty()){
-            chatFactory.sendPlayerMessage("You have leveled up to level &e" + level + "&f. You have unlocked the following spells: ", false, player, null);
+            ChatSender.sendPlayerMessage("You have leveled up to level &e" + level + "&f. You have unlocked the following spells: ", false, player, null);
             for(SpellWrapper spell : unlockedSpells){
-                chatFactory.sendPlayerMessage("&cSpell: &e" + spell.getName(), false, player, null);
+                ChatSender.sendPlayerMessage("&cSpell: &e" + spell.getName(), false, player, null);
             }
         }
 

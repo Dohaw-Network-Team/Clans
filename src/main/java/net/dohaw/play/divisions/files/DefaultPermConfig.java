@@ -1,8 +1,7 @@
 package net.dohaw.play.divisions.files;
 
-import me.c10coding.coreapi.BetterJavaPlugin;
-import me.c10coding.coreapi.files.Config;
-import me.c10coding.coreapi.helpers.EnumHelper;
+import net.dohaw.play.corelib.Config;
+import net.dohaw.play.corelib.helpers.EnumHelper;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.rank.Permission;
 import net.dohaw.play.divisions.rank.Rank;
@@ -24,10 +23,9 @@ public class DefaultPermConfig extends Config {
     }
 
     private EnumMap<Permission, Object> getRankPermissions(Rank rank){
-        EnumHelper enumHelper = ((BetterJavaPlugin)plugin).getAPI().getEnumHelper();
         EnumMap<Permission, Object> defaultPermsForRank = new EnumMap<>(Permission.class);
         for(Permission perm : Permission.values()){
-            Object value = config.get("Permissions." + enumHelper.enumToName(rank) + "." + enumHelper.enumToName(perm));
+            Object value = config.get("Permissions." + EnumHelper.enumToName(rank) + "." + EnumHelper.enumToName(perm));
             defaultPermsForRank.put(perm, value);
         }
         return defaultPermsForRank;
