@@ -157,7 +157,11 @@ public class GeneralListener implements Listener {
      */
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerTakeDamage(EntityDamageByEntityEvent e){
+
+        Bukkit.broadcastMessage("INIT: " + e.getDamage());
+
         double newDmg = Calculator.getNewDamage(e, playerDataManager);
+        Bukkit.broadcastMessage("NEW: " + newDmg);
         e.setDamage(newDmg);
     }
 
@@ -201,7 +205,7 @@ public class GeneralListener implements Listener {
                                                      */
                                                     pd.addCoolDown(spell);
                                                     pd.subtractRegen(spell);
-                                                    spell.execute(player);
+                                                    spell.execute(pd);
                                                     playerDataManager.updatePlayerData(pd);
 
                                                     startCooldownScheduler(pd, spell);

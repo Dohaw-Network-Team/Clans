@@ -146,6 +146,13 @@ public class CustomItemManager implements Manager{
                 spellLore = combineLore(LORE_COLOR, spellLore, rangeable.getRangeLorePart());
             }
 
+            if(aSpell instanceof Affectable){
+                Affectable affectable = (Affectable) aSpell;
+                spellLore.add(" ");
+                spellLore.add(LORE_HEADER_COLOR + "DURATION");
+                spellLore = combineLore(LORE_COLOR, spellLore, affectable.getDurationLorePart());
+            }
+
             spellLore = plugin.getAPI().getChatFactory().colorLore(spellLore);
             meta.setLore(spellLore);
 

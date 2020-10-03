@@ -3,7 +3,6 @@ package net.dohaw.play.divisions.archetypes.spells.active;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
-import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -21,9 +20,9 @@ public class Escape extends ActiveSpell {
     }
 
     @Override
-    public void execute(Player player) {
+    public void execute(PlayerData pd) {
 
-
+        Player player = pd.getPlayer().getPlayer();
         Vector playerDirection = player.getLocation().getDirection();
         double scale = defaultConfig.getEscapeScale() * -1;
 

@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import org.bukkit.Material;
@@ -27,8 +28,8 @@ public abstract class ActiveLaunchableSpell extends ActiveSpell{
     }
 
     @Override
-    public void execute(Player player){
-        launchProjectile(player);
+    public void execute(PlayerData pd){
+        launchProjectile(pd.getPlayer().getPlayer());
     }
 
 }

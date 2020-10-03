@@ -128,4 +128,8 @@ public class PlayerData {
         return Bukkit.getOfflinePlayer(getPLAYER_UUID());
     }
 
+    public void setStat(Stat stat, double value){
+        statLevels.replace(stat, value);
+    }
+
 }

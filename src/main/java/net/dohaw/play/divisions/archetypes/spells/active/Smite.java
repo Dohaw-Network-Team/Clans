@@ -6,7 +6,6 @@ import net.dohaw.play.divisions.archetypes.spells.Damageable;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +32,7 @@ public class Smite extends ActiveLaunchableSpell implements Damageable {
     }
 
     @Override
-    public void execute(Player player) {
+    public void execute(PlayerData pd) {
 
     }
 

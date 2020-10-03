@@ -20,7 +20,7 @@ public class Stun extends ActiveSpell implements ActiveHittableSpell {
     }
 
     @Override
-    public void execute(Player player) { }
+    public void execute(PlayerData pd) { }
 
     /*
         Fix this off stream

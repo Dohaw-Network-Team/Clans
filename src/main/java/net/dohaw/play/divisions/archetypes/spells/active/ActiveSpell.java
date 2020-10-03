@@ -1,6 +1,7 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
 import lombok.Getter;
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
@@ -22,6 +23,6 @@ public abstract class ActiveSpell extends SpellWrapper implements Cooldownable, 
     /*
         isOut == whether we are executing on the player that is doing the spell or the player that is being affected by the spell
     */
-    public abstract void execute(Player player);
+    public abstract void execute(PlayerData pd);
 
 }

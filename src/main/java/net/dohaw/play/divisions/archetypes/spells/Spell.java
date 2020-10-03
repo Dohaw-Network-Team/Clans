@@ -37,6 +37,7 @@ public abstract class Spell extends WrapperHolder {
         Duelist Spells
      */
     public static final ActiveSpell STUN = new Stun("stun_spell", Archetype.DUELIST, SpellKey.STUN, 2);
+    public static final ActiveSpell RAGE = new Rage("rage_spell", Archetype.DUELIST, SpellKey.RAGE, 3);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {

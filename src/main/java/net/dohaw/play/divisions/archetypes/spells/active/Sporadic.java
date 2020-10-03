@@ -14,7 +14,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Sporadic extends ActiveSpell implements CooldownDecreasable {
 
@@ -23,11 +22,12 @@ public class Sporadic extends ActiveSpell implements CooldownDecreasable {
     }
 
     @Override
-    public void execute(Player player) {
+    public void execute(PlayerData pd) {
 
         final int DURATION = 5;
         // Certain percentage chance they will fire an arrow
         final double FIRE_CHANCE = 0.10;
+        Player player = pd.getPlayer().getPlayer();
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
 
