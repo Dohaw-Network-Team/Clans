@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
+import net.dohaw.play.divisions.archetypes.spells.CooldownDecreasable;
 import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
 import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
@@ -77,7 +78,15 @@ public class PlayerData {
     }
 
     public void addCoolDown(ActiveSpell spell){
-        long millis = (long) (spell.getBaseCooldown() * 1000);
+
+        double cooldown;
+        if(spell instanceof CooldownDecreasable){
+            cooldown = ((CooldownDecreasable)spell).getAdjustedCooldown(this);
+        }else{
+            cooldown = spell.getBaseCooldown();
+        }
+
+        long millis = (long) (cooldown * 1000);
         long millisCooldownEnd = millis + System.currentTimeMillis();
         spellCoolDowns.put(spell.getKEY().toString(), millisCooldownEnd);
     }

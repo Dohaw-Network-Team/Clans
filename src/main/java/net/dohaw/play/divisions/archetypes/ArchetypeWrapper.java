@@ -1,5 +1,6 @@
 package net.dohaw.play.divisions.archetypes;
 
+import lombok.Getter;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityKey;
 import net.dohaw.play.divisions.archetypes.specializations.SpecialityWrapper;
@@ -13,8 +14,11 @@ import java.util.List;
 
 public abstract class ArchetypeWrapper extends Wrapper{
 
+    @Getter final protected ArchetypeKey KEY;
+
     public ArchetypeWrapper(ArchetypeKey KEY) {
         super(KEY);
+        this.KEY = KEY;
     }
 
     /*

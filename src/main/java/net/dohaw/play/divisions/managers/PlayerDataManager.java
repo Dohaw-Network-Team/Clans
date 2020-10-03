@@ -98,10 +98,11 @@ public class PlayerDataManager implements Manager{
         playerDataList.add(playerDataHandler.loadPlayerData(u));
     }
 
-    public void updatePlayerData(UUID playerUUID, PlayerData newData){
+    public void updatePlayerData(PlayerData newData){
         /*
             It may invoke null if the newData value is temporarily loaded data.
          */
+        UUID playerUUID = newData.getPLAYER_UUID();
         PlayerData playerData = getPlayerByUUID(playerUUID);
         if(playerData == null){
             playerDataList.add(newData);

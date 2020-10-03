@@ -38,6 +38,6 @@ public class Regener extends BukkitRunnable {
             }
         }
 
-        plugin.getPlayerDataManager().updatePlayerData(UUID, data);
+        plugin.getPlayerDataManager().updatePlayerData(data);
     }
 }

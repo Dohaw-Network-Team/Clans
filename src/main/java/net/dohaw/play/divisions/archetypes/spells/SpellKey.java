@@ -7,5 +7,6 @@ public enum SpellKey {
     HEATING_UP,
     ESCAPE,
     CRIPPLING_SHOT,
-    SPORADIC
+    SPORADIC,
+    STUN
 }

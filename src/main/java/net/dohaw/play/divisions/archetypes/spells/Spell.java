@@ -33,6 +33,11 @@ public abstract class Spell extends WrapperHolder {
     public static final BowSpell CRIPPLING_SHOT = new CripplingShot("", Archetype.ARCHER, SpellKey.CRIPPLING_SHOT, 4);
     public static final ActiveSpell SPORADIC = new Sporadic("sporadic_spell", Archetype.ARCHER, SpellKey.SPORADIC, 7);
 
+    /*
+        Duelist Spells
+     */
+    public static final ActiveSpell STUN = new Stun("stun_spell", Archetype.DUELIST, SpellKey.STUN, 2);
+
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
             Wrapper wrapper = entry.getValue();

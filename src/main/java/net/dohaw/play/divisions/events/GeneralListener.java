@@ -1,15 +1,15 @@
 package net.dohaw.play.divisions.events;
 
 import me.c10coding.coreapi.chat.ChatFactory;
-import me.c10coding.coreapi.helpers.PlayerHelper;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.CooldownDecreasable;
 import net.dohaw.play.divisions.archetypes.spells.Cooldownable;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
-import net.dohaw.play.divisions.archetypes.spells.SpellWrapper;
+import net.dohaw.play.divisions.archetypes.spells.active.ActiveHittableSpell;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.archetypes.types.Archer;
@@ -18,11 +18,9 @@ import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
 import net.dohaw.play.divisions.events.custom.SpellCooldownDoneEvent;
 import net.dohaw.play.divisions.events.custom.TemporaryPlayerDataCreationEvent;
-import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.DivisionChat;
 import net.dohaw.play.divisions.utils.EntityUtils;
@@ -32,7 +30,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -181,41 +178,98 @@ public class GeneralListener implements Listener {
                     String customItemKey = CustomItem.getCustomItemKey(stackInHand);
 
                     if(customItemKey != null){
-                        if(!customItemKey.isEmpty()){
+                        if(!customItemKey.isEmpty()) {
+
                             ActiveSpell spell = Spell.getSpellByItemKey(customItemKey);
-                            if(archetype.getKEY() == spell.getArchetype().getKEY()){
-                                if(spell != null){
-                                    int playerLevel = pd.getLevel();
-                                    if(spell.getLevelUnlocked() <= playerLevel){
-                                        if(!pd.isOnCooldown(spell)) {
+                            /*
+                                Don't want to waste resources if this spell is supposed to be activated via hitting a player instead of right clicking
+                             */
+                            if (spell != null) {
 
-                                            if (pd.hasEnoughRegen(spell)) {
+                                if (!(spell instanceof ActiveHittableSpell)) {
 
-                                                /*
-                                                    Adds the cooldown to a map within the PlayerData object. Delays a task to remove the spell from the map to signal that it's not on cooldown
-                                                 */
-                                                UUID playerUUID = player.getUniqueId();
-                                                pd.addCoolDown(spell);
-                                                pd.subtractRegen(spell);
-                                                spell.execute(player);
-                                                playerDataManager.updatePlayerData(playerUUID, pd);
+                                    if (archetype.getKEY() == spell.getArchetype().getKEY()) {
 
-                                                double cooldown;
-                                                if(spell instanceof CooldownDecreasable){
-                                                    cooldown = Spell.getSchedulerInterval(pd, (CooldownDecreasable)spell);
-                                                }else{
-                                                    cooldown = Spell.getSchedulerInterval(spell);
+                                        int playerLevel = pd.getLevel();
+                                        if (spell.getLevelUnlocked() <= playerLevel) {
+                                            if (!pd.isOnCooldown(spell)) {
+
+                                                if (pd.hasEnoughRegen(spell)) {
+
+                                                    /*
+                                                        Adds the cooldown to a map within the PlayerData object. Delays a task to remove the spell from the map to signal that it's not on cooldown
+                                                     */
+                                                    pd.addCoolDown(spell);
+                                                    pd.subtractRegen(spell);
+                                                    spell.execute(player);
+                                                    playerDataManager.updatePlayerData(pd);
+
+                                                    startCooldownScheduler(pd, spell);
+
                                                 }
 
-                                                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                                                    pd.removeCoolDown(spell);
-                                                    Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(spell, playerUUID));
-                                                    playerDataManager.updatePlayerData(playerUUID, pd);
-                                                }, (long) cooldown);
-
+                                            } else {
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-                                        }else{
+    }
+
+    /*
+        For active spells that are triggered by hitting a player while the custom item is in their hand
+     */
+    @EventHandler
+    public void onPlayerHit(EntityDamageByEntityEvent e){
+
+        Entity enDamager = e.getDamager();
+
+        if(enDamager instanceof Player){
+
+            Player player = (Player) enDamager;
+            PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
+            ArchetypeWrapper archetype = pd.getArchetype();
+            if(archetype != null) {
+                ItemStack itemInHand = player.getInventory().getItemInMainHand();
+                if(itemInHand != null){
+
+                    String customItemKey = CustomItem.getCustomItemKey(itemInHand);
+                    if(customItemKey != null) {
+                        if (!customItemKey.isEmpty()) {
+
+                            ActiveSpell spell = Spell.getSpellByItemKey(customItemKey);
+                            if(spell != null){
+
+                                if(spell instanceof ActiveHittableSpell){
+
+                                    ArchetypeKey spellArchetype = spell.getArchetype().getKEY();
+                                    ArchetypeKey playerArchetype = pd.getArchetype().getKEY();
+
+                                    if(spellArchetype == playerArchetype){
+
+                                        int playerLevel = pd.getLevel();
+                                        if (spell.getLevelUnlocked() <= playerLevel) {
+
+                                            if (!pd.isOnCooldown(spell)) {
+                                                if (pd.hasEnoughRegen(spell)) {
+
+                                                    pd.addCoolDown(spell);
+                                                    pd.subtractRegen(spell);
+                                                    playerDataManager.updatePlayerData(pd);
+
+                                                    Entity hitEntity = e.getEntity();
+                                                    ((ActiveHittableSpell)spell).executeHit(hitEntity, player);
+
+                                                    startCooldownScheduler(pd, spell);
+
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -253,9 +307,9 @@ public class GeneralListener implements Listener {
                         Archer archer = (Archer) archetype;
                         BowSpell currentBowSpell = archer.getBowSpell();
 
-                    /*
-                        If they shift left click then they can un-select any bow spell
-                     */
+                        /*
+                            If they shift left click then they can un-select any bow spell
+                         */
                         if(!player.isSneaking()){
 
                             List<BowSpell> unlockedBowSpells = Spell.getUnlockedBowSpells(archetype, pd.getLevel());
@@ -276,7 +330,7 @@ public class GeneralListener implements Listener {
 
                         archer.setBowSpell(currentBowSpell);
                         pd.setArchetype(archer);
-                        playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+                        playerDataManager.updatePlayerData(pd);
 
                     }
 
@@ -321,13 +375,7 @@ public class GeneralListener implements Listener {
                             pd.addCoolDown(bowSpell);
                             pd.subtractRegen(bowSpell);
 
-                            playerDataManager.updatePlayerData(playerUUID, pd);
-
-                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                pd.removeCoolDown(bowSpell);
-                                Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(bowSpell, playerUUID));
-                                playerDataManager.updatePlayerData(playerUUID, pd);
-                            }, Spell.getSchedulerInterval(bowSpell));
+                            playerDataManager.updatePlayerData(pd);
 
                         }
 
@@ -388,6 +436,28 @@ public class GeneralListener implements Listener {
         // Only runs if unlocked bow spells is empty
         return currentBowSpell;
 
+    }
+
+    private double getCooldown(PlayerData pd, Cooldownable spell){
+
+        double cooldown;
+        if (spell instanceof CooldownDecreasable) {
+            cooldown = Spell.getSchedulerInterval(pd, (CooldownDecreasable) spell);
+        } else {
+            cooldown = Spell.getSchedulerInterval(spell);
+        }
+
+        return cooldown;
+
+    }
+
+    public void startCooldownScheduler(PlayerData pd, ActiveSpell spell){
+        double cooldown = getCooldown(pd, spell);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            pd.removeCoolDown(spell);
+            Bukkit.getPluginManager().callEvent(new SpellCooldownDoneEvent(spell, pd.getPLAYER_UUID()));
+            playerDataManager.updatePlayerData(pd);
+        }, (long) cooldown);
     }
 
 }

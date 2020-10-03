@@ -1,7 +1,6 @@
 package net.dohaw.play.divisions.commands;
 
 import me.c10coding.coreapi.chat.ChatFactory;
-import me.c10coding.coreapi.helpers.PlayerHelper;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
@@ -9,7 +8,6 @@ import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.events.custom.LevelUpEvent;
-import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.utils.Calculator;
@@ -60,7 +58,7 @@ public class ArchetypesCommand implements CommandExecutor {
 
                         pd.setLevel(level);
                         Bukkit.getPluginManager().callEvent(new LevelUpEvent(pd));
-                        playerDataManager.updatePlayerData(playerUUID, pd);
+                        playerDataManager.updatePlayerData(pd);
 
                         chatFactory.sendPlayerMessage("You have set this player's level to " + level, false, sender, null);
                         chatFactory.sendPlayerMessage("Your level has been set to " + level, false, player, null);
@@ -95,7 +93,7 @@ public class ArchetypesCommand implements CommandExecutor {
                             customItemManager.setSpellItemLores(pd);
 
                             pd.startRegener(plugin, Calculator.calculateRegenInterval(pd));
-                            playerDataManager.updatePlayerData(playerUUID, pd);
+                            playerDataManager.updatePlayerData(pd);
                             chatFactory.sendPlayerMessage("You have given this player the archetype " + archetype.getName() + "!", true, sender, plugin.getPluginPrefix());
 
                         }else{
@@ -144,7 +142,7 @@ public class ArchetypesCommand implements CommandExecutor {
             pd.setSpeciality(null);
             pd.setStatLevels(Stat.getDefaultStats());
             pd.stopRegener();
-            playerDataManager.updatePlayerData(pd.getPLAYER_UUID(), pd);
+            playerDataManager.updatePlayerData(pd);
             chatFactory.sendPlayerMessage("You have reset your archetype as well as your archetype stats!", true, pd.getPlayer().getPlayer(), plugin.getPluginPrefix());
         }else{
             chatFactory.sendPlayerMessage("You don't have an archetype right now!", true, pd.getPlayer().getPlayer(), plugin.getPluginPrefix());
@@ -164,6 +162,7 @@ public class ArchetypesCommand implements CommandExecutor {
         List<Object> defaultItems = archetype.getDefaultItems();
 
         List<ItemStack> items = new ArrayList<>();
+
         for(Object obj : defaultItems){
             if(obj instanceof Material){
                 Material mat = (Material) obj;

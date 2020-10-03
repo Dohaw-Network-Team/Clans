@@ -69,7 +69,7 @@ public class NumericPermissionPrompt extends NumericPrompt {
             context.getForWhom().sendRawMessage("Rank: " + enumHelper.enumToName(rank) + " | Permission: " + enumHelper.enumToName(permission) + " | New Value: " + inputInt);
         }else{
             playerData.replacePermission(permission, inputInt);
-            playerDataManager.updatePlayerData(playerData.getPLAYER_UUID(), playerData);
+            playerDataManager.updatePlayerData(playerData);
             context.getForWhom().sendRawMessage("Player: " + playerData.getPLAYER_NAME() + " | Permission: " + enumHelper.enumToName(permission) + " | New Value: " + inputInt);
         }
 

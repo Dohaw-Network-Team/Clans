@@ -178,7 +178,7 @@ public class CreateItemMenu extends Menu implements Listener {
              */
             pd.setItemCreationSession(session);
 
-            playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+            playerDataManager.updatePlayerData(pd);
 
         }else if(slotClicked == 30) {
             DisplayLoreMenu dilm = new DisplayLoreMenu(plugin, this, session);
@@ -200,7 +200,7 @@ public class CreateItemMenu extends Menu implements Listener {
              */
             pd.setItemCreationSession(session);
 
-            playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+            playerDataManager.updatePlayerData(pd);
 
         }else if(slotClicked == 32) {
 
@@ -230,7 +230,7 @@ public class CreateItemMenu extends Menu implements Listener {
             session.setSpellItem(isSpellItem);
 
             pd.setItemCreationSession(session);
-            playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+            playerDataManager.updatePlayerData(pd);
 
         }else if(slotClicked == abortCreationSlot){
             clearPlayerDataSession(pd);
@@ -259,7 +259,7 @@ public class CreateItemMenu extends Menu implements Listener {
 
     private void clearPlayerDataSession(PlayerData pd){
         pd.setItemCreationSession(new ItemCreationSession());
-        playerDataManager.updatePlayerData(pd.getPLAYER_UUID(), pd);
+        playerDataManager.updatePlayerData(pd);
     }
 
 }

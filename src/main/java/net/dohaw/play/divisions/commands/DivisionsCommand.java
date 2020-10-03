@@ -211,7 +211,7 @@ public class DivisionsCommand implements CommandExecutor {
                                             kickedPlayerData.setRank(null);
                                             division.removePlayer(kickedPlayerData);
 
-                                            playerDataManager.updatePlayerData(kickedPlayer.getUniqueId(), kickedPlayerData);
+                                            playerDataManager.updatePlayerData(kickedPlayerData);
                                             divisionsManager.updateDivision(kickerDivisionName, division);
 
                                             if(kickedPlayer.isOnline()){
@@ -361,7 +361,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                                         }
                                         playerAffectedData.setRank(newRank);
-                                        playerDataManager.updatePlayerData(playerAffected.getUniqueId(), playerAffectedData);
+                                        playerDataManager.updatePlayerData(playerAffectedData);
 
                                         chatFactory.sendPlayerMessage(playerAffectedMsg, true, playerAffected, prefix);
                                         chatFactory.sendPlayerMessage(playerMsg, true, player, prefix);
@@ -399,7 +399,7 @@ public class DivisionsCommand implements CommandExecutor {
 
                                 pd.setDivision(divisionName);
                                 pd.setRank(Rank.FRESH_MEAT);
-                                playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+                                playerDataManager.updatePlayerData(pd);
 
                                 msg = messagesConfig.getMessage(Message.DIVISION_JOIN);
                                 msg = MessagesConfig.replacePlaceholder(msg, Placeholder.DIVISION_NAME, divisionName);
@@ -442,7 +442,7 @@ public class DivisionsCommand implements CommandExecutor {
                             if(newChannel != pd.getChannel()){
 
                                 pd.setChannel(newChannel);
-                                playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+                                playerDataManager.updatePlayerData(pd);
                                 //division.updatePlayerData(pd);
 
                                 if(newChannel != DivisionChannel.NONE){

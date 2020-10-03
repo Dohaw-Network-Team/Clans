@@ -105,7 +105,7 @@ public class DivisionsManager implements Manager {
 
             playerData.setDivision(null);
             playerData.setRank(null);
-            playerDataManager.updatePlayerData(playerData.getPLAYER_UUID(), playerData);
+            playerDataManager.updatePlayerData(playerData);
         }
 
         DivisionsConfigHandler dch = new DivisionsConfigHandler(plugin);

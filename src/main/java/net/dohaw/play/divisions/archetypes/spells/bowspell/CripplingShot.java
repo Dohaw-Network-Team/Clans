@@ -84,7 +84,7 @@ public class CripplingShot extends BowSpell implements Damageable, RegenAffectab
 
     @Override
     public double getDuration() {
-        return 20;
+        return 7;
     }
 
     private String getAttributeModifierName(){

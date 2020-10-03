@@ -95,8 +95,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>Spigot_v1.16.2</groupId>
-            <artifactId>Spigot_v1.16.2</artifactId>
+            <groupId>NMS</groupId>
+            <artifactId>Spigot_v1.16.3</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

@@ -154,7 +154,7 @@ public class ItemCreationSessionPrompt extends StringPrompt {
 
         PlayerData pd = playerDataManager.getPlayerByUUID(player.getUniqueId());
         pd.setItemCreationSession(session);
-        playerDataManager.updatePlayerData(player.getUniqueId(), pd);
+        playerDataManager.updatePlayerData(pd);
 
         previousMenu.setSession(session);
 

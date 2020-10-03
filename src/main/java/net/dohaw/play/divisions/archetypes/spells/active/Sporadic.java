@@ -101,7 +101,4 @@ public class Sporadic extends ActiveSpell implements CooldownDecreasable {
 
     }
 
-    private double getRandDouble(){
-        return ThreadLocalRandom.current().nextLong(0, 1);
-    }
 }

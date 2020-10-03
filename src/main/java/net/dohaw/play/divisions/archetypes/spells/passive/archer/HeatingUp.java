@@ -1,16 +1,12 @@
 package net.dohaw.play.divisions.archetypes.spells.passive.archer;
 
-import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
-import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import net.dohaw.play.divisions.archetypes.types.Archer;
 import net.dohaw.play.divisions.events.custom.HeatingUpCriticalStrikeEvent;
-import net.dohaw.play.divisions.files.DefaultConfig;
-import net.dohaw.play.divisions.managers.PlayerDataManager;
 import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.EntityUtils;
 import org.bukkit.Bukkit;
@@ -71,7 +67,7 @@ public class HeatingUp extends PassiveSpell implements Listener {
 
                         archer.setHeatingUpCount(0);
                         pd.setArchetype(archer);
-                        plugin.getPlayerDataManager().updatePlayerData(damagerUUID, pd);
+                        plugin.getPlayerDataManager().updatePlayerData(pd);
 
                         if(getSpellAffecterParticle() != null){
                             Entity damaged = e.getEntity();
@@ -96,7 +92,7 @@ public class HeatingUp extends PassiveSpell implements Listener {
 
                         archer.setHeatingUpCount(heatingUpCount + 1);
                         pd.setArchetype(archer);
-                        plugin.getPlayerDataManager().updatePlayerData(damagerUUID, pd);
+                        plugin.getPlayerDataManager().updatePlayerData(pd);
 
                     }
                 }
