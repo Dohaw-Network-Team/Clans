@@ -7,6 +7,7 @@ import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Damageable;
+import net.dohaw.play.divisions.archetypes.spells.Rangeable;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.types.Duelist;
 import net.dohaw.play.divisions.utils.Calculator;
@@ -28,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class Leap extends ActiveSpell implements Damageable, Listener {
+public class Leap extends ActiveSpell implements Damageable, Listener, Rangeable {
 
     final double BASE_DMG;
     final double HEART_INCREASE_PER_STRENGTH;
@@ -80,53 +81,58 @@ public class Leap extends ActiveSpell implements Damageable, Listener {
         UUID uuid = player.getUniqueId();
         PlayerData pd = plugin.getPlayerDataManager().getPlayerByUUID(uuid);
 
-        if(pd.getArchetype().getKEY() == ArchetypeKey.DUELIST){
+        if(pd.getArchetype() != null){
 
-            Duelist duelist = (Duelist) pd.getArchetype();
+            if(pd.getArchetype().getKEY() == ArchetypeKey.DUELIST){
 
-            if(duelist.isInMiddleOfLeap() && player.isOnGround()){
+                Duelist duelist = (Duelist) pd.getArchetype();
 
-                duelist.setInMiddleOfLeap(false);
-                pd.setArchetype(duelist);
-                plugin.getPlayerDataManager().updatePlayerData(pd);
+                if(duelist.isInMiddleOfLeap() && player.isOnGround()){
 
-                double totalStrength = Calculator.getTotalStat(pd, Stat.STRENGTH);
+                    duelist.setInMiddleOfLeap(false);
+                    pd.setArchetype(duelist);
+                    plugin.getPlayerDataManager().updatePlayerData(pd);
 
-                double baseDmg;
-                if(totalStrength != 0){
-                    baseDmg = BASE_DMG + ((totalStrength / STRENGTH_INTERVAL) * HEART_INCREASE_PER_STRENGTH);
-                }else{
-                    baseDmg = BASE_DMG;
-                }
+                    double totalStrength = Calculator.getTotalStat(pd, Stat.STRENGTH);
 
-                List<Entity> entitiesAroundPlayer = player.getNearbyEntities(RADIUS, RADIUS, RADIUS);
-                for(Entity en : entitiesAroundPlayer){
-                    if(en instanceof LivingEntity){
-
-                        LivingEntity le = (LivingEntity) en;
-
-                        double distanceFromPlayer = le.getLocation().distance(player.getLocation());
-                        double exponent = (distanceFromPlayer * -1) + 1.25;
-                        double dmgFromDistance = (Math.pow(5, exponent) + 2);
-                        double finalDmg = (baseDmg + dmgFromDistance) * DAMAGE_SCALE;
-
-                        if(plugin.getDefaultConfig().isInDebugMode()){
-                            player.sendMessage("WHO: " + le.getName());
-                            player.sendMessage("DISTANCE: " + distanceFromPlayer);
-                            player.sendMessage("BASE DMG: " + baseDmg);
-                            player.sendMessage("Damage from distance: " + dmgFromDistance);
-                            player.sendMessage("Final Damage: " + finalDmg);
-                        }
-
-                        le.damage(finalDmg);
-
+                    double baseDmg;
+                    if(totalStrength != 0){
+                        baseDmg = BASE_DMG + ((totalStrength / STRENGTH_INTERVAL) * HEART_INCREASE_PER_STRENGTH);
+                    }else{
+                        baseDmg = BASE_DMG;
                     }
+
+                    List<Entity> entitiesAroundPlayer = player.getNearbyEntities(RADIUS, RADIUS, RADIUS);
+                    for(Entity en : entitiesAroundPlayer){
+                        if(en instanceof LivingEntity){
+
+                            LivingEntity le = (LivingEntity) en;
+
+                            double distanceFromPlayer = le.getLocation().distance(player.getLocation());
+                            double exponent = (distanceFromPlayer * -1) + 1.25;
+                            double dmgFromDistance = (Math.pow(5, exponent) + 2);
+                            double finalDmg = (baseDmg + dmgFromDistance) * DAMAGE_SCALE;
+
+                            if(plugin.getDefaultConfig().isInDebugMode()){
+                                player.sendMessage("WHO: " + le.getName());
+                                player.sendMessage("DISTANCE: " + distanceFromPlayer);
+                                player.sendMessage("BASE DMG: " + baseDmg);
+                                player.sendMessage("Damage from distance: " + dmgFromDistance);
+                                player.sendMessage("Final Damage: " + finalDmg);
+                            }
+
+                            le.damage(finalDmg);
+
+                        }
+                    }
+
+                    player.getWorld().spawnParticle(getLandingParticle(), player.getLocation(), 40, 2, 2, 2);
+
                 }
-
-                player.getWorld().spawnParticle(getLandingParticle(), player.getLocation(), 40, 2, 2, 2);
-
             }
+
         }
+
 
     }
 
@@ -187,4 +193,13 @@ public class Leap extends ActiveSpell implements Damageable, Listener {
 
     }
 
+    @Override
+    public double getRange() {
+        return RADIUS;
+    }
+
+    @Override
+    public List<String> getRangeLorePart() {
+        return Arrays.asList(getRange() + " blocks ");
+    }
 }

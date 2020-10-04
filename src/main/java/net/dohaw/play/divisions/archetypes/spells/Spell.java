@@ -5,6 +5,7 @@ import net.dohaw.play.divisions.archetypes.*;
 import net.dohaw.play.divisions.archetypes.spells.active.*;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.CripplingShot;
+import net.dohaw.play.divisions.archetypes.spells.passive.DuelWielder;
 import net.dohaw.play.divisions.archetypes.spells.passive.Finisher;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import net.dohaw.play.divisions.archetypes.spells.passive.archer.HeatingUp;
@@ -41,6 +42,7 @@ public abstract class Spell extends WrapperHolder {
     public static final ActiveSpell RAGE = new Rage("rage_spell", Archetype.DUELIST, SpellKey.RAGE, 3);
     public static final PassiveSpell FINISHER = new Finisher(Archetype.DUELIST, SpellKey.FINISHER,3);
     public static final ActiveSpell LEAP = new Leap("leap_spell", Archetype.DUELIST, SpellKey.LEAP, 6);
+    public static final PassiveSpell DUEL_WIELDER = new DuelWielder(Archetype.DUELIST, SpellKey.DUEL_WIELDER, 6);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {

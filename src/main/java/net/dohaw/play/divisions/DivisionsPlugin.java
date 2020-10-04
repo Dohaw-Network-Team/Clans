@@ -144,6 +144,7 @@ public final class DivisionsPlugin extends JavaPlugin {
         Spell.registerWrapper(Spell.RAGE);
         Spell.registerWrapper(Spell.FINISHER);
         Spell.registerWrapper(Spell.LEAP);
+        Spell.registerWrapper(Spell.DUEL_WIELDER);
     }
 
     private boolean setupEconomy() {

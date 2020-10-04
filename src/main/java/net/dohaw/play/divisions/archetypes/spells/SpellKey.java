@@ -11,5 +11,6 @@ public enum SpellKey {
     STUN,
     RAGE,
     FINISHER,
-    LEAP;
+    LEAP,
+    DUEL_WIELDER
 }
