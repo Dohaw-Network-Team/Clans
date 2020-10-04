@@ -1,6 +1,7 @@
 Plugin Prefix: "&l[&aDivisions&r&l]&r"
 
 Debug Mode: true
+No CoolDown Mode: true
 Default Division Gold Amount: 100
 Invite Cooldown: 5
 
@@ -28,3 +29,11 @@ Calculations:
       Total Luck Multiple: 2
     Escape:
       Velocity Scale: 2
+    Leap:
+      Base Damage: 2
+      Heart Increase Per Strength: 1
+      Strength Interval: 5
+      Y Level Increase: 1
+      Velocity Scale: 2
+      Radius: 3
+      Damage Scale: 1

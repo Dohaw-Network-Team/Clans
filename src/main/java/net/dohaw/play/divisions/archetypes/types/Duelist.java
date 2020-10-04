@@ -1,5 +1,7 @@
 package net.dohaw.play.divisions.archetypes.types;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
@@ -15,6 +17,8 @@ import org.bukkit.Material;
 import java.util.*;
 
 public class Duelist extends ArchetypeWrapper {
+
+    @Getter @Setter boolean isInMiddleOfLeap = false;
 
     public Duelist(ArchetypeKey ARCHETYPE) {
         super(ARCHETYPE);

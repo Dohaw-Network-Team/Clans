@@ -10,5 +10,6 @@ public enum SpellKey {
     SPORADIC,
     STUN,
     RAGE,
-    FINISHER
+    FINISHER,
+    LEAP;
 }

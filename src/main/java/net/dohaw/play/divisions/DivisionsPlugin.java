@@ -143,6 +143,7 @@ public final class DivisionsPlugin extends JavaPlugin {
         Spell.registerWrapper(Spell.STUN);
         Spell.registerWrapper(Spell.RAGE);
         Spell.registerWrapper(Spell.FINISHER);
+        Spell.registerWrapper(Spell.LEAP);
     }
 
     private boolean setupEconomy() {

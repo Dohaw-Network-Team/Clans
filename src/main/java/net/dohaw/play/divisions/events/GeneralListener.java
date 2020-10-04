@@ -18,6 +18,7 @@ import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.events.custom.NewMemberEvent;
 import net.dohaw.play.divisions.events.custom.SpellCooldownDoneEvent;
 import net.dohaw.play.divisions.events.custom.TemporaryPlayerDataCreationEvent;
+import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.managers.CustomItemManager;
 import net.dohaw.play.divisions.managers.DivisionsManager;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
@@ -51,11 +52,13 @@ public class GeneralListener implements Listener {
     private DivisionsPlugin plugin;
     private PlayerDataManager playerDataManager;
     private DivisionsManager divisionsManager;
+    private DefaultConfig defaultConfig;
 
     public GeneralListener(DivisionsPlugin plugin){
         this.plugin = plugin;
         this.playerDataManager = plugin.getPlayerDataManager();
         this.divisionsManager = plugin.getDivisionsManager();
+        this.defaultConfig = plugin.getDefaultConfig();
     }
 
     @EventHandler
@@ -171,49 +174,56 @@ public class GeneralListener implements Listener {
             ArchetypeWrapper archetype = pd.getArchetype();
             if(archetype != null){
                 if(e.getItem() != null){
+                    if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK){
 
-                    ItemStack stackInHand = e.getItem();
-                    String customItemKey = CustomItem.getCustomItemKey(stackInHand);
+                        ItemStack stackInHand = e.getItem();
+                        String customItemKey = CustomItem.getCustomItemKey(stackInHand);
 
-                    if(customItemKey != null){
-                        if(!customItemKey.isEmpty()) {
+                        if(customItemKey != null){
+                            if(!customItemKey.isEmpty()) {
 
-                            ActiveSpell spell = Spell.getSpellByItemKey(customItemKey);
-                            /*
-                                Don't want to waste resources if this spell is supposed to be activated via hitting a player instead of right clicking
-                             */
-                            if (spell != null) {
+                                ActiveSpell spell = Spell.getSpellByItemKey(customItemKey);
+                                /*
+                                    Don't want to waste resources if this spell is supposed to be activated via hitting a player instead of right clicking
+                                 */
+                                if (spell != null) {
 
-                                if (!(spell instanceof ActiveHittableSpell)) {
+                                    if (!(spell instanceof ActiveHittableSpell)) {
 
-                                    if (archetype.getKEY() == spell.getArchetype().getKEY()) {
+                                        if (archetype.getKEY() == spell.getArchetype().getKEY()) {
 
-                                        int playerLevel = pd.getLevel();
-                                        if (spell.getLevelUnlocked() <= playerLevel) {
-                                            if (!pd.isOnCooldown(spell)) {
+                                            int playerLevel = pd.getLevel();
+                                            if (spell.getLevelUnlocked() <= playerLevel) {
+                                                if (!pd.isOnCooldown(spell)) {
 
-                                                if (pd.hasEnoughRegen(spell)) {
+                                                    if (pd.hasEnoughRegen(spell)) {
 
                                                     /*
                                                         Adds the cooldown to a map within the PlayerData object. Delays a task to remove the spell from the map to signal that it's not on cooldown
                                                      */
-                                                    pd.addCoolDown(spell);
-                                                    pd.subtractRegen(spell);
-                                                    spell.execute(pd);
-                                                    playerDataManager.updatePlayerData(pd);
+                                                        if(!defaultConfig.isInNoCooldownMode()){
+                                                            pd.addCoolDown(spell);
+                                                        }
 
-                                                    startCooldownScheduler(pd, spell);
+                                                        pd.subtractRegen(spell);
+                                                        spell.execute(pd);
+                                                        playerDataManager.updatePlayerData(pd);
 
+                                                        startCooldownScheduler(pd, spell);
+
+                                                    }
+
+                                                } else {
                                                 }
-
-                                            } else {
                                             }
                                         }
                                     }
                                 }
                             }
                         }
+
                     }
+
                 }
             }
         }

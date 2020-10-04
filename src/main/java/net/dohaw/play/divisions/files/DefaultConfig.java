@@ -79,8 +79,40 @@ public class DefaultConfig extends Config {
         return config.getDouble(SPELL_CALCULATIONS_PATH + ".Escape.Velocity Scale");
     }
 
+    public double getLeapBaseDamage(){
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Leap.Base Damage");
+    }
+
+    public double getLeapHeartIncreasePerStrength(){
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Leap.Heart Increase Per Strength");
+    }
+
+    public double getLeapStrengthInterval(){
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Leap.Strength Interval");
+    }
+
+    public double getLeapYLevelIncrease(){
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Leap.Y Level Increase");
+    }
+
+    public double getLeapVelocityScale(){
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Leap.Velocity Scale");
+    }
+
+    public double getLeapRadius(){
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Leap.Radius");
+    }
+
+    public double getLeapDamageScale(){
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Leap.Damage Scale");
+    }
+
     public boolean isInDebugMode(){
         return config.getBoolean("Debug Mode");
+    }
+
+    public boolean isInNoCooldownMode(){
+        return config.getBoolean("No CoolDown Mode");
     }
 
 }

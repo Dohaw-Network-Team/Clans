@@ -83,7 +83,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.dohaw.play</groupId>
+            <groupId>net.dohaw.play.corelib</groupId>
             <artifactId>CoreLib</artifactId>
             <version>3.0.0</version>
         </dependency>
