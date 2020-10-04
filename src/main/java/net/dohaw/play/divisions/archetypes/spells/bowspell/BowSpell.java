@@ -12,8 +12,8 @@ import org.bukkit.event.Listener;
 
 public abstract class BowSpell extends PassiveSpell implements Listener, Cooldownable, RegenAffectable, Affectable {
 
-    public BowSpell(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
-        super(customItemBindedToKey, archetype, KEY, levelUnlocked);
+    public BowSpell(ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
+        super(archetype, KEY, levelUnlocked);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

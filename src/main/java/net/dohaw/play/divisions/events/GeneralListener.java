@@ -155,11 +155,7 @@ public class GeneralListener implements Listener {
      */
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerTakeDamage(EntityDamageByEntityEvent e){
-
-        Bukkit.broadcastMessage("INIT: " + e.getDamage());
-
         double newDmg = Calculator.getNewDamage(e, playerDataManager);
-        Bukkit.broadcastMessage("NEW: " + newDmg);
         e.setDamage(newDmg);
     }
 

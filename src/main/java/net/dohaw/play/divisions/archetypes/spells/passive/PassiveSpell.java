@@ -9,8 +9,8 @@ public abstract class PassiveSpell extends SpellWrapper{
     /*
         A passive spell is defined as a spell that activates via listener.
      */
-    public PassiveSpell(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
-        super(customItemBindedToKey, archetype, KEY, levelUnlocked);
+    public PassiveSpell(ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
+        super("", archetype, KEY, levelUnlocked);
     }
 
 }

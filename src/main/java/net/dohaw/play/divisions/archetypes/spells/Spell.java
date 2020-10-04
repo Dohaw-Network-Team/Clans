@@ -5,6 +5,7 @@ import net.dohaw.play.divisions.archetypes.*;
 import net.dohaw.play.divisions.archetypes.spells.active.*;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.CripplingShot;
+import net.dohaw.play.divisions.archetypes.spells.passive.Finisher;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import net.dohaw.play.divisions.archetypes.spells.passive.archer.HeatingUp;
 import org.bukkit.Location;
@@ -28,9 +29,9 @@ public abstract class Spell extends WrapperHolder {
     /*
         Archer Spells
      */
-    public static final PassiveSpell HEATING_UP = new HeatingUp("heating_up_spell", Archetype.ARCHER, SpellKey.HEATING_UP, 1);
+    public static final PassiveSpell HEATING_UP = new HeatingUp(Archetype.ARCHER, SpellKey.HEATING_UP, 1);
     public static final ActiveSpell ESCAPE = new Escape("escape_spell", Archetype.ARCHER, SpellKey.ESCAPE, 2);
-    public static final BowSpell CRIPPLING_SHOT = new CripplingShot("", Archetype.ARCHER, SpellKey.CRIPPLING_SHOT, 4);
+    public static final BowSpell CRIPPLING_SHOT = new CripplingShot(Archetype.ARCHER, SpellKey.CRIPPLING_SHOT, 4);
     public static final ActiveSpell SPORADIC = new Sporadic("sporadic_spell", Archetype.ARCHER, SpellKey.SPORADIC, 7);
 
     /*
@@ -38,6 +39,7 @@ public abstract class Spell extends WrapperHolder {
      */
     public static final ActiveSpell STUN = new Stun("stun_spell", Archetype.DUELIST, SpellKey.STUN, 2);
     public static final ActiveSpell RAGE = new Rage("rage_spell", Archetype.DUELIST, SpellKey.RAGE, 3);
+    public static final PassiveSpell FINISHER = new Finisher(Archetype.DUELIST, SpellKey.FINISHER,3);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {

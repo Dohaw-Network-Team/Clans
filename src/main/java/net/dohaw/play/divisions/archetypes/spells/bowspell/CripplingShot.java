@@ -14,8 +14,8 @@ import java.util.UUID;
 
 public class CripplingShot extends BowSpell implements Damageable, RegenAffectable, Cooldownable, Affectable {
 
-    public CripplingShot(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
-        super(customItemBindedToKey, archetype, KEY, levelUnlocked);
+    public CripplingShot(ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
+        super(archetype, KEY, levelUnlocked);
     }
 
     @Override

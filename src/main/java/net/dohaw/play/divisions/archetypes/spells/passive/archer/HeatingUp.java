@@ -25,8 +25,8 @@ import java.util.UUID;
 
 public class HeatingUp extends PassiveSpell implements Listener {
 
-    public HeatingUp(String customItemBindedToKey, ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
-        super(customItemBindedToKey, archetype, KEY, levelUnlocked);
+    public HeatingUp(ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
+        super(archetype, KEY, levelUnlocked);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

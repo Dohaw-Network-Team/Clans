@@ -142,6 +142,7 @@ public final class DivisionsPlugin extends JavaPlugin {
         Spell.registerWrapper(Spell.SPORADIC);
         Spell.registerWrapper(Spell.STUN);
         Spell.registerWrapper(Spell.RAGE);
+        Spell.registerWrapper(Spell.FINISHER);
     }
 
     private boolean setupEconomy() {

@@ -9,5 +9,6 @@ public enum SpellKey {
     CRIPPLING_SHOT,
     SPORADIC,
     STUN,
-    RAGE
+    RAGE,
+    FINISHER
 }
