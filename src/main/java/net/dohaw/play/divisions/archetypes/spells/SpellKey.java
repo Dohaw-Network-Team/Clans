@@ -12,5 +12,6 @@ public enum SpellKey {
     RAGE,
     FINISHER,
     LEAP,
-    DUEL_WIELDER
+    DUEL_WIELDER,
+    PHOTOSYNTHESIS_P1
 }

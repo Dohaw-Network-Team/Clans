@@ -1,7 +1,7 @@
 package net.dohaw.play.divisions.menus.itemcreation.enchants;
 
 import lombok.Setter;
-import net.dohaw.play.corelib.menus.Menu;
+import net.dohaw.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.customitems.ItemCreationSession;
 import net.dohaw.play.divisions.managers.CustomItemManager;

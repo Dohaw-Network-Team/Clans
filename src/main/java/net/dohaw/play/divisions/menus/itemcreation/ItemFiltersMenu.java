@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.menus.itemcreation;
 
-import net.dohaw.play.corelib.menus.Menu;
+import net.dohaw.corelib.menus.Menu;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.managers;
 
-import net.dohaw.play.corelib.StringUtils;
+import net.dohaw.corelib.StringUtils;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.*;

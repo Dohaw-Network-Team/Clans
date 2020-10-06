@@ -1,7 +1,7 @@
 package net.dohaw.play.divisions.commands;
 
-import net.dohaw.play.corelib.ChatSender;
-import net.dohaw.play.corelib.helpers.MathHelper;
+import net.dohaw.corelib.ChatSender;
+import net.dohaw.corelib.helpers.MathHelper;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;

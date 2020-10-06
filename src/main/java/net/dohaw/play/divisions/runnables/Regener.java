@@ -26,16 +26,20 @@ public class Regener extends BukkitRunnable {
     public void run() {
 
         this.data = plugin.getPlayerDataManager().getPlayerByUUID(UUID);
-        double playerRegen = data.getRegen();
-        double maxRegen = Calculator.calculateMaxRegen(data);
+        if(data != null){
+            double playerRegen = data.getRegen();
+            double maxRegen = Calculator.calculateMaxRegen(data);
 
-        if(playerRegen != maxRegen){
-            double finalPlayerRegen = playerRegen + Calculator.calculateRegen(data);
-            if(maxRegen <= finalPlayerRegen){
-                data.setRegen(playerRegen + Calculator.calculateRegen(data));
-            }else{
-                data.setRegen(maxRegen);
+            if(playerRegen != maxRegen){
+                double finalPlayerRegen = playerRegen + Calculator.calculateRegen(data);
+                if(maxRegen <= finalPlayerRegen){
+                    data.setRegen(playerRegen + Calculator.calculateRegen(data));
+                }else{
+                    data.setRegen(maxRegen);
+                }
             }
+        }else{
+            this.cancel();
         }
 
         plugin.getPlayerDataManager().updatePlayerData(data);

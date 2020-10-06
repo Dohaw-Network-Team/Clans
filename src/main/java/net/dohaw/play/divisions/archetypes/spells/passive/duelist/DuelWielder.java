@@ -1,10 +1,11 @@
-package net.dohaw.play.divisions.archetypes.spells.passive;
+package net.dohaw.play.divisions.archetypes.spells.passive.duelist;
 
-import net.dohaw.play.corelib.helpers.CustomInvHelper;
+import net.dohaw.corelib.helpers.CustomInvHelper;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
+import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.HumanEntity;
@@ -16,7 +17,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,9 +1,7 @@
 package net.dohaw.play.divisions.archetypes.spells.active;
 
-import net.dohaw.play.corelib.helpers.MathHelper;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
-import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Damageable;
@@ -16,7 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

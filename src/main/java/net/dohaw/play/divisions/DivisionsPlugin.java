@@ -1,11 +1,12 @@
 package net.dohaw.play.divisions;
 
 import lombok.Getter;
-import net.dohaw.play.corelib.CoreLib;
-import net.dohaw.play.corelib.JPUtils;
+import net.dohaw.corelib.CoreLib;
+import net.dohaw.corelib.JPUtils;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.specializations.Speciality;
 import net.dohaw.play.divisions.archetypes.spells.Spell;
+import net.dohaw.play.divisions.archetypes.spells.passive.tree.PhotosynthesisRunner;
 import net.dohaw.play.divisions.commands.ArchetypesCommand;
 import net.dohaw.play.divisions.commands.ConfirmableCommands;
 import net.dohaw.play.divisions.commands.CustomItemsCommand;
@@ -84,6 +85,7 @@ public final class DivisionsPlugin extends JavaPlugin {
         registerSpells();
 
         loadManagerData();
+        new PhotosynthesisRunner(this).runTaskTimer(this, 0L, (long) (defaultConfig.getPhotosynthesisInterval() * 20) );
 
         JPUtils.registerEvents(new GeneralListener(this), new ProgressListener(this));
         JPUtils.registerCommand("divisions", new DivisionsCommand(this));
@@ -145,6 +147,7 @@ public final class DivisionsPlugin extends JavaPlugin {
         Spell.registerWrapper(Spell.FINISHER);
         Spell.registerWrapper(Spell.LEAP);
         Spell.registerWrapper(Spell.DUEL_WIELDER);
+        Spell.registerWrapper(Spell.PHOTOSYNTHESIS_P1);
     }
 
     private boolean setupEconomy() {

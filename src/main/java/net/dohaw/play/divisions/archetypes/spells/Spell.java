@@ -5,10 +5,11 @@ import net.dohaw.play.divisions.archetypes.*;
 import net.dohaw.play.divisions.archetypes.spells.active.*;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.CripplingShot;
-import net.dohaw.play.divisions.archetypes.spells.passive.DuelWielder;
-import net.dohaw.play.divisions.archetypes.spells.passive.Finisher;
+import net.dohaw.play.divisions.archetypes.spells.passive.duelist.DuelWielder;
+import net.dohaw.play.divisions.archetypes.spells.passive.duelist.Finisher;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import net.dohaw.play.divisions.archetypes.spells.passive.archer.HeatingUp;
+import net.dohaw.play.divisions.archetypes.spells.passive.tree.PhotosynthesisP1;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -43,6 +44,11 @@ public abstract class Spell extends WrapperHolder {
     public static final PassiveSpell FINISHER = new Finisher(Archetype.DUELIST, SpellKey.FINISHER,3);
     public static final ActiveSpell LEAP = new Leap("leap_spell", Archetype.DUELIST, SpellKey.LEAP, 6);
     public static final PassiveSpell DUEL_WIELDER = new DuelWielder(Archetype.DUELIST, SpellKey.DUEL_WIELDER, 6);
+
+    /*
+        Tree Spells
+     */
+    public static final PassiveSpell PHOTOSYNTHESIS_P1 = new PhotosynthesisP1(Archetype.TREE, SpellKey.PHOTOSYNTHESIS_P1, 1);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {

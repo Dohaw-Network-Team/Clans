@@ -1,8 +1,8 @@
 package net.dohaw.play.divisions.menus.permissions;
 
-import net.dohaw.play.corelib.StringUtils;
-import net.dohaw.play.corelib.helpers.EnumHelper;
-import net.dohaw.play.corelib.menus.Menu;
+import net.dohaw.corelib.StringUtils;
+import net.dohaw.corelib.helpers.EnumHelper;
+import net.dohaw.corelib.menus.Menu;
 import net.dohaw.play.divisions.rank.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

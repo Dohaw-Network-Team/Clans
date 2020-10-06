@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.files;
 
-import net.dohaw.play.corelib.Config;
+import net.dohaw.corelib.Config;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DefaultConfig extends Config {
@@ -105,6 +105,10 @@ public class DefaultConfig extends Config {
 
     public double getLeapDamageScale(){
         return config.getDouble(SPELL_CALCULATIONS_PATH + ".Leap.Damage Scale");
+    }
+
+    public double getPhotosynthesisInterval(){
+        return config.getDouble(SPELL_CALCULATIONS_PATH + ".Photosynthesis.Interval");
     }
 
     public boolean isInDebugMode(){

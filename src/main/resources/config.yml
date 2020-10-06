@@ -37,3 +37,5 @@ Calculations:
       Velocity Scale: 2
       Radius: 3
       Damage Scale: 1
+    Photosynthesis:
+      Interval: 30

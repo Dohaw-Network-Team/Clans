@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions.files;
 
-import net.dohaw.play.corelib.Config;
+import net.dohaw.corelib.Config;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;

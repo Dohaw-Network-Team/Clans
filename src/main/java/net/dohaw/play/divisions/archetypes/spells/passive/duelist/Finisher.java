@@ -1,10 +1,11 @@
-package net.dohaw.play.divisions.archetypes.spells.passive;
+package net.dohaw.play.divisions.archetypes.spells.passive.duelist;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
+import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;

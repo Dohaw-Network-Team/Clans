@@ -1,8 +1,7 @@
 package net.dohaw.play.divisions.files;
 
-import net.dohaw.play.corelib.Config;
-import net.dohaw.play.corelib.StringUtils;
-import net.dohaw.play.divisions.DivisionsPlugin;
+import net.dohaw.corelib.Config;
+import net.dohaw.corelib.StringUtils;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.customitems.ItemType;

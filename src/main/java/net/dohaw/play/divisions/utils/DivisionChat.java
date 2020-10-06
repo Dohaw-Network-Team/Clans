@@ -1,7 +1,7 @@
 package net.dohaw.play.divisions.utils;
 
-import net.dohaw.play.corelib.ChatSender;
-import net.dohaw.play.corelib.StringUtils;
+import net.dohaw.corelib.ChatSender;
+import net.dohaw.corelib.StringUtils;
 import net.dohaw.play.divisions.DivisionChannel;
 import net.dohaw.play.divisions.division.Division;
 import net.dohaw.play.divisions.managers.PlayerDataManager;

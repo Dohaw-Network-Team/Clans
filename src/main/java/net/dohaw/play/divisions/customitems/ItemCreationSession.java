@@ -2,7 +2,7 @@ package net.dohaw.play.divisions.customitems;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.dohaw.play.corelib.StringUtils;
+import net.dohaw.corelib.StringUtils;
 import net.dohaw.play.divisions.Stat;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

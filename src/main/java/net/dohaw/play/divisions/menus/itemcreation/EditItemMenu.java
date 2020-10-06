@@ -1,7 +1,7 @@
 package net.dohaw.play.divisions.menus.itemcreation;
 
-import net.dohaw.play.corelib.ChatSender;
-import net.dohaw.play.corelib.menus.Menu;
+import net.dohaw.corelib.ChatSender;
+import net.dohaw.corelib.menus.Menu;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.managers.CustomItemManager;
 import org.bukkit.Bukkit;

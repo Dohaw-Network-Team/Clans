@@ -1,6 +1,6 @@
 package net.dohaw.play.divisions;
 
-import net.dohaw.play.corelib.helpers.EnumHelper;
+import net.dohaw.corelib.helpers.EnumHelper;
 import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
