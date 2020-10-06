@@ -404,21 +404,19 @@ public class GeneralListener implements Listener {
         Entity enDamager = e.getDamager();
         Entity enDamageTaker = e.getEntity();
 
-        if(enDamager instanceof Arrow && enDamageTaker instanceof Player){
+        if(enDamager instanceof Arrow){
 
             Arrow arrow = (Arrow) enDamager;
             if(arrow.hasMetadata("bow_spell")){
 
                 Player damager = (Player) arrow.getShooter();
-                Player damageTaker = (Player) enDamageTaker;
 
                 String bowSpellKey = enDamager.getMetadata("bow_spell").get(0).asString();
                 BowSpell bowSpell = Spell.getBowSpellByKey(bowSpellKey);
 
                 PlayerData shootersData = playerDataManager.getPlayerByUUID(damager.getUniqueId());
-                PlayerData damageTakerData = playerDataManager.getPlayerByUUID(damageTaker.getUniqueId());
 
-                bowSpell.affectHitPlayer(damageTakerData, shootersData);
+                bowSpell.affectHitEntity(enDamageTaker, shootersData);
 
             }
         }

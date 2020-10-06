@@ -6,7 +6,11 @@ import net.dohaw.play.divisions.archetypes.spells.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -64,21 +68,31 @@ public class CripplingShot extends BowSpell implements Damageable, RegenAffectab
     }
 
     @Override
-    public void affectHitPlayer(PlayerData damageTaker, PlayerData damagerDealer) {
+    public void affectHitEntity(Entity eDamageTaker, PlayerData damagerDealer) {
 
-        Player damagedPlayer = Bukkit.getPlayer(damageTaker.getPLAYER_UUID());
-        final float INIT_WALKING_SPEED = damagedPlayer.getWalkSpeed();
-        final double PERCENTAGE_SPEED_DECREASE = .25;
+        double duration = getDuration() * 20;
+        if(eDamageTaker instanceof Player){
 
-        double subtractive = INIT_WALKING_SPEED * PERCENTAGE_SPEED_DECREASE;
-        float newSpeed = (float) (INIT_WALKING_SPEED - subtractive);
+            Player damageTaker = (Player) eDamageTaker;
+            Player damagedPlayer = Bukkit.getPlayer(damageTaker.getUniqueId());
+            final float INIT_WALKING_SPEED = damagedPlayer.getWalkSpeed();
+            final double PERCENTAGE_SPEED_DECREASE = .25;
 
-        damagedPlayer.setWalkSpeed(newSpeed);
-        double duration = getDuration();
+            double subtractive = INIT_WALKING_SPEED * PERCENTAGE_SPEED_DECREASE;
+            float newSpeed = (float) (INIT_WALKING_SPEED - subtractive);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            damagedPlayer.setWalkSpeed(INIT_WALKING_SPEED);
-        }, (long) (duration * 20) );
+            damagedPlayer.setWalkSpeed(newSpeed);
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                damagedPlayer.setWalkSpeed(INIT_WALKING_SPEED);
+            }, (long) duration );
+
+        }else{
+
+            LivingEntity le = (LivingEntity) eDamageTaker;
+            le.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, (int) (duration * 20), 1));
+
+        }
 
     }
 

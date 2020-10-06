@@ -8,6 +8,8 @@ import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Listener;
 
 public abstract class BowSpell extends PassiveSpell implements Listener, Cooldownable, RegenAffectable, Affectable {
@@ -17,6 +19,6 @@ public abstract class BowSpell extends PassiveSpell implements Listener, Cooldow
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    public abstract void affectHitPlayer(PlayerData damageTaker, PlayerData damagerDealer);
+    public abstract void affectHitEntity(Entity eDamageTaker, PlayerData damagerDealer);
 
 }

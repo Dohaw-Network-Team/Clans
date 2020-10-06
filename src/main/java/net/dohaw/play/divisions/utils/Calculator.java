@@ -4,19 +4,15 @@ import net.dohaw.play.divisions.DamageType;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.spells.RegenAffectable;
-import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.customitems.CustomItem;
 import net.dohaw.play.divisions.files.DefaultConfig;
 import net.dohaw.play.divisions.managers.PlayerDataManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-
-import java.util.EnumMap;
 
 
 public class Calculator {
@@ -39,9 +35,8 @@ public class Calculator {
         return (dmg + (Math.pow(damageEnhancer, dmgScale))) / dmgDivisionScale;
     }
 
-    public static double factorInToughness(PlayerData data, double dmg){
-        EnumMap<Stat, Double> skills = data.getStatLevels();
-        double toughnessLvl = skills.get(Stat.FORTITUDE);
+    public static double factorInFortitude(PlayerData data, double dmg){
+        double toughnessLvl = Calculator.getTotalStat(data, Stat.FORTITUDE);
         return dmg - (Math.pow(toughnessLvl, config.getToughnessScale()));
     }
 
@@ -168,7 +163,7 @@ public class Calculator {
             }
             PlayerData pd = playerDataManager.getPlayerByUUID(damageTaker.getUniqueId());
 
-            dmg = Calculator.factorInToughness(pd, dmg);
+            dmg = Calculator.factorInFortitude(pd, dmg);
 
         }
 
