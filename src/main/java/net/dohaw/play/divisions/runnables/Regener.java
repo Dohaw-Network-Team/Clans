@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.dohaw.play.divisions.DivisionsPlugin;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.utils.Calculator;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -14,9 +15,6 @@ public class Regener extends BukkitRunnable {
     @Getter private final UUID UUID;
     @Getter private DivisionsPlugin plugin;
 
-    /*
-        Regener error happens when i close game but not when i disconnect
-     */
     public Regener(DivisionsPlugin plugin, final UUID UUID){
         this.UUID = UUID;
         this.plugin = plugin;
@@ -27,6 +25,7 @@ public class Regener extends BukkitRunnable {
 
         this.data = plugin.getPlayerDataManager().getPlayerByUUID(UUID);
         if(data != null){
+
             double playerRegen = data.getRegen();
             double maxRegen = Calculator.calculateMaxRegen(data);
 
@@ -38,10 +37,10 @@ public class Regener extends BukkitRunnable {
                     data.setRegen(maxRegen);
                 }
             }
+            plugin.getPlayerDataManager().updatePlayerData(data);
         }else{
             this.cancel();
         }
 
-        plugin.getPlayerDataManager().updatePlayerData(data);
     }
 }

@@ -100,10 +100,12 @@ public class CustomItemManager implements Manager{
 
                 Player player = pd.getPlayer().getPlayer();
                 TreeMap<Integer, ItemStack> bindedItemMap = CustomItem.getPlayerItemWithKey(player, customItemBindedToKey);
-                ItemStack bindedItem = alterMeta(pd, aSpell, bindedItemMap.firstEntry().getValue());
+                if(bindedItemMap != null){
+                    ItemStack bindedItem = alterMeta(pd, aSpell, bindedItemMap.firstEntry().getValue());
+                    int slot = bindedItemMap.firstKey();
+                    player.getInventory().setItem(slot, bindedItem);
+                }
 
-                int slot = bindedItemMap.firstKey();
-                player.getInventory().setItem(slot, bindedItem);
             }
 
         }

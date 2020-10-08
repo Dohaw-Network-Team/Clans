@@ -211,7 +211,6 @@ public class GeneralListener implements Listener {
 
                                                     }
 
-                                                } else {
                                                 }
                                             }
                                         }

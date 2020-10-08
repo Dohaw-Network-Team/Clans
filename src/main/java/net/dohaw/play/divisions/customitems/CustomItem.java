@@ -138,15 +138,21 @@ public class CustomItem {
         return 0;
     }
 
+    /*
+        Can return null if it doesn't find item with specific customItemKey
+     */
+    @Nullable
     public static TreeMap<Integer, ItemStack> getPlayerItemWithKey(Player player, String customItemKey){
         PlayerInventory inv = player.getInventory();
         for(int x = 0; x < inv.getContents().length; x++){
             ItemStack is = inv.getContents()[x];
-            if(getCustomItemKey(is).equalsIgnoreCase(customItemKey)){
-                int finalX = x;
-                return new TreeMap<Integer, ItemStack>(){{
-                    put(finalX, is);
-                }};
+            if(is != null){
+                if(getCustomItemKey(is).equalsIgnoreCase(customItemKey)){
+                    int finalX = x;
+                    return new TreeMap<Integer, ItemStack>(){{
+                        put(finalX, is);
+                    }};
+                }
             }
         }
         return null;
