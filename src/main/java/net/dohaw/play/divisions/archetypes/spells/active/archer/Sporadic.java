@@ -67,11 +67,6 @@ public class Sporadic extends ActiveSpell implements CooldownDecreasable {
     }
 
     @Override
-    public double alterDamage(double dmg, PlayerData pd) {
-        return 0;
-    }
-
-    @Override
     public Particle getSpellOwnerParticle() {
         return null;
     }

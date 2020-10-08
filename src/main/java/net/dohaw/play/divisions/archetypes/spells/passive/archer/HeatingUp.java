@@ -3,6 +3,7 @@ package net.dohaw.play.divisions.archetypes.spells.passive.archer;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
+import net.dohaw.play.divisions.archetypes.spells.Damageable;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
 import net.dohaw.play.divisions.archetypes.types.Archer;
@@ -23,13 +24,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class HeatingUp extends PassiveSpell implements Listener {
+public class HeatingUp extends PassiveSpell implements Listener, Damageable {
 
     public HeatingUp(ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
         super(archetype, KEY, levelUnlocked);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
-
 
     @Override
     public Particle getSpellOwnerParticle() {
@@ -74,13 +74,18 @@ public class HeatingUp extends PassiveSpell implements Listener {
                             world.spawnParticle(getSpellAffecterParticle(), damaged.getLocation(), 40);
                         }
 
-                        newDmg = alterDamage(newDmg, pd);
                         // Made this thinking I'd need it. I'm not actually utilizing it right now but I'll keep it here just in case I want to use it later.
                         Bukkit.getPluginManager().callEvent(new HeatingUpCriticalStrikeEvent(pd));
 
                         if(defaultConfig.isInDebugMode()){
                             Bukkit.broadcastMessage("Heat Up Critical Damage: " + newDmg);
                             Bukkit.broadcastMessage("Regular Damage: " + e.getDamage());
+                        }
+
+                        Entity eDamaged = e.getEntity();
+                        if(eDamaged instanceof Player){
+                            PlayerData playerHitData = plugin.getPlayerDataManager().getPlayerByUUID(eDamaged.getUniqueId());
+                            alterDamage(newDmg, pd, playerHitData);
                         }
                         e.setDamage(newDmg);
 
@@ -103,11 +108,21 @@ public class HeatingUp extends PassiveSpell implements Listener {
     }
 
     @Override
-    public double alterDamage(double dmg, PlayerData pd) {
-        double totalLuck = Calculator.getTotalStat(pd, Stat.LUCK);
+    public double alterDamage(double dmg, PlayerData spellOwner, PlayerData playerAffected) {
+
+        double totalLuck = Calculator.getTotalStat(playerAffected, Stat.LUCK);
         double totalLuckMultiplier = defaultConfig.getHeatUpLuckMultiple();
-        int playerLevel = pd.getLevel();
-        return dmg + (totalLuckMultiplier * totalLuck) + (playerLevel - 1);
+        int playerLevel = playerAffected.getLevel();
+
+        double newDmg = dmg + (totalLuckMultiplier * totalLuck) + (playerLevel - 1);
+        newDmg = Calculator.factorInFortitude(playerAffected, newDmg);
+
+        return newDmg;
+    }
+
+    @Override
+    public List<String> getDamageLorePart() {
+        return null;
     }
 
 }

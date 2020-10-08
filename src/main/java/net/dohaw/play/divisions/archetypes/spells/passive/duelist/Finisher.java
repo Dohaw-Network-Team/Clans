@@ -1,7 +1,6 @@
 package net.dohaw.play.divisions.archetypes.spells.passive.duelist;
 
 import net.dohaw.play.divisions.PlayerData;
-import net.dohaw.play.divisions.archetypes.Archetype;
 import net.dohaw.play.divisions.archetypes.ArchetypeKey;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
@@ -27,11 +26,6 @@ public class Finisher extends PassiveSpell implements Listener {
     public Finisher(ArchetypeWrapper archetype, SpellKey KEY, int levelUnlocked) {
         super(archetype, KEY, levelUnlocked);
         Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
-
-    @Override
-    public double alterDamage(double dmg, PlayerData pd) {
-        return 0;
     }
 
     @Override

@@ -54,11 +54,6 @@ public class Stun extends ActiveSpell implements ActiveHittableSpell {
     }
 
     @Override
-    public double alterDamage(double dmg, PlayerData pd) {
-        return 0;
-    }
-
-    @Override
     public Particle getSpellOwnerParticle() {
         return null;
     }

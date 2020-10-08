@@ -93,6 +93,7 @@ public class CustomItemManager implements Manager{
 
         List<SpellWrapper> spells = Spell.getArchetypeSpellsUnlocked(archetype, playerLevel);
         for(SpellWrapper spell : spells){
+
             if(spell instanceof ActiveSpell){
 
                 ActiveSpell aSpell = (ActiveSpell) spell;
@@ -154,6 +155,13 @@ public class CustomItemManager implements Manager{
                 spellLore.add(" ");
                 spellLore.add(LORE_HEADER_COLOR + "DURATION");
                 spellLore = combineLore(LORE_COLOR, spellLore, affectable.getDurationLorePart());
+            }
+
+            if(aSpell instanceof Healable){
+                Healable healable = (Healable) aSpell;
+                spellLore.add(" ");
+                spellLore.add(LORE_HEADER_COLOR + "HEALING");
+                spellLore = combineLore(LORE_COLOR, spellLore, healable.getHealingLorePart());
             }
 
             spellLore = StringUtils.colorLore(spellLore);

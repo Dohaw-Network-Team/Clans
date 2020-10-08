@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Escape extends ActiveSpell {
@@ -61,12 +62,7 @@ public class Escape extends ActiveSpell {
 
     @Override
     public List<String> getCooldownLorePart(PlayerData pd) {
-        return Arrays.asList(getBaseCooldown() + " seconds");
-    }
-
-    @Override
-    public double alterDamage(double dmg, PlayerData pd) {
-        return 0;
+        return Collections.singletonList(getBaseCooldown() + " seconds");
     }
 
     @Override

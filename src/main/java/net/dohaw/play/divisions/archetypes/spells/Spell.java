@@ -5,6 +5,7 @@ import net.dohaw.play.divisions.archetypes.*;
 import net.dohaw.play.divisions.archetypes.spells.active.*;
 import net.dohaw.play.divisions.archetypes.spells.active.archer.Escape;
 import net.dohaw.play.divisions.archetypes.spells.active.archer.Sporadic;
+import net.dohaw.play.divisions.archetypes.spells.active.tree.Cocoon;
 import net.dohaw.play.divisions.archetypes.spells.active.tree.Root;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.CripplingShot;
@@ -56,6 +57,7 @@ public abstract class Spell extends WrapperHolder {
      */
     public static final PassiveSpell PHOTOSYNTHESIS_P1 = new PhotosynthesisP1(Archetype.TREE, SpellKey.PHOTOSYNTHESIS_P, 1);
     public static final ActiveSpell ROOT = new Root("root_spell", Archetype.TREE, SpellKey.ROOT, 2);
+    public static final ActiveSpell COCOON = new Cocoon("cocoon_spell", Archetype.TREE, SpellKey.COCOON, 2);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {

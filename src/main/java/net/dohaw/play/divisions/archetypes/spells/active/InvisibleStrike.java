@@ -42,7 +42,7 @@ public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable
     }
 
     @Override
-    public double alterDamage(double dmg, PlayerData pd) {
+    public double alterDamage(double dmg, PlayerData spellOwner, PlayerData playerAffected) {
         return 0;
     }
 

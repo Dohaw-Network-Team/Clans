@@ -14,5 +14,6 @@ public enum SpellKey {
     LEAP,
     DUEL_WIELDER,
     PHOTOSYNTHESIS_P,
-    ROOT
+    ROOT,
+    COCOON
 }

@@ -14,10 +14,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Root extends ActiveSpell implements Affectable, Damageable, Rangeable {
@@ -38,7 +37,7 @@ public class Root extends ActiveSpell implements Affectable, Damageable, Rangeab
         double range = getRange();
         List<Entity> nearbyEntities = player.getNearbyEntities(range, range, range);
 
-        Bukkit.broadcastMessage(nearbyEntities.toString());
+        double damage = Calculator.factorInSpellPower(pd, BASE_DMG);
         for(Entity e : nearbyEntities){
 
             if(e instanceof LivingEntity){
@@ -47,17 +46,23 @@ public class Root extends ActiveSpell implements Affectable, Damageable, Rangeab
                 LivingEntity le = (LivingEntity) e;
                 if(le instanceof Player){
 
-                    Player playerInRadius = (Player) e;
-                    playerInRadius.setMetadata("rooted", new FixedMetadataValue(plugin, true));
+                    Player playerRooted = (Player) e;
+                    playerRooted.setMetadata("rooted", new FixedMetadataValue(plugin, true));
 
                     Bukkit.getScheduler().runTaskLater(plugin, () ->{
-                        playerInRadius.removeMetadata("rooted", plugin);
+                        playerRooted.removeMetadata("rooted", plugin);
                     }, duration);
+
+                    PlayerData playerRootedData = plugin.getPlayerDataManager().getPlayerByUUID(playerRooted.getUniqueId());
+                    damage = Calculator.factorInFortitude(playerRootedData, damage);
+
+                    if(damage > 0){
+                        playerRooted.damage(damage);
+                    }
 
                 }else{
 
                     le.setAI(false);
-
                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                         le.setAI(true);
                     }, duration);
@@ -84,7 +89,7 @@ public class Root extends ActiveSpell implements Affectable, Damageable, Rangeab
 
     @Override
     public List<String> getCooldownLorePart(PlayerData pd) {
-        return Arrays.asList(getBaseCooldown() + " seconds");
+        return Collections.singletonList(getBaseCooldown() + " seconds");
     }
 
     @Override
@@ -93,15 +98,13 @@ public class Root extends ActiveSpell implements Affectable, Damageable, Rangeab
     }
 
     @Override
-    public double alterDamage(double dmg, PlayerData pd) {
-        double damage = Calculator.factorInSpellPower(pd, BASE_DMG);
-        damage = Calculator.factorInFortitude(pd, damage);
-        return damage;
+    public double alterDamage(double dmg, PlayerData spellOwner, PlayerData playerAffected) {
+        return 0;
     }
 
     @Override
     public List<String> getDamageLorePart() {
-        return Arrays.asList("Damage is based on your spell power");
+        return Arrays.asList("Has a base damage of " + BASE_DMG, "Damage can be increased by your spell power");
     }
 
     @Override

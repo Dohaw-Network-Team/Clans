@@ -46,8 +46,6 @@ public abstract class SpellWrapper extends Wrapper {
         return "Spell: " + getName() + "; Level Unlocked: " + levelUnlocked + "; Custom Item Binded To: " + customItemBindedToKey;
     }
 
-    public abstract double alterDamage(double dmg, PlayerData pd);
-
     public abstract Particle getSpellOwnerParticle();
 
     public abstract Particle getSpellAffecterParticle();

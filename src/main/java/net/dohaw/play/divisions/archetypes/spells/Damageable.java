@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Damageable {
 
-    double alterDamage(double dmg, PlayerData pd);
+    double alterDamage(double dmg, PlayerData spellOwner, PlayerData playerAffected);
     List<String> getDamageLorePart();
 
 }

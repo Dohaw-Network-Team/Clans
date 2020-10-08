@@ -12,6 +12,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -66,17 +67,12 @@ public class Rage extends ActiveSpell implements Affectable {
 
     @Override
     public List<String> getCooldownLorePart(PlayerData pd) {
-        return Arrays.asList(getBaseCooldown() + " seconds");
+        return Collections.singletonList(getBaseCooldown() + " seconds");
     }
 
     @Override
     public double getPercentageRegenAffected() {
         return .20;
-    }
-
-    @Override
-    public double alterDamage(double dmg, PlayerData pd) {
-        return 0;
     }
 
     @Override
@@ -91,7 +87,7 @@ public class Rage extends ActiveSpell implements Affectable {
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("Increases your strength for " + (STRENGTH_INCREASE * 100) + "%");
+        return Collections.singletonList("Increases your strength for " + (STRENGTH_INCREASE * 100) + "%");
     }
 
     @Override

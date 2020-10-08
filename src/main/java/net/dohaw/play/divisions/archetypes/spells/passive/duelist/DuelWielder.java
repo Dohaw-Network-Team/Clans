@@ -97,11 +97,6 @@ public class DuelWielder extends PassiveSpell implements Listener {
     }
 
     @Override
-    public double alterDamage(double dmg, PlayerData pd) {
-        return 0;
-    }
-
-    @Override
     public Particle getSpellOwnerParticle() {
         return null;
     }

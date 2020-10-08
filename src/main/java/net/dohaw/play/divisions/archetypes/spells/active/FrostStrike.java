@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FrostStrike extends ActiveLaunchableSpell implements Damageable {
@@ -23,12 +24,12 @@ public class FrostStrike extends ActiveLaunchableSpell implements Damageable {
 
     @Override
     public List<String> getCooldownLorePart(PlayerData pd) {
-        return Arrays.asList(getBaseCooldown() + " seconds");
+        return Collections.singletonList(getBaseCooldown() + " seconds");
     }
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("Shoots a frost strike");
+        return Collections.singletonList("Shoots a frost strike");
     }
 
     @Override
@@ -37,13 +38,13 @@ public class FrostStrike extends ActiveLaunchableSpell implements Damageable {
     }
 
     @Override
-    public double alterDamage(double dmg, PlayerData pd) {
+    public double alterDamage(double dmg, PlayerData spellOwner, PlayerData playerAffected) {
         return 0;
     }
 
     @Override
     public List<String> getDamageLorePart() {
-        return Arrays.asList("Damage is based on spell power");
+        return Collections.singletonList("Damage is based on spell power");
     }
 
     @Override

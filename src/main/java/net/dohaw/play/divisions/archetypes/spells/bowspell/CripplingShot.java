@@ -48,7 +48,7 @@ public class CripplingShot extends BowSpell implements Damageable, RegenAffectab
     }
 
     @Override
-    public double alterDamage(double dmg, PlayerData pd) {
+    public double alterDamage(double dmg, PlayerData spellOwner, PlayerData playerAffected) {
         return 0;
     }
 
