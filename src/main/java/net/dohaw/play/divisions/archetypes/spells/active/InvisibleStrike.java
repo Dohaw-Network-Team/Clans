@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable{
@@ -38,7 +39,7 @@ public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable
 
     @Override
     public List<String> getCooldownLorePart(PlayerData pd) {
-        return Arrays.asList("");
+        return Collections.singletonList("");
     }
 
     @Override
@@ -48,7 +49,7 @@ public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable
 
     @Override
     public List<String> getDamageLorePart() {
-        return Arrays.asList("");
+        return Collections.singletonList("");
     }
 
     @Override
@@ -63,7 +64,7 @@ public class InvisibleStrike extends ActiveLaunchableSpell implements Damageable
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("Hits your enemies with an attack that is obscure and undetectable");
+        return Collections.singletonList("Hits your enemies with an attack that is obscure and undetectable");
     }
 
     @Override

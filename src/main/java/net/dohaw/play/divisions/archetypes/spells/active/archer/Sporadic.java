@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Sporadic extends ActiveSpell implements CooldownDecreasable {
@@ -58,7 +59,7 @@ public class Sporadic extends ActiveSpell implements CooldownDecreasable {
 
     @Override
     public List<String> getCooldownLorePart(PlayerData pd) {
-        return Arrays.asList(getAdjustedCooldown(pd) + " seconds");
+        return Collections.singletonList(getAdjustedCooldown(pd) + " seconds");
     }
 
     @Override
@@ -78,7 +79,7 @@ public class Sporadic extends ActiveSpell implements CooldownDecreasable {
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("Allows you to continuously spew out arrows, each one firing on a random interval");
+        return Collections.singletonList("Allows you to continuously spew out arrows, each one firing on a random interval");
     }
 
     @Override

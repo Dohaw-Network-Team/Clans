@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class DuelWielder extends PassiveSpell implements Listener {
@@ -108,7 +109,7 @@ public class DuelWielder extends PassiveSpell implements Listener {
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("Decides whether a player can duel-wield or not");
+        return Collections.singletonList("Decides whether a player can duel-wield or not");
     }
 
 }

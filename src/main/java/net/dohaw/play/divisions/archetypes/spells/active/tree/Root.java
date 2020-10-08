@@ -119,7 +119,7 @@ public class Root extends ActiveSpell implements Affectable, Damageable, Rangeab
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("Roots nearby entities");
+        return Collections.singletonList("Roots nearby entities");
     }
 
     @Override
@@ -129,7 +129,7 @@ public class Root extends ActiveSpell implements Affectable, Damageable, Rangeab
 
     @Override
     public List<String> getDurationLorePart() {
-        return Arrays.asList(getDuration() + " seconds");
+        return Collections.singletonList(getDuration() + " seconds");
     }
 
     @Override
@@ -139,6 +139,6 @@ public class Root extends ActiveSpell implements Affectable, Damageable, Rangeab
 
     @Override
     public List<String> getRangeLorePart() {
-        return Arrays.asList(getDuration() + " blocks");
+        return Collections.singletonList(getDuration() + " blocks");
     }
 }

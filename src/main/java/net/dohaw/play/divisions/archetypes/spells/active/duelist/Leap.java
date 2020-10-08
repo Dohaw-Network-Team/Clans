@@ -24,6 +24,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -146,7 +147,7 @@ public class Leap extends ActiveSpell implements Damageable, Listener, Rangeable
 
     @Override
     public List<String> getCooldownLorePart(PlayerData pd) {
-        return Arrays.asList(getBaseCooldown() + " seconds");
+        return Collections.singletonList(getBaseCooldown() + " seconds");
     }
 
     @Override
@@ -180,7 +181,7 @@ public class Leap extends ActiveSpell implements Damageable, Listener, Rangeable
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("You leap into battle. When you land on the ground, you do damage to those around you");
+        return Collections.singletonList("You leap into battle. When you land on the ground, you do damage to those around you");
     }
 
     private boolean isOnBlock(Player player){
@@ -198,6 +199,6 @@ public class Leap extends ActiveSpell implements Damageable, Listener, Rangeable
 
     @Override
     public List<String> getRangeLorePart() {
-        return Arrays.asList(getRange() + " blocks ");
+        return Collections.singletonList(getRange() + " blocks ");
     }
 }

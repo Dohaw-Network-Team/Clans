@@ -11,6 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Stun extends ActiveSpell implements ActiveHittableSpell {
@@ -45,7 +46,7 @@ public class Stun extends ActiveSpell implements ActiveHittableSpell {
 
     @Override
     public List<String> getCooldownLorePart(PlayerData pd) {
-        return Arrays.asList(getBaseCooldown() + " seconds");
+        return Collections.singletonList(getBaseCooldown() + " seconds");
     }
 
     @Override
@@ -65,7 +66,7 @@ public class Stun extends ActiveSpell implements ActiveHittableSpell {
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("Knocks up opponent in front of you");
+        return Collections.singletonList("Knocks up opponent in front of you");
     }
 
 }

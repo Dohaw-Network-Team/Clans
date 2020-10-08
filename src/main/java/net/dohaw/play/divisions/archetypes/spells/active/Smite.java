@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Smite extends ActiveLaunchableSpell implements Damageable {
@@ -48,7 +49,7 @@ public class Smite extends ActiveLaunchableSpell implements Damageable {
 
     @Override
     public List<String> getDescription() {
-        return Arrays.asList("");
+        return Collections.singletonList("");
     }
 
     @Override
@@ -58,7 +59,7 @@ public class Smite extends ActiveLaunchableSpell implements Damageable {
 
     @Override
     public List<String> getCooldownLorePart(PlayerData pd) {
-        return Arrays.asList("");
+        return Collections.singletonList("");
     }
 
     @Override
@@ -68,6 +69,6 @@ public class Smite extends ActiveLaunchableSpell implements Damageable {
 
     @Override
     public List<String> getDamageLorePart() {
-        return Arrays.asList("");
+        return Collections.singletonList("");
     }
 }

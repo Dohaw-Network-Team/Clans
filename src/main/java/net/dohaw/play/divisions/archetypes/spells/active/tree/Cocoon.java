@@ -4,9 +4,13 @@ import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.*;
 import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
+import net.dohaw.play.divisions.utils.Calculator;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
@@ -34,16 +38,53 @@ public class Cocoon extends ActiveSpell implements Damageable, Rangeable, Affect
 
         Player player = pd.getPlayer().getPlayer();
 
-        List<Location> treeLogLocations = getTreeLogLocations(player.getLocation());
-        Map<Location, Material> treePreviousBlocks = spawnTree(treeLogLocations);
+        player.setGameMode(GameMode.SPECTATOR);
 
-        Bukkit.getScheduler().runTaskLater(plugin, () ->{
-            for(Map.Entry<Location, Material> previousLoc : treePreviousBlocks.entrySet()){
-                Location loc = previousLoc.getKey();
-                Material mat = previousLoc.getValue();
-                loc.getBlock().setType(mat);
+        Location initPlayerLocation = player.getLocation().clone();
+        List<Location> mineableLogLocations = getTreeLogLocations(player.getLocation());
+        Map<Location, Material> treeBlockLocations = spawnTree(mineableLogLocations);
+
+        BukkitTask treeWatcher = new TreeWatcher(player, initPlayerLocation, mineableLogLocations, treeBlockLocations).runTaskTimer(plugin, 0L, 5L);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+
+            if(!treeWatcher.isCancelled()){
+
+                TreeWatcher.removeTree(treeBlockLocations);
+                player.setGameMode(GameMode.SURVIVAL);
+                player.teleport(initPlayerLocation);
+                treeWatcher.cancel();
+                /*
+                    Damages players that are within the radius
+                 */
+                double radius = getRange();
+                List<Entity> nearbyEntities = player.getNearbyEntities(radius, radius, radius);
+                for(Entity e : nearbyEntities){
+
+                    if(e instanceof LivingEntity){
+
+                        LivingEntity le = (LivingEntity) e;
+                        double dmg = BASE_DMG;
+                        if(le instanceof Player){
+                            PlayerData playerInRadiusData = plugin.getPlayerDataManager().getPlayerByUUID(le.getUniqueId());
+                            dmg = alterDamage(dmg, pd, playerInRadiusData);
+                        }
+
+                        /*
+                            Could be less than 0 depending on how much fortitude their opponent has
+                         */
+                        if(dmg > 0){
+                            le.damage(dmg);
+                        }
+
+                        le.getWorld().spawnParticle(getSpellAffecterParticle(), le.getLocation(), 40, 1, 1, 1);
+                    }
+
+                }
+
             }
-        }, 20);
+
+        }, (long) (getDuration() * 20));
 
     }
 
@@ -84,17 +125,19 @@ public class Cocoon extends ActiveSpell implements Damageable, Rangeable, Affect
 
     @Override
     public double alterDamage(double dmg, PlayerData spellOwner, PlayerData playerAffected) {
-        return 0;
+        double newDmg = Calculator.factorInSpellPower(spellOwner, dmg);
+        newDmg = Calculator.factorInFortitude(playerAffected, newDmg);
+        return newDmg;
     }
 
     @Override
     public Particle getSpellOwnerParticle() {
-        return null;
+        return Particle.HEART;
     }
 
     @Override
     public Particle getSpellAffecterParticle() {
-        return null;
+        return Particle.SWEEP_ATTACK;
     }
 
     @Override
@@ -166,5 +209,7 @@ public class Cocoon extends ActiveSpell implements Damageable, Rangeable, Affect
         return previousBlocks;
 
     }
+
+
 
 }
