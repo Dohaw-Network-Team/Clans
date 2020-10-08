@@ -1,4 +1,4 @@
-package net.dohaw.play.divisions.archetypes.spells.duelist;
+package net.dohaw.play.divisions.archetypes.spells.active.duelist;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;

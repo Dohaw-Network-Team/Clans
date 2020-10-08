@@ -61,7 +61,7 @@ public class PhotosynthesisP1 extends PassiveSpell implements Listener {
                 net.minecraft.server.v1_16_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
                 NBTTagCompound nmsComp = nmsStack.getOrCreateTag();
 
-                if(nmsComp.getBoolean("Is Photo Food")){
+                if(nmsComp.getBoolean("Is Photo Food") && nmsComp.getString("Owner").equalsIgnoreCase(player.getName())){
                     e.setCancelled(true);
                     player.sendMessage("Only Tree archetypes can eat this food!");
                 }

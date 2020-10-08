@@ -73,6 +73,7 @@ public class PhotosynthesisRunner extends BukkitRunnable {
                             net.minecraft.server.v1_16_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(food);
                             NBTTagCompound nmsComp = nmsStack.getOrCreateTag();
                             nmsComp.setBoolean("Is Photo Food", true);
+                            nmsComp.setString("Owner", player.getName());
                             nmsStack.setTag(nmsComp);
 
                             food = CraftItemStack.asBukkitCopy(nmsStack);
