@@ -17,12 +17,15 @@ Calculations:
     Melee Damage Scale: 1.35
     Toughness Scale: 1.2
     Bow Damage Scale: 1.2
+    Spell Power Damage Scale: 1.35
 
   Division Scale:
     Melee Damage Division Scale: 1.35
     Ranged Damage Division Scale: 1.35
+    Spell Power Damage Division Scale: 1.35
     Raw Stat Division Scale: 60
     Raw Stat Division Totality Scale: 1.665
+
 
   Spells:
     Heating Up:

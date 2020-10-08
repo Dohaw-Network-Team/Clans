@@ -1,4 +1,4 @@
-package net.dohaw.play.divisions.archetypes.spells.active;
+package net.dohaw.play.divisions.archetypes.spells.duelist;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.Stat;
@@ -7,6 +7,7 @@ import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.Damageable;
 import net.dohaw.play.divisions.archetypes.spells.Rangeable;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
+import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import net.dohaw.play.divisions.archetypes.types.Duelist;
 import net.dohaw.play.divisions.utils.Calculator;
 import org.bukkit.Bukkit;

@@ -1,8 +1,9 @@
-package net.dohaw.play.divisions.archetypes.spells.active;
+package net.dohaw.play.divisions.archetypes.spells.active.archer;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
+import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

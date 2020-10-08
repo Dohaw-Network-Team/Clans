@@ -1,8 +1,10 @@
-package net.dohaw.play.divisions.archetypes.spells.active;
+package net.dohaw.play.divisions.archetypes.spells.duelist;
 
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.ArchetypeWrapper;
 import net.dohaw.play.divisions.archetypes.spells.SpellKey;
+import net.dohaw.play.divisions.archetypes.spells.active.ActiveHittableSpell;
+import net.dohaw.play.divisions.archetypes.spells.active.ActiveSpell;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;

@@ -26,6 +26,7 @@ import net.dohaw.play.divisions.utils.Calculator;
 import net.dohaw.play.divisions.utils.DivisionChat;
 import net.dohaw.play.divisions.utils.EntityUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Arrow;
@@ -37,10 +38,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -418,6 +416,20 @@ public class GeneralListener implements Listener {
 
                 bowSpell.affectHitEntity(enDamageTaker, shootersData);
 
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e){
+
+        Player player = e.getPlayer();
+        if(player.hasMetadata("rooted")){
+            Location to = e.getTo();
+            Location from = e.getFrom();
+            if(to.getX() != from.getX() || to.getZ() != from.getZ()){
+                e.setCancelled(true);
             }
         }
 

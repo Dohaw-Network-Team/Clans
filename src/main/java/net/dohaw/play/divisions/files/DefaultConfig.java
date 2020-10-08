@@ -29,6 +29,14 @@ public class DefaultConfig extends Config {
         return config.getDouble(CALCULATIONS_PATH + ".Scale.Bow Damage Scale");
     }
 
+    public double getSpellPowerDamageDivisionScale(){
+        return config.getDouble(CALCULATIONS_PATH + ".Division Scale.Spell Power Damage Division Scale");
+    }
+
+    public double getSpellPowerDamageScale(){
+        return config.getDouble(CALCULATIONS_PATH + ".Scale.Spell Power Damage Scale");
+    }
+
     public double getMeleeDamageDivisionScale(){
         return config.getDouble(CALCULATIONS_PATH + ".Division Scale.Melee Damage Division Scale");
     }

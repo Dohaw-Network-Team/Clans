@@ -148,6 +148,7 @@ public final class DivisionsPlugin extends JavaPlugin {
         Spell.registerWrapper(Spell.LEAP);
         Spell.registerWrapper(Spell.DUEL_WIELDER);
         Spell.registerWrapper(Spell.PHOTOSYNTHESIS_P1);
+        Spell.registerWrapper(Spell.ROOT);
     }
 
     private boolean setupEconomy() {

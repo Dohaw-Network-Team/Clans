@@ -13,5 +13,6 @@ public enum SpellKey {
     FINISHER,
     LEAP,
     DUEL_WIELDER,
-    PHOTOSYNTHESIS_P1
+    PHOTOSYNTHESIS_P,
+    ROOT
 }

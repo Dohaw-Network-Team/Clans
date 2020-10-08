@@ -20,9 +20,11 @@ public class Calculator {
     private static DefaultConfig config;
 
     public static double factorInDamage(PlayerData data, double dmg, boolean isBowDamage){
+
         double damageEnhancer;
         double dmgScale;
         double dmgDivisionScale;
+
         if(isBowDamage){
             dmgDivisionScale = config.getRangedDamageDivisionScale();
             dmgScale = config.getBowDamageScale();
@@ -33,11 +35,22 @@ public class Calculator {
             damageEnhancer = getTotalStat(data, Stat.STRENGTH);
         }
         return (dmg + (Math.pow(damageEnhancer, dmgScale))) / dmgDivisionScale;
+
     }
 
+    /*
+        Possibly factor in fortitude differently for magic, physical, and ranged damage
+     */
     public static double factorInFortitude(PlayerData data, double dmg){
         double toughnessLvl = Calculator.getTotalStat(data, Stat.FORTITUDE);
         return dmg - (Math.pow(toughnessLvl, config.getToughnessScale()));
+    }
+
+    public static double factorInSpellPower(PlayerData data, double dmg){
+        double spellPower = Calculator.getTotalStat(data, Stat.SPELL_POWER);
+        double spellPowerDamageScale = config.getSpellPowerDamageScale();
+        double spellPowerDivisionScale = config.getSpellPowerDamageDivisionScale();
+        return dmg + (Math.pow(spellPower, spellPowerDamageScale)) / spellPowerDivisionScale;
     }
 
     public static double getStatFromItem(double rawStatOnItem){

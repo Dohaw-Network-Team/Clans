@@ -3,8 +3,14 @@ package net.dohaw.play.divisions.archetypes.spells;
 import net.dohaw.play.divisions.PlayerData;
 import net.dohaw.play.divisions.archetypes.*;
 import net.dohaw.play.divisions.archetypes.spells.active.*;
+import net.dohaw.play.divisions.archetypes.spells.active.archer.Escape;
+import net.dohaw.play.divisions.archetypes.spells.active.archer.Sporadic;
+import net.dohaw.play.divisions.archetypes.spells.active.tree.Root;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.BowSpell;
 import net.dohaw.play.divisions.archetypes.spells.bowspell.CripplingShot;
+import net.dohaw.play.divisions.archetypes.spells.duelist.Leap;
+import net.dohaw.play.divisions.archetypes.spells.duelist.Rage;
+import net.dohaw.play.divisions.archetypes.spells.duelist.Stun;
 import net.dohaw.play.divisions.archetypes.spells.passive.duelist.DuelWielder;
 import net.dohaw.play.divisions.archetypes.spells.passive.duelist.Finisher;
 import net.dohaw.play.divisions.archetypes.spells.passive.PassiveSpell;
@@ -48,7 +54,8 @@ public abstract class Spell extends WrapperHolder {
     /*
         Tree Spells
      */
-    public static final PassiveSpell PHOTOSYNTHESIS_P1 = new PhotosynthesisP1(Archetype.TREE, SpellKey.PHOTOSYNTHESIS_P1, 1);
+    public static final PassiveSpell PHOTOSYNTHESIS_P1 = new PhotosynthesisP1(Archetype.TREE, SpellKey.PHOTOSYNTHESIS_P, 1);
+    public static final ActiveSpell ROOT = new Root("root_spell", Archetype.TREE, SpellKey.ROOT, 2);
 
     public static ActiveSpell getSpellByItemKey(String customItemKey) {
         for (Map.Entry<Enum, Wrapper> entry : wrappers.entrySet()) {
